@@ -1,6 +1,6 @@
 <template>
   <div id="app" class="has-background-grey">
-    <div class="box" style="max-width: 540px;margin:auto;">
+    <div class="box" style="max-width: 540px;margin:auto;margin-bottom:15px;">
       <h2 class="title">{{ l["title"] }}</h2>
       <h3 class="subtitle">
         R = (D<sup>2</sup> + 4 * S<sup>2</sup>) / (8 * S)
@@ -11,7 +11,7 @@
         <span v-html="l['equation_3']"></span>
       </p>
     </div>
-    <div class="box">
+    <div class="box" style="max-width: 540px;margin:auto;margin-bottom:15px;">
       <div class="field is-horizontal">
         <label for="" class="label is-small">{{ l["language"] }} :</label>
         <div class="select is-small">
