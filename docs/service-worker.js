@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/sphero/precache-manifest.4736cf2494e84df587c74cc8d96e792b.js"
+  "/sphero/precache-manifest.6f2211c1b728a8a53a8bd22bcddcd241.js"
 );
 
 workbox.core.setCacheNameDetails({prefix: "sphero"});

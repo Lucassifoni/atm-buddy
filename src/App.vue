@@ -119,9 +119,6 @@ export default {
       const d = this.d;
       const s = this.s;
       const r = (d * d + 4 * s * s) / 8 * s;
-      if (this.units !== "mm") {
-        return r / 25.4;
-      }
       return r;
     },
     l() {
