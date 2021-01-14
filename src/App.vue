@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <div class="box" style="max-width: 540px;margin:auto;margin-bottom:15px;">
+    <div class="box" style="width: 100%;max-width: 540px;margin:auto;margin-bottom:15px;">
       <h2 class="title">{{ l["title"] }}</h2>
       <h3 class="subtitle">
         R = (D<sup>2</sup> + 4 * S<sup>2</sup>) / 8 * S
