@@ -1,9 +1,9 @@
 <template>
-  <div id="app" class="has-background-grey">
+  <div id="app">
     <div class="box" style="max-width: 540px;margin:auto;margin-bottom:15px;">
       <h2 class="title">{{ l["title"] }}</h2>
       <h3 class="subtitle">
-        R = (D<sup>2</sup> + 4 * S<sup>2</sup>) / (8 * S)
+        R = (D<sup>2</sup> + 4 * S<sup>2</sup>) / 8 * S
       </h3>
       <p>
         <span v-html="l['equation_1']"></span>
@@ -146,12 +146,11 @@ export default {
 <style lang="scss">
 @import "~bulma";
 
+html, body {
+  background: gray;
+}
+
 #app {
-  position: fixed;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
   padding: 15px;
 }
 
