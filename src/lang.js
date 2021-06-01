@@ -1,6 +1,6 @@
 export const fr = {
     language: "Langue",
-    title: "Sphéromètre (sans unités)",
+    title: "Sphéromètre",
     equation_1: `<strong>D</strong> est le diamètre du cercle des pattes.<br>`,
     equation_2: `<strong>S</strong> est la profondeur mesurée.<br>`,
     equation_3: `<strong>R</strong> est le rayon de courbure = <strong>2 * F</strong>`,

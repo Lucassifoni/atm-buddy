@@ -120,6 +120,10 @@ html, body {
   overflow-x: hidden;
 }
 
+html {
+  font-size: 14.5px!important;
+}
+
 #app {
   padding: 15px;
 }
