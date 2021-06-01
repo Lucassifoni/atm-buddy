@@ -29,19 +29,17 @@
       <div class="field is-horizontal">
         <label for="" class="label is-small"> D : </label>
         <input
-          type="number"
           class="input is-small"
           :value="d"
-          @input="set('d', parseFloat($event.target.value, 10))"
+          @input="set('d', Number(normalize(($event.target.value))))"
         />
       </div>
       <div class="field is-horizontal">
         <label for="" class="label is-small"> S : </label>
         <input
-          type="number"
           class="input is-small"
           :value="s"
-          @input="set('s', parseFloat($event.target.value, 10))"
+          @input="set('s', Number(normalize(($event.target.value))))"
         />
       </div>
       <div class="button is-primary" style="white-space: normal">
@@ -78,13 +76,15 @@ const set = (component, storage_key, obj, key, value) => {
   }
 };
 
+const normalize = n => n.toString().replace(",", ".");
+
 export default {
   name: "App",
   data() {
     return {
       lang: get("__sphero", "lang", "fr"),
-      d: parseFloat(get("__sphero", "d", 40), 10),
-      s: parseFloat(get("__sphero", "s", 3), 10),
+      d: Number(normalize(get("__sphero", "d", "40"))),
+      s: Number(normalize(get("__sphero", "s", "3"))),
     };
   },
   methods: {
@@ -97,6 +97,7 @@ export default {
         value
       );
     },
+    normalize
   },
   computed: {
     r() {
