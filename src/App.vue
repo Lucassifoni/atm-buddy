@@ -1,17 +1,16 @@
 <template>
   <div id="app">
     <div class="box" style="width: 100%;max-width: 540px;margin:auto;margin-bottom:15px;">
-      <h2 class="title">{{ l["title"] }}</h2>
-      <h3 class="subtitle">
-        R = (D<sup>2</sup> + 4 * S<sup>2</sup>) / 8 * S
+      <h2 class="subtitle" style="margin-bottom: 0">{{ l["title"] }}</h2>
+      <h3 class="subtitle" style="margin-bottom: 0">
+        R = (S / 2) + (D<sup>2</sup> / 8 * S)
       </h3>
       <p>
         <span v-html="l['equation_1']"></span>
         <span v-html="l['equation_2']"></span>
         <span v-html="l['equation_3']"></span>
       </p>
-    </div>
-    <div class="box" style="max-width: 540px;margin:auto;margin-bottom:15px;">
+      <hr>
       <div class="field is-horizontal">
         <label for="" class="label is-small">{{ l["language"] }} :</label>
         <div class="select is-small">
@@ -45,25 +44,11 @@
           @input="set('s', parseFloat($event.target.value, 10))"
         />
       </div>
-      <div class="field is-horizontal">
-        <label for="" class="label is-small">{{ l["units"] }} : </label>
-        <div class="select is-small">
-          <select
-            name=""
-            id=""
-            :value="units"
-            @change="set('units', $event.target.value)"
-          >
-            <option value="mm">{{ l["mm"] }}</option>
-            <option value="in">{{ l["in"] }}</option>
-          </select>
-        </div>
-      </div>
       <div class="button is-primary" style="white-space: normal">
         <span
           >{{ l["roc"] }} &nbsp;
           <strong
-            >&nbsp;{{ r.toFixed(2) }}{{ units === "mm" ? "mm" : "in" }}</strong
+            >&nbsp;{{ r.toFixed(2) }}</strong
           ></span
         >
       </div>
@@ -100,7 +85,6 @@ export default {
       lang: get("__sphero", "lang", "fr"),
       d: parseFloat(get("__sphero", "d", 40), 10),
       s: parseFloat(get("__sphero", "s", 3), 10),
-      units: get("__sphero", "units", "mm"),
     };
   },
   methods: {
@@ -118,24 +102,12 @@ export default {
     r() {
       const d = this.d;
       const s = this.s;
-      const r = (d * d + 4 * s * s) / 8 * s;
+      const r = (s / 2) + ((d * d) / (8 * s))
       return r;
     },
     l() {
       return this.lang === "fr" ? langpack_fr : langpack_en;
     },
-  },
-  watch: {
-    // eslint-disable-next-line
-    units(val, _old) {
-      if (val === "mm") {
-        this.set('d', this.d * 25.4);
-        this.set('s', this.s * 25.4);
-      } else {
-        this.set('d', this.d / 25.4);
-        this.set('s', this.s / 25.4);
-      }
-    }
   }
 };
 </script>
