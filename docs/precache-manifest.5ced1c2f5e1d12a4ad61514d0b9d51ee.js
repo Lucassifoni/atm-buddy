@@ -4,7 +4,7 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/sphero/css/app.2ac229b5.css"
   },
   {
-    "revision": "464f494283d2c8cdd926f7000ef3cc1a",
+    "revision": "573f74f1d21d159f93256e4d231036cb",
     "url": "/sphero/index.html"
   },
   {
