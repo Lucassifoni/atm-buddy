@@ -1,15 +1,15 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "17437bbc25bc19d41cde",
-    "url": "/sphero/css/app.b7cbc13e.css"
+    "revision": "33bc77fce5783f3f84cd",
+    "url": "/sphero/css/app.2ac229b5.css"
   },
   {
-    "revision": "ebd27fc233689b902e16e5c96a4bb2f0",
+    "revision": "464f494283d2c8cdd926f7000ef3cc1a",
     "url": "/sphero/index.html"
   },
   {
-    "revision": "17437bbc25bc19d41cde",
-    "url": "/sphero/js/app.7d6e0d8e.js"
+    "revision": "33bc77fce5783f3f84cd",
+    "url": "/sphero/js/app.05a4a593.js"
   },
   {
     "revision": "c8c7bd16d672163a3522",

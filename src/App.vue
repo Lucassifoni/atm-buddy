@@ -117,6 +117,7 @@ export default {
 
 html, body {
   background: gray;
+  overflow-x: hidden;
 }
 
 #app {
