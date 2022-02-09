@@ -1,9 +1,29 @@
-import Vue from 'vue'
+import { createApp } from 'vue'
 import App from './App.vue'
-import './registerServiceWorker'
+import {createWebHashHistory, createRouter} from 'vue-router';
+import BallSpherometer from './BallSpherometer.vue';
+import BaaderMpcc from './BaaderMpcc.vue';
+import Home from './Home.vue';
 
-Vue.config.productionTip = false
+const router = createRouter({
+    history: createWebHashHistory(),
+    routes: [
+        {
+            path: '/',
+            name: 'Home',
+            component: Home,
+        },
+        {
+            path: '/sphero',
+            name: 'Spherometer',
+            component: BallSpherometer,
+        },
+        {
+            path: '/mpcc_hyperbolic',
+            name: 'Baader MPCCIII Hyperbola',
+            component: BaaderMpcc,
+        }
+    ],
+});
 
-new Vue({
-  render: h => h(App),
-}).$mount('#app')
+createApp(App).use(router).mount('#app')
