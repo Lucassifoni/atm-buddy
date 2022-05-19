@@ -1,10 +1,11 @@
 <template>
   <div>
       <h3 class="subtitle" style="margin-bottom: 0">
-        Sine table, where x is the angle between the two planes.<br>
+        Sine table</h3>
+        <p>where x is the angle between the two planes.<br>
         r is the cup radius<br>(measure outside for a concave curve, inside for a convex curve !)<br>
         sin(x) = r / R
-      </h3>
+      </p>
       <hr>
       <div class="field is-horizontal">
         <label for="" class="label is-small">Cup radius (in mm): </label>
