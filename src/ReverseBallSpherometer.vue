@@ -1,7 +1,7 @@
 <template>
   <div>
       <h3 class="subtitle" style="margin-bottom: 0">
-        ROC = (r² + s²) / 2s ± b/2
+        Sagitta = ROC ± b/2 - sqrt((ROC ± b/2)² - r²)
       </h3>
       <hr>
       <div class="field is-horizontal">
@@ -13,11 +13,11 @@
         />
       </div>
       <div class="field is-horizontal">
-        <label for="" class="label is-small">Sagitta (in mm): </label>
+        <label for="" class="label is-small">Desired ROC (in mm): </label>
         <input
           class="input is-small"
-          :value="s"
-          @input="set('s', Number(normalize(($event.target.value))))"
+          :value="R"
+          @input="set('R', Number(normalize(($event.target.value))))"
         />
       </div>
       <div class="field is-horizontal">
@@ -39,9 +39,9 @@
       </div>
       <div class="button is-primary" style="white-space: normal">
         <span
-          >ROC: &nbsp;
+          >Sagitta: &nbsp;
           <strong
-            >&nbsp;{{ roc.toFixed(2) }}</strong
+            >&nbsp;{{ sag.toFixed(3) }}</strong
           ></span
         >
       </div>
@@ -56,9 +56,9 @@ export default {
   name: "App",
   data() {
     return {
-      r: Number(normalize(get("__sphero", "r", "40"))),
-      s: Number(normalize(get("__sphero", "s", "3"))),
-      b: Number(normalize(get("__sphero", "b", "3"))),
+      R: Number(normalize(get("__rsphero", "R", "2500"))),
+      r: Number(normalize(get("__rsphero", "r", "35"))),
+      b: Number(normalize(get("__rsphero", "b", "3"))),
       curve: 'concave',
     };
   },
@@ -66,8 +66,8 @@ export default {
     set(key, value) {
       set(
         this,
-        "__sphero",
-        { b: this.b, s: this.s, r: this.r, curve: this.curve},
+        "__rsphero",
+        { R: this.R, r: this.r, curve: this.curve, b: this.b},
         key,
         value
       );
@@ -75,12 +75,13 @@ export default {
     normalize
   },
   computed: {
-    roc() {
+    sag() {
       const r = this.r;
-      const s = this.s;
+      const R = this.R;
       const b = this.curve === 'concave' ? this.b : -this.b;
-      const roc = (r * r + s * s) / (2 * s) + b / 2;
-      return roc;
+      const aR = (R + b / 2);
+      const sag = aR - Math.sqrt((aR * aR) - (r * r));
+      return sag;
     },
   }
 };
