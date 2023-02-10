@@ -5,6 +5,7 @@ import BallSpherometer from './BallSpherometer.vue';
 import ReverseBallSpherometer from './ReverseBallSpherometer.vue';
 import SineTableEquation from './SineTableEquation.vue';
 import BaaderMpcc from './BaaderMpcc.vue';
+import SpraySilvering from './SpraySilvering.vue';
 import Home from './Home.vue';
 
 const router = createRouter({
@@ -34,6 +35,11 @@ const router = createRouter({
             path: '/mpcc_hyperbolic',
             name: 'Baader MPCCIII Hyperbola',
             component: BaaderMpcc,
+        },
+        {
+            path: '/spray_silvering',
+            name: 'Spray Silvering calculations',
+            component: SpraySilvering,
         }
     ],
 });
