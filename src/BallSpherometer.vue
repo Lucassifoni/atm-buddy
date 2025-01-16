@@ -1,87 +1,95 @@
 <template>
-  <div>
-      <h3 class="subtitle" style="margin-bottom: 0">
-        ROC = (r² + s²) / 2s ± b/2
-      </h3>
-      <hr>
-      <div class="field is-horizontal">
-        <label for="" class="label is-small">Radius of feet (in mm): </label>
-        <input
-          class="input is-small"
-          :value="r"
-          @input="set('r', Number(normalize(($event.target.value))))"
-        />
-      </div>
-      <div class="field is-horizontal">
-        <label for="" class="label is-small">Sagitta (in mm): </label>
-        <input
-          class="input is-small"
-          :value="s"
-          @input="set('s', Number(normalize(($event.target.value))))"
-        />
-      </div>
-      <div class="field is-horizontal">
-        <label for="" class="label is-small">Ball diameter (in mm): </label>
-        <input
-          class="input is-small"
-          :value="b"
-          @input="set('b', Number(normalize(($event.target.value))))"
-        />
-      </div>
-      <div class="field is-horizontal">
-        <label for="" class="label is-small">Curve : </label>
-        <div class="select is-small">
-          <select name="" id="" :value="curve">
-            <option :value="'concave'">Concave</option>
-            <option :value="'convex'">Convex</option>
-          </select>
+    <div>
+        <h3 class="subtitle" style="margin-bottom: 0">
+            ROC = (r² + s²) / 2s ± b/2
+        </h3>
+        <hr />
+        <div class="field is-horizontal">
+            <label for="" class="label is-small"
+                >Radius of feet (in mm):
+            </label>
+            <input
+                class="input is-small"
+                :value="r"
+                inputmode="numeric"
+                @input="set('r', $event.target.value)"
+            />
         </div>
-      </div>
-      <div class="button is-primary" style="white-space: normal">
-        <span
-          >ROC: &nbsp;
-          <strong
-            >&nbsp;{{ roc.toFixed(2) }}</strong
-          ></span
-        >
-      </div>
-  </div>
+        <div class="field is-horizontal">
+            <label for="" class="label is-small">Sagitta (in mm): </label>
+            <input
+                class="input is-small"
+                inputmode="numeric"
+                :value="s"
+                @input="set('s', $event.target.value)"
+            />
+        </div>
+        <div class="field is-horizontal">
+            <label for="" class="label is-small">Ball diameter (in mm): </label>
+            <input
+                class="input is-small"
+                :value="b"
+                inputmode="numeric"
+                @input="set('b', $event.target.value)"
+            />
+        </div>
+        <div class="field is-horizontal">
+            <label for="" class="label is-small">Curve : </label>
+            <div class="control">
+                <label class="radio">
+                    <input type="radio" value="concave" v-model="curve" />
+                    Concave
+                </label>
+                <label class="radio">
+                    <input type="radio" value="convex" v-model="curve" />
+                    Convex
+                </label>
+            </div>
+        </div>
+        <div class="button is-primary" style="white-space: normal">
+            <span
+                >ROC: &nbsp; <strong>&nbsp;{{ roc.toFixed(2) }}</strong></span
+            >
+        </div>
+    </div>
 </template>
 
 <script>
 import { fr as langpack_fr, en as langpack_en } from "./lang";
-import {get, set, normalize} from './utils';
+import { get, set, normalize } from "./utils";
+
+const toN = (a) => Number(normalize(a));
 
 export default {
-  name: "App",
-  data() {
-    return {
-      r: Number(normalize(get("__sphero", "r", "40"))),
-      s: Number(normalize(get("__sphero", "s", "3"))),
-      b: Number(normalize(get("__sphero", "b", "3"))),
-      curve: 'concave',
-    };
-  },
-  methods: {
-    set(key, value) {
-      set(
-        this,
-        "__sphero",
-        { b: this.b, s: this.s, r: this.r, curve: this.curve},
-        key,
-        value
-      );
+    name: "App",
+    data() {
+        return {
+            r: get("__sphero", "r", "40"),
+            s: get("__sphero", "s", "3"),
+            b: get("__sphero", "b", "3"),
+            curve: "concave",
+        };
     },
-    normalize
-  },
-  computed: {
-    roc() {
-      const r = this.r;
-      const s = this.s;
-      const b = this.curve === 'concave' ? this.b : -this.b;
-      const roc = (r * r + s * s) / (2 * s) + b / 2;
-      return roc;
+    methods: {
+        set(key, value) {
+            set(
+                this,
+                "__sphero",
+                { b: this.b, s: this.s, r: this.r, curve: this.curve },
+                key,
+                value,
+            );
+        },
+        normalize,
     },
-  }
+    computed: {
+        roc() {
+            const r = toN(this.r);
+            const s = toN(this.s);
+            const b = this.curve === "concave" ? toN(this.b) : -toN(this.b);
+            const roc = (r * r + s * s) / (2 * s) + b / 2;
+            return roc;
+        },
+    },
 };
 </script>
