@@ -10,7 +10,8 @@
             </label>
             <input
                 class="input is-small"
-                inputmode="numeric"
+                inputmode="decimal"
+                pattern="[0-9]*[.,]?[0-9]*"
                 :value="r"
                 @input="set('r', $event.target.value)"
             />
@@ -19,7 +20,8 @@
             <label for="" class="label is-small">Desired ROC (in mm): </label>
             <input
                 class="input is-small"
-                inputmode="numeric"
+                inputmode="decimal"
+                pattern="[0-9]*[.,]?[0-9]*"
                 :value="R"
                 @input="set('R', $event.target.value)"
             />
@@ -28,7 +30,8 @@
             <label for="" class="label is-small">Ball diameter (in mm): </label>
             <input
                 class="input is-small"
-                inputmode="numeric"
+                inputmode="decimal"
+                pattern="[0-9]*[.,]?[0-9]*"
                 :value="b"
                 @input="set('b', $event.target.value)"
             />

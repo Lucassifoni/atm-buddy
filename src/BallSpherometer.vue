@@ -11,7 +11,8 @@
             <input
                 class="input is-small"
                 :value="r"
-                inputmode="numeric"
+                inputmode="decimal"
+                pattern="[0-9]*[.,]?[0-9]*"
                 @input="set('r', $event.target.value)"
             />
         </div>
@@ -19,7 +20,8 @@
             <label for="" class="label is-small">Sagitta (in mm): </label>
             <input
                 class="input is-small"
-                inputmode="numeric"
+                inputmode="decimal"
+                pattern="[0-9]*[.,]?[0-9]*"
                 :value="s"
                 @input="set('s', $event.target.value)"
             />
@@ -29,7 +31,8 @@
             <input
                 class="input is-small"
                 :value="b"
-                inputmode="numeric"
+                inputmode="decimal"
+                pattern="[0-9]*[.,]?[0-9]*"
                 @input="set('b', $event.target.value)"
             />
         </div>
