@@ -90,7 +90,7 @@ export default {
         sag() {
             const r = toN(this.r);
             const R = toN(this.R);
-            const b = this.curve === "concave" ? toN(this.b) : -toN(this.b);
+            const b = this.curve === "convex" ? toN(this.b) : -toN(this.b);
             const aR = R + b / 2;
             const sag = aR - Math.sqrt(aR * aR - r * r);
             return sag;
