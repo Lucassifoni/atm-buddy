@@ -3,13 +3,17 @@
         <h3 class="subtitle" style="margin-bottom: 0">
             Astigmatism correction reminder.
         </h3>
+        <p>
+            Fix by following the "Polish" column with straight strokes with a
+            full size tool.
+        </p>
         <table class="table" style="margin-bottom: 0.75em; margin: auto">
             <thead>
                 <tr>
                     <th>Axis</th>
                     <th>Elevation</th>
                     <th>Radius</th>
-                    <th>Polish</th>
+                    <th>Fix</th>
                 </tr>
             </thead>
             <tbody>
