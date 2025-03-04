@@ -6,7 +6,9 @@
                 v-for="route in routes"
                 :class="{ 'is-primary': route.path === $route.path }"
             >
-                <router-link :to="route.path">{{ route.name }}</router-link>
+                <router-link :to="route.path" style="color: black">{{
+                    route.name
+                }}</router-link>
             </div>
         </div>
         <div
