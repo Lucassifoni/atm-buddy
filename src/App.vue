@@ -46,7 +46,7 @@ body {
 }
 
 html {
-    font-size: 14.5px !important;
+    font-size: 13.5px !important;
 }
 
 #app {
