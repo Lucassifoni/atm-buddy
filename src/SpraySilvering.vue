@@ -9,6 +9,23 @@
             Recipe from Gerhard S. on Cloudy Nights<br />
         </p>
         <div class="field">
+            <h3 class="subtitle">BOM for a session</h3>
+            <div class="columns is-multiline">
+                <div
+                    v-for="(item, index) in bomItems"
+                    :key="index"
+                    class="column is-half"
+                    style="margin: -0.5em 0"
+                >
+                    <label class="label checkbox">
+                        <input type="checkbox" v-model="item.checked" />
+                        {{ item.name }}
+                    </label>
+                </div>
+            </div>
+            <button class="button is-small" @click="resetBom">Reset BOM</button>
+        </div>
+        <div class="field">
             <label for="" class="label"
                 >Base quantity in ml of the first solution</label
             >
@@ -90,6 +107,7 @@ export default {
     data() {
         return {
             b: Number(normalize(get("__baseqty", "b", "150"))),
+            bomItems: this.loadBomItems(),
         };
     },
     methods: {
@@ -97,6 +115,56 @@ export default {
             set(this, "__baseqty", { f: this.f, d: this.d }, key, value);
         },
         normalize,
+        loadBomItems() {
+            const defaultItems = [
+                { name: "Gloves", checked: false },
+                { name: "Chalk to wash the mirrors", checked: false },
+                { name: "Hydrophilic cotton", checked: false },
+                { name: "Demin. water", checked: false },
+                { name: "Stands for the mirrors", checked: false },
+                { name: "A box in which to silver", checked: false },
+                { name: "Glucose", checked: false },
+                { name: "Silver nitrate", checked: false },
+                { name: "Sodium hydroxide", checked: false },
+                { name: "Ammonia", checked: false },
+                { name: "Two sprayers", checked: false },
+                { name: "Containers", checked: false },
+                { name: "FFP2 masks", checked: false },
+            ];
+
+            const savedItems = localStorage.getItem("bomItems");
+            if (savedItems) {
+                const parsedItems = JSON.parse(savedItems);
+                if (!parsedItems) {
+                    return defaultItems;
+                }
+                // Check if any new items need to be added
+                defaultItems.forEach((item) => {
+                    if (
+                        !parsedItems.find((saved) => saved.name === item.name)
+                    ) {
+                        parsedItems.push(item);
+                    }
+                });
+                return parsedItems;
+            }
+            return defaultItems;
+        },
+        resetBom() {
+            this.bomItems = null;
+            this.saveBomItems();
+        },
+        saveBomItems() {
+            localStorage.setItem("bomItems", JSON.stringify(this.bomItems));
+        },
+    },
+    watch: {
+        bomItems: {
+            handler() {
+                this.saveBomItems();
+            },
+            deep: true,
+        },
     },
     computed: {
         silver() {
