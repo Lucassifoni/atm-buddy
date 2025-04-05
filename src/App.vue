@@ -50,7 +50,7 @@ html {
 }
 
 #app {
-    padding: 15px;
+    padding: 5px;
 }
 
 .is-horizontal {
