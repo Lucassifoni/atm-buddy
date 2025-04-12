@@ -9,7 +9,7 @@
             Recipe from Gerhard S. on Cloudy Nights<br />
         </p>
         <div class="field">
-            <h3 class="subtitle">BOM for a session</h3>
+            <h3 class="title">BOM for a session</h3>
             <div class="columns is-multiline">
                 <div
                     v-for="(item, index) in bomItems"
@@ -25,6 +25,16 @@
             </div>
             <button class="button is-small" @click="resetBom">Reset BOM</button>
         </div>
+        <hr />
+        <h2 class="title">Step 0 : calibrate bottles</h2>
+        <p>
+            Calibrate
+            <strong class="tag is-dark">Bottle 1</strong> and
+            <strong class="tag is-danger">Bottle 2</strong> with water, ensuring
+            that the same quantity of water is sprayed with 100 sprays.
+        </p>
+        <hr />
+        <h2 class="title">Step 1 : prepare the solutions</h2>
         <div class="field">
             <label for="" class="label"
                 >Base quantity in ml of the first solution</label
@@ -83,17 +93,50 @@
                 until a transparent, slightly brownish solution is obtained.
             </li>
         </ul>
-        <hr />
         <p>
             Any precipitate that may still be present should be completely
             dissolved
         </p>
         <hr />
+        <h2 class="title">Step 2 : clean the mirror</h2>
         <p>
-            To use, first calibrate
-            <strong class="tag is-dark">Bottle 1</strong> and
-            <strong class="tag is-danger">Bottle 2</strong> with water, ensuring
-            that the same quantity of water is sprayed with 100 sprays.
+            Use chalk precipitate in distilled/demin water on small cotton
+            balls. Change often and start with thick sauce, thinning it
+            progressively. The center will clean fast but the edge and chamfer
+            need a LOT of time.<br />Rough guideline : (diameter_in_mm/15)^1.4 =
+            time in minutes.<br />Yes, that is an advice of 1h40 for a 400mm
+            mirror.<br />Rinse with demin water and if possible, high pressure.
+        </p>
+        <label for="" class="label is-small">
+            Mirror diameter in mm:
+            <input
+                class="input is-small"
+                type="text"
+                placeholder="diameter"
+                v-model="diameter"
+            />
+        </label>
+        <p>
+            Cleaning time :
+            {{ cleaning_time }}
+        </p>
+        <hr />
+        <h2 class="title">Step 3 : spray the mirror</h2>
+        <p>
+            Spray the mirror with both sprays, ensuring that they mix on the
+            surface. You will see a faint blue film appear first.<br />Then it
+            will turn yellowish. If you see dark brown or black streaks, this
+            means your cleaning wasn't thorough enough.<br />A thin coating is
+            preferable to a thick one and it should still be a tad transparent
+            at the end.
+        </p>
+        <hr />
+        <h2 class="title">Step 4 : dry & store</h2>
+        <p>
+            Immediately dry with a hot air gun and store in an airtight box with
+            dessicant packs, or better, silver protector felt. Silver protector
+            felt is felt impregnated with tiny silver particles that are there
+            to react with oxydants first and protect your coating.
         </p>
     </div>
 </template>
@@ -108,6 +151,7 @@ export default {
         return {
             b: Number(normalize(get("__baseqty", "b", "150"))),
             bomItems: this.loadBomItems(),
+            diameter: 150,
         };
     },
     methods: {
@@ -119,6 +163,9 @@ export default {
             const defaultItems = [
                 { name: "Gloves", checked: false },
                 { name: "Chalk to wash the mirrors", checked: false },
+                { name: "Mirror stands", checked: false },
+                { name: "Anti-projection box", checked: false },
+                { name: "Hairdryer", checked: false },
                 { name: "Hydrophilic cotton", checked: false },
                 { name: "Demin. water", checked: false },
                 { name: "Stands for the mirrors", checked: false },
@@ -167,6 +214,13 @@ export default {
         },
     },
     computed: {
+        cleaning_time() {
+            const minutes = Math.pow(this.diameter / 15, 1.4).toFixed(2);
+            const hours = Math.floor(minutes / 60);
+            const rminutes = Math.trunc(minutes - hours * 60);
+            const p = (n) => (n + "").padStart("0", 2);
+            return `${p(hours)}h${p(rminutes)}m`;
+        },
         silver() {
             return Number((1.6 * (this.b / 150)).toFixed(2));
         },
