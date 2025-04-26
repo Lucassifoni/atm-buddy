@@ -7,6 +7,7 @@ import SineTableEquation from "./SineTableEquation.vue";
 import BaaderMpcc from "./BaaderMpcc.vue";
 import SpraySilvering from "./SpraySilvering.vue";
 import StigReminder from "./StigReminder.vue";
+import SagittaCalculator from "./SagittaCalculator.vue";
 import Home from "./Home.vue";
 
 const router = createRouter({
@@ -26,6 +27,11 @@ const router = createRouter({
       path: "/reverse_sphero",
       name: "ROC to Spherometer",
       component: ReverseBallSpherometer,
+    },
+    {
+      path: "/sagitta",
+      name: "Sagitta Calculator",
+      component: SagittaCalculator,
     },
     {
       path: "/sine_table",
