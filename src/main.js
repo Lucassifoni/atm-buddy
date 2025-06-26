@@ -8,6 +8,8 @@ import BaaderMpcc from "./BaaderMpcc.vue";
 import SpraySilvering from "./SpraySilvering.vue";
 import StigReminder from "./StigReminder.vue";
 import SagittaCalculator from "./SagittaCalculator.vue";
+import AnnularRing from "./AnnularRing.vue";
+import SagittaFringes from "./SagittaFringes.vue";
 import Home from "./Home.vue";
 
 const router = createRouter({
@@ -52,6 +54,16 @@ const router = createRouter({
       path: "/stig",
       name: "Stig Correction Reminder",
       component: StigReminder,
+    },
+    {
+      path: "/annular_ring",
+      name: "Annular Ring Calculator",
+      component: AnnularRing,
+    },
+    {
+      path: "/sagitta_fringes",
+      name: "ROC Fringes",
+      component: SagittaFringes,
     },
   ],
 });
