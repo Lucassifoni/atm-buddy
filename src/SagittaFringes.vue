@@ -1,5 +1,5 @@
 <template>
-    <div class="section">
+    <div>
         <h3 class="subtitle" style="margin-bottom: 0">
             ROC Fringes Calculator
         </h3>
@@ -47,9 +47,7 @@
             />
         </div>
         <div class="field is-horizontal">
-            <label for="" class="label is-small"
-                >Relative shape:
-            </label>
+            <label for="" class="label is-small mr-2">Relative shape: </label>
             <div class="control">
                 <label class="radio">
                     <input
