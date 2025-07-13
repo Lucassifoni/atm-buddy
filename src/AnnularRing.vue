@@ -4,6 +4,26 @@
             Annular Ring Surface Area Calculator
         </h3>
         <hr />
+        <div class="field is-horizontal" v-if="savedOpticalPieces.length > 0">
+            <label for="" class="label is-small">Load optical piece: </label>
+            <div class="field has-addons">
+                <div class="control">
+                    <div class="select is-small">
+                        <select v-model="selectedOpticalPiece">
+                            <option value="">Select...</option>
+                            <option v-for="piece in savedOpticalPieces" :key="piece.name" :value="piece.name">
+                                {{ piece.name }}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+                <div class="control">
+                    <button class="button is-small is-info" @click="loadOpticalPiece" :disabled="!selectedOpticalPiece">
+                        Load
+                    </button>
+                </div>
+            </div>
+        </div>
         <div class="field is-horizontal">
             <label for="" class="label is-small"
                 >Mirror diameter (in mm):
@@ -72,7 +92,14 @@
             />
         </div>
         <hr />
-        <div style="display: flex; align-items: flex-start; gap: 20px">
+        <div
+            style="
+                display: flex;
+                align-items: flex-start;
+                gap: 20px;
+                flex-wrap: wrap;
+            "
+        >
             <div style="flex: 1">
                 <h4 class="subtitle is-6">Results:</h4>
                 <div class="content">
@@ -116,7 +143,7 @@
 </template>
 
 <script>
-import { get, set, normalize } from "./utils";
+import { get, set, normalize, getOpticalPieces } from "./utils";
 
 const toN = (a) => Number(normalize(a));
 
@@ -129,7 +156,13 @@ export default {
             endRadius: get("__annular", "endRadius", "0.85"),
             inputMode: get("__annular", "inputMode", "percent"),
             centralObstruction: get("__annular", "centralObstruction", "0.3"),
+            savedOpticalPieces: [],
+            selectedOpticalPiece: "",
         };
+    },
+    mounted() {
+        this.savedOpticalPieces = getOpticalPieces();
+        this.drawCanvas();
     },
     methods: {
         set(key, value) {
@@ -148,6 +181,16 @@ export default {
             );
         },
         normalize,
+        loadOpticalPiece() {
+            if (this.selectedOpticalPiece) {
+                const piece = this.savedOpticalPieces.find(
+                    p => p.name === this.selectedOpticalPiece
+                );
+                if (piece) {
+                    this.set('mirrorDiameter', piece.radius * 2); // diameter = 2 * radius
+                }
+            }
+        },
         drawCanvas() {
             const canvas = this.$refs.canvas;
             if (!canvas) return;
@@ -226,9 +269,6 @@ export default {
                 ctx.fill();
             }
         },
-    },
-    mounted() {
-        this.drawCanvas();
     },
     computed: {
         startRadiusMm() {

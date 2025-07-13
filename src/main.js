@@ -10,6 +10,7 @@ import StigReminder from "./StigReminder.vue";
 import SagittaCalculator from "./SagittaCalculator.vue";
 import AnnularRing from "./AnnularRing.vue";
 import SagittaFringes from "./SagittaFringes.vue";
+import Hardware from "./Hardware.vue";
 import Home from "./Home.vue";
 
 const router = createRouter({
@@ -17,53 +18,58 @@ const router = createRouter({
   routes: [
     {
       path: "/",
-      name: "Home",
+      name: "🏠 Home",
       component: Home,
     },
     {
       path: "/sphero",
-      name: "Spherometer to ROC",
+      name: "📏 Spherometer to ROC",
       component: BallSpherometer,
     },
     {
       path: "/reverse_sphero",
-      name: "ROC to Spherometer",
+      name: "🔄 ROC to Spherometer",
       component: ReverseBallSpherometer,
     },
     {
       path: "/sagitta",
-      name: "Sagitta Calculator",
+      name: "📐 Sagitta Calculator",
       component: SagittaCalculator,
     },
     {
       path: "/sine_table",
-      name: "Sine table",
+      name: "📊 Sine table",
       component: SineTableEquation,
     },
     {
       path: "/mpcc_hyperbolic",
-      name: "Baader MPCCIII Hyperbola",
+      name: "🔭 Baader MPCCIII Hyperbola",
       component: BaaderMpcc,
     },
     {
       path: "/spray_silvering",
-      name: "Spray Silvering calculations",
+      name: "🪞 Spray Silvering calculations",
       component: SpraySilvering,
     },
     {
       path: "/stig",
-      name: "Stig Correction Reminder",
+      name: "👁️ Stig Correction Reminder",
       component: StigReminder,
     },
     {
       path: "/annular_ring",
-      name: "Annular Ring Calculator",
+      name: "⭕ Annular Ring Calculator",
       component: AnnularRing,
     },
     {
       path: "/sagitta_fringes",
-      name: "ROC Fringes",
+      name: "🌊 ROC Fringes",
       component: SagittaFringes,
+    },
+    {
+      path: "/hardware",
+      name: "🔧 Hardware",
+      component: Hardware,
     },
   ],
 });

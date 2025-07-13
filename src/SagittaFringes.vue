@@ -4,6 +4,26 @@
             ROC Fringes Calculator
         </h3>
         <hr />
+        <div class="field is-horizontal" v-if="savedOpticalPieces.length > 0">
+            <label for="" class="label is-small">Load optical piece: </label>
+            <div class="field has-addons">
+                <div class="control">
+                    <div class="select is-small">
+                        <select v-model="selectedOpticalPiece">
+                            <option value="">Select...</option>
+                            <option v-for="piece in savedOpticalPieces" :key="piece.name" :value="piece.name">
+                                {{ piece.name }}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+                <div class="control">
+                    <button class="button is-small is-info" @click="loadOpticalPiece" :disabled="!selectedOpticalPiece">
+                        Load
+                    </button>
+                </div>
+            </div>
+        </div>
         <div class="field is-horizontal">
             <label for="" class="label is-small">Lambda (nm): </label>
             <input
@@ -89,7 +109,7 @@
 </template>
 
 <script>
-import { get, set } from "./utils.js";
+import { get, set, getOpticalPieces } from "./utils.js";
 
 const key = "__sagittaFringes";
 
@@ -102,11 +122,27 @@ export default {
             concaveRoc: get(key, "concaveRoc", ""),
             nbFringes: get(key, "nbFringes", ""),
             relativeShape: get(key, "relativeShape", "1"),
+            savedOpticalPieces: [],
+            selectedOpticalPiece: "",
         };
+    },
+    mounted() {
+        this.savedOpticalPieces = getOpticalPieces();
     },
     methods: {
         set(field, value) {
             set(this, key, this, field, value);
+        },
+        loadOpticalPiece() {
+            if (this.selectedOpticalPiece) {
+                const piece = this.savedOpticalPieces.find(
+                    p => p.name === this.selectedOpticalPiece
+                );
+                if (piece) {
+                    this.set('concaveRoc', piece.radiusOfCurvature); // ROC directly
+                    this.set('contactDiameter', piece.radius * 2); // diameter = 2 * radius
+                }
+            }
         },
     },
     computed: {
