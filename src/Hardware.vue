@@ -66,8 +66,8 @@
                             class="input is-small"
                             type="number"
                             step="0.01"
-                            placeholder="Ball radius (mm)"
-                            v-model.number="newSpherometer.ballRadius"
+                            placeholder="Ball diameter (mm)"
+                            v-model.number="newSpherometer.ballRadius2"
                         />
                     </div>
                     <div class="control">
@@ -101,7 +101,7 @@
                         <tr>
                             <th>Name</th>
                             <th>Feet R (mm)</th>
-                            <th>Ball R (mm)</th>
+                            <th>Ball D (mm)</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
@@ -112,7 +112,7 @@
                         >
                             <td>{{ spherometer.name }}</td>
                             <td>{{ spherometer.feetRadius }}</td>
-                            <td>{{ spherometer.ballRadius }}</td>
+                            <td>{{ spherometer.ballRadius2 }}</td>
                             <td>
                                 <button
                                     class="button is-small is-info m-1"
@@ -247,7 +247,7 @@ export default {
             newSpherometer: {
                 name: "",
                 feetRadius: null,
-                ballRadius: null,
+                ballRadius2: null,
             },
             newOpticalPiece: {
                 name: "",
@@ -263,7 +263,7 @@ export default {
             return (
                 this.newSpherometer.name &&
                 this.newSpherometer.feetRadius > 0 &&
-                this.newSpherometer.ballRadius > 0
+                this.newSpherometer.ballRadius2 > 0
             );
         },
         isOpticalPieceValid() {
@@ -294,7 +294,7 @@ export default {
             const spherometer = {
                 name: this.newSpherometer.name,
                 feetRadius: this.newSpherometer.feetRadius,
-                ballRadius: this.newSpherometer.ballRadius,
+                ballRadius2: this.newSpherometer.ballRadius2,
             };
 
             if (this.editingSpherometerIndex !== null) {
@@ -326,7 +326,7 @@ export default {
             this.newSpherometer = {
                 name: "",
                 feetRadius: null,
-                ballRadius: null,
+                ballRadius2: null,
             };
         },
         addOpticalPiece() {
@@ -483,7 +483,7 @@ export default {
                     if (
                         !spherometer.name ||
                         typeof spherometer.feetRadius !== "number" ||
-                        typeof spherometer.ballRadius !== "number"
+                        typeof spherometer.ballRadius2 !== "number"
                     ) {
                         return false;
                     }

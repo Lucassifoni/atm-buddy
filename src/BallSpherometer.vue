@@ -91,7 +91,7 @@ export default {
         normalize,
         onSpherometerSelected(spherometer) {
             this.set("r", spherometer.feetRadius.toString());
-            this.set("b", (spherometer.ballRadius * 2).toString());
+            this.set("b", spherometer.ballRadius2.toString());
         },
     },
     computed: {
