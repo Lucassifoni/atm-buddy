@@ -3,6 +3,37 @@
         <div class="column is-size-7">
             <h1 class="title">Hardware Manager</h1>
 
+            <!-- Import/Export Section -->
+            <div class="mb-4">
+                <h2 class="subtitle">Import/Export</h2>
+                <div class="field is-grouped">
+                    <div class="control">
+                        <button
+                            class="button is-small is-info"
+                            @click="exportData"
+                        >
+                            📤 Export Hardware Data
+                        </button>
+                    </div>
+                    <div class="control">
+                        <label class="button is-small is-success">
+                            📥 Import Hardware Data
+                            <input
+                                type="file"
+                                accept=".json"
+                                @change="importData"
+                                style="display: none"
+                                ref="fileInput"
+                            />
+                        </label>
+                    </div>
+                </div>
+                <p class="has-text-grey is-size-7 mt-2">
+                    💡 Export your hardware data to backup or share with other
+                    devices. Import will merge with existing data.
+                </p>
+            </div>
+
             <!-- Spherometers Section -->
             <div class="">
                 <h2 class="subtitle">Spherometers</h2>
@@ -340,6 +371,139 @@ export default {
                 radius: null,
                 radiusOfCurvature: null,
             };
+        },
+        exportData() {
+            const data = {
+                spherometers: this.spherometers,
+                opticalPieces: this.opticalPieces,
+                exportDate: new Date().toISOString(),
+                version: "1.0",
+            };
+
+            const blob = new Blob([JSON.stringify(data, null, 2)], {
+                type: "application/json",
+            });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = `atm-buddy-hardware-${new Date().toISOString().split("T")[0]}.json`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        },
+        importData(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                try {
+                    const data = JSON.parse(e.target.result);
+
+                    if (!this.validateImportData(data)) {
+                        alert(
+                            "Invalid file format. Please select a valid ATM Buddy hardware export file.",
+                        );
+                        return;
+                    }
+
+                    // Merge imported data with existing data
+                    const importedSpherometers = data.spherometers || [];
+                    const importedOpticalPieces = data.opticalPieces || [];
+
+                    // Check for duplicates and merge
+                    importedSpherometers.forEach((imported) => {
+                        const existing = this.spherometers.find(
+                            (s) => s.name === imported.name,
+                        );
+                        if (existing) {
+                            if (
+                                confirm(
+                                    `Spherometer "${imported.name}" already exists. Replace it?`,
+                                )
+                            ) {
+                                const index =
+                                    this.spherometers.indexOf(existing);
+                                this.spherometers[index] = imported;
+                            }
+                        } else {
+                            this.spherometers.push(imported);
+                        }
+                    });
+
+                    importedOpticalPieces.forEach((imported) => {
+                        const existing = this.opticalPieces.find(
+                            (p) => p.name === imported.name,
+                        );
+                        if (existing) {
+                            if (
+                                confirm(
+                                    `Optical piece "${imported.name}" already exists. Replace it?`,
+                                )
+                            ) {
+                                const index =
+                                    this.opticalPieces.indexOf(existing);
+                                this.opticalPieces[index] = imported;
+                            }
+                        } else {
+                            this.opticalPieces.push(imported);
+                        }
+                    });
+
+                    this.saveData();
+                    alert(
+                        `Import completed! Added ${importedSpherometers.length} spherometers and ${importedOpticalPieces.length} optical pieces.`,
+                    );
+                } catch (error) {
+                    alert(
+                        "Error reading file. Please make sure it's a valid JSON file.",
+                    );
+                }
+
+                // Reset file input
+                this.$refs.fileInput.value = "";
+            };
+            reader.readAsText(file);
+        },
+        validateImportData(data) {
+            if (typeof data !== "object" || data === null) return false;
+
+            // Check if it has the expected structure
+            if (
+                !Array.isArray(data.spherometers) &&
+                !Array.isArray(data.opticalPieces)
+            ) {
+                return false;
+            }
+
+            // Validate spherometers structure
+            if (data.spherometers) {
+                for (const spherometer of data.spherometers) {
+                    if (
+                        !spherometer.name ||
+                        typeof spherometer.feetRadius !== "number" ||
+                        typeof spherometer.ballRadius !== "number"
+                    ) {
+                        return false;
+                    }
+                }
+            }
+
+            // Validate optical pieces structure
+            if (data.opticalPieces) {
+                for (const piece of data.opticalPieces) {
+                    if (
+                        !piece.name ||
+                        typeof piece.radius !== "number" ||
+                        typeof piece.radiusOfCurvature !== "number"
+                    ) {
+                        return false;
+                    }
+                }
+            }
+
+            return true;
         },
     },
 };

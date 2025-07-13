@@ -4,36 +4,7 @@
             ROC = (r² + s²) / 2s ± b/2
         </h3>
         <hr />
-        <div class="field is-horizontal" v-if="savedSpherometers.length > 0">
-            <label for="" class="label is-small"
-                >Load spherometer&nbsp;:&nbsp;</label
-            >
-            <div class="field has-addons">
-                <div class="control">
-                    <div class="select is-small">
-                        <select v-model="selectedSpherometer">
-                            <option value="">Select...</option>
-                            <option
-                                v-for="sphero in savedSpherometers"
-                                :key="sphero.name"
-                                :value="sphero.name"
-                            >
-                                {{ sphero.name }}
-                            </option>
-                        </select>
-                    </div>
-                </div>
-                <div class="control">
-                    <button
-                        class="button is-small is-info"
-                        @click="loadSpherometer"
-                        :disabled="!selectedSpherometer"
-                    >
-                        Load
-                    </button>
-                </div>
-            </div>
-        </div>
+        <SpherometerSelector @spherometer-selected="onSpherometerSelected" />
         <div class="field is-horizontal">
             <label for="" class="label is-small"
                 >Radius of feet (in mm):
@@ -89,7 +60,8 @@
 
 <script>
 import { fr as langpack_fr, en as langpack_en } from "./lang";
-import { get, set, normalize, getSpherometers } from "./utils";
+import { get, set, normalize } from "./utils";
+import SpherometerSelector from "./SpherometerSelector.vue";
 
 const toN = (a) => Number(normalize(a));
 
@@ -101,12 +73,10 @@ export default {
             s: get("__sphero", "s", "3"),
             b: get("__sphero", "b", "3"),
             curve: "concave",
-            savedSpherometers: [],
-            selectedSpherometer: "",
         };
     },
-    mounted() {
-        this.savedSpherometers = getSpherometers();
+    components: {
+        SpherometerSelector,
     },
     methods: {
         set(key, value) {
@@ -119,16 +89,9 @@ export default {
             );
         },
         normalize,
-        loadSpherometer() {
-            if (this.selectedSpherometer) {
-                const spherometer = this.savedSpherometers.find(
-                    (s) => s.name === this.selectedSpherometer,
-                );
-                if (spherometer) {
-                    this.set("r", spherometer.feetRadius.toString());
-                    this.set("b", (spherometer.ballRadius * 2).toString());
-                }
-            }
+        onSpherometerSelected(spherometer) {
+            this.set("r", spherometer.feetRadius.toString());
+            this.set("b", (spherometer.ballRadius * 2).toString());
         },
     },
     computed: {

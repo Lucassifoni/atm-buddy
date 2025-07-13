@@ -107,26 +107,7 @@
             time in minutes.<br />Yes, that is an advice of 1h40 for a 400mm
             mirror.<br />Rinse with demin water and if possible, high pressure.
         </p>
-        <div class="field is-horizontal" v-if="savedOpticalPieces.length > 0">
-            <label for="" class="label is-small">Load optical piece: </label>
-            <div class="field has-addons">
-                <div class="control">
-                    <div class="select is-small">
-                        <select v-model="selectedOpticalPiece">
-                            <option value="">Select...</option>
-                            <option v-for="piece in savedOpticalPieces" :key="piece.name" :value="piece.name">
-                                {{ piece.name }}
-                            </option>
-                        </select>
-                    </div>
-                </div>
-                <div class="control">
-                    <button class="button is-small is-info" @click="loadOpticalPiece" :disabled="!selectedOpticalPiece">
-                        Load
-                    </button>
-                </div>
-            </div>
-        </div>
+        <OpticalPieceSelector @optical-piece-selected="onOpticalPieceSelected" />
         <label for="" class="label is-small">
             Mirror diameter in mm:
             <input
@@ -163,36 +144,28 @@
 
 <script>
 import { fr as langpack_fr, en as langpack_en } from "./lang";
-import { get, set, normalize, getOpticalPieces } from "./utils";
+import { get, set, normalize } from "./utils";
+import OpticalPieceSelector from './OpticalPieceSelector.vue';
 
 export default {
     name: "App",
+    components: {
+        OpticalPieceSelector,
+    },
     data() {
         return {
             b: Number(normalize(get("__baseqty", "b", "150"))),
             bomItems: this.loadBomItems(),
             diameter: 150,
-            savedOpticalPieces: [],
-            selectedOpticalPiece: "",
         };
-    },
-    mounted() {
-        this.savedOpticalPieces = getOpticalPieces();
     },
     methods: {
         set(key, value) {
             set(this, "__baseqty", { f: this.f, d: this.d }, key, value);
         },
         normalize,
-        loadOpticalPiece() {
-            if (this.selectedOpticalPiece) {
-                const piece = this.savedOpticalPieces.find(
-                    p => p.name === this.selectedOpticalPiece
-                );
-                if (piece) {
-                    this.diameter = piece.radius * 2; // diameter = 2 * radius
-                }
-            }
+        onOpticalPieceSelected(piece) {
+            this.diameter = piece.radius * 2; // diameter = 2 * radius
         },
         loadBomItems() {
             const defaultItems = [
