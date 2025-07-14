@@ -19,6 +19,12 @@ export const set = (component, storage_key, obj, key, value) => {
 
 export const normalize = n => n.toString().replace(",", ".");
 
+export const parseFloat = (value) => {
+    const normalized = normalize(value);
+    const parsed = Number(normalized);
+    return isNaN(parsed) ? 0 : parsed;
+};
+
 export const getHardware = () => {
     try {
         const storage = JSON.parse(localStorage.getItem('__hardware')) || {};

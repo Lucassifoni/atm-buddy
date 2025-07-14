@@ -14,7 +14,7 @@
                 inputmode="decimal"
                 pattern="[0-9]*[.,]?[0-9]*"
                 :value="r"
-@input="r = Number(normalize($event.target.value))"
+@input="r = $event.target.value"
             />
         </div>
         <div class="field is-horizontal">
@@ -24,7 +24,7 @@
                 inputmode="decimal"
                 pattern="[0-9]*[.,]?[0-9]*"
                 :value="R"
-@input="R = Number(normalize($event.target.value))"
+@input="R = $event.target.value"
             />
         </div>
         <div class="field is-horizontal">
@@ -34,7 +34,7 @@
                 inputmode="decimal"
                 pattern="[0-9]*[.,]?[0-9]*"
                 :value="b"
-@input="b = Number(normalize($event.target.value))"
+@input="b = $event.target.value"
             />
         </div>
         <div class="field is-horizontal">
@@ -61,7 +61,7 @@
 
 <script>
 import { fr as langpack_fr, en as langpack_en } from "./lang";
-import { normalize } from "./utils";
+import { normalize, parseFloat } from "./utils";
 import SpherometerSelector from "./SpherometerSelector.vue";
 
 
@@ -69,9 +69,9 @@ export default {
     name: "App",
     data() {
         return {
-            R: 2500,
-            r: 35,
-            b: 3,
+            R: "2500",
+            r: "35",
+            b: "3",
             curve: "concave",
         };
     },
@@ -81,15 +81,15 @@ export default {
     methods: {
         normalize,
         onSpherometerSelected(spherometer) {
-            this.r = spherometer.feetRadius;
-            this.b = spherometer.ballRadius2;
+            this.r = spherometer.feetRadius.toString();
+            this.b = spherometer.ballRadius2.toString();
         },
     },
     computed: {
         sag() {
-            const r = this.r;
-            const R = this.R;
-            const b = this.curve === "convex" ? this.b : -this.b;
+            const r = parseFloat(this.r);
+            const R = parseFloat(this.R);
+            const b = this.curve === "convex" ? parseFloat(this.b) : -parseFloat(this.b);
             const aR = R + b / 2;
             const sag = aR - Math.sqrt(aR * aR - r * r);
             return sag;

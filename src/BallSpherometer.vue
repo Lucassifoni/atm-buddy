@@ -14,7 +14,7 @@
                 :value="r"
                 inputmode="decimal"
                 pattern="[0-9]*[.,]?[0-9]*"
-@input="r = Number(normalize($event.target.value))"
+@input="r = $event.target.value"
             />
         </div>
         <div class="field is-horizontal">
@@ -24,7 +24,7 @@
                 inputmode="decimal"
                 pattern="[0-9]*[.,]?[0-9]*"
                 :value="s"
-@input="s = Number(normalize($event.target.value))"
+@input="s = $event.target.value"
             />
         </div>
         <div class="field is-horizontal">
@@ -34,7 +34,7 @@
                 :value="b"
                 inputmode="decimal"
                 pattern="[0-9]*[.,]?[0-9]*"
-@input="b = Number(normalize($event.target.value))"
+@input="b = $event.target.value"
             />
         </div>
         <div class="field is-horizontal">
@@ -60,7 +60,7 @@
 
 <script>
 import { fr as langpack_fr, en as langpack_en } from "./lang";
-import { normalize } from "./utils";
+import { normalize, parseFloat } from "./utils";
 import SpherometerSelector from "./SpherometerSelector.vue";
 
 
@@ -68,9 +68,9 @@ export default {
     name: "App",
     data() {
         return {
-            r: 40,
-            s: 3,
-            b: 3,
+            r: "40",
+            s: "3",
+            b: "3",
             curve: "concave",
         };
     },
@@ -80,15 +80,15 @@ export default {
     methods: {
         normalize,
         onSpherometerSelected(spherometer) {
-            this.r = spherometer.feetRadius;
-            this.b = spherometer.ballRadius2;
+            this.r = spherometer.feetRadius.toString();
+            this.b = spherometer.ballRadius2.toString();
         },
     },
     computed: {
         roc() {
-            const r = this.r;
-            const s = this.s;
-            const b = this.curve === "concave" ? this.b : -this.b;
+            const r = parseFloat(this.r);
+            const s = parseFloat(this.s);
+            const b = this.curve === "concave" ? parseFloat(this.b) : -parseFloat(this.b);
             const roc = (r * r + s * s) / (2 * s) + b / 2;
             return roc;
         },

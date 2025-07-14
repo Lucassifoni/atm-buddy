@@ -13,7 +13,7 @@
         <input
           class="input is-small"
           :value="r"
-@input="r = Number(normalize($event.target.value))"
+@input="r = $event.target.value"
         />
       </div>
       <div class="field is-horizontal">
@@ -21,7 +21,7 @@
         <input
           class="input is-small"
           :value="R"
-@input="R = Number(normalize($event.target.value))"
+@input="R = $event.target.value"
         />
       </div>
       <div class="button is-primary" style="white-space: normal">
@@ -37,7 +37,7 @@
 
 <script>
 import { fr as langpack_fr, en as langpack_en } from "./lang";
-import { normalize } from './utils';
+import { normalize, parseFloat } from './utils';
 import OpticalPieceSelector from './OpticalPieceSelector.vue';
 
 export default {
@@ -47,19 +47,21 @@ export default {
   },
   data() {
     return {
-      r: 125,
-      R: 2500,
+      r: "125",
+      R: "2500",
     };
   },
   methods: {
     normalize,
     onOpticalPieceSelected(piece) {
-      this.R = piece.radiusOfCurvature; // ROC directly
+      this.R = piece.radiusOfCurvature.toString(); // ROC directly
     },
   },
   computed: {
     x() {
-      const sinx = this.r / this.R;
+      const r = parseFloat(this.r);
+      const R = parseFloat(this.R);
+      const sinx = r / R;
       const rad = Math.asin(sinx);
       const deg = rad * (180 / Math.PI);
       return deg;

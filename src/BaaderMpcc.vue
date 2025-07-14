@@ -14,7 +14,7 @@
         <input
           class="input is-small"
           :value="d"
-@input="d = Number(normalize($event.target.value))"
+@input="d = $event.target.value"
         />
       </div>
       <div class="field is-horizontal">
@@ -22,7 +22,7 @@
         <input
           class="input is-small"
           :value="f"
-@input="f = Number(normalize($event.target.value))"
+@input="f = $event.target.value"
         />
       </div>
       <hr>
@@ -37,15 +37,15 @@
 
 <script>
 import { fr as langpack_fr, en as langpack_en } from "./lang";
-import { normalize } from './utils';
+import { normalize, parseFloat } from './utils';
 import OpticalPieceSelector from "./OpticalPieceSelector.vue";
 
 export default {
   name: "App",
   data() {
     return {
-      f: 1200,
-      d: 300,
+      f: "1200",
+      d: "300",
     };
   },
   components: {
@@ -54,16 +54,19 @@ export default {
   methods: {
     normalize,
     onOpticalPieceSelected(piece) {
-      this.d = piece.radius * 2; // diameter = 2 * radius
-      this.f = piece.radiusOfCurvature / 2; // focal length = ROC / 2
+      this.d = (piece.radius * 2).toString(); // diameter = 2 * radius
+      this.f = (piece.radiusOfCurvature / 2).toString(); // focal length = ROC / 2
     },
   },
   computed: {
     ratio() {
-        return this.f / this.d;
+        const f = parseFloat(this.f);
+        const d = parseFloat(this.d);
+        return f / d;
     },
     correction() {
-      return this.d / (1.1264 * (this.ratio * this.ratio * this.ratio));
+      const d = parseFloat(this.d);
+      return d / (1.1264 * (this.ratio * this.ratio * this.ratio));
     },
     undercorrection() {
     const c = (4 / this.ratio);
