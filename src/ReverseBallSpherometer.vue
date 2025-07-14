@@ -14,7 +14,7 @@
                 inputmode="decimal"
                 pattern="[0-9]*[.,]?[0-9]*"
                 :value="r"
-                @input="set('r', $event.target.value)"
+@input="r = Number(normalize($event.target.value))"
             />
         </div>
         <div class="field is-horizontal">
@@ -24,7 +24,7 @@
                 inputmode="decimal"
                 pattern="[0-9]*[.,]?[0-9]*"
                 :value="R"
-                @input="set('R', $event.target.value)"
+@input="R = Number(normalize($event.target.value))"
             />
         </div>
         <div class="field is-horizontal">
@@ -34,7 +34,7 @@
                 inputmode="decimal"
                 pattern="[0-9]*[.,]?[0-9]*"
                 :value="b"
-                @input="set('b', $event.target.value)"
+@input="b = Number(normalize($event.target.value))"
             />
         </div>
         <div class="field is-horizontal">
@@ -61,18 +61,17 @@
 
 <script>
 import { fr as langpack_fr, en as langpack_en } from "./lang";
-import { get, set, normalize } from "./utils";
+import { normalize } from "./utils";
 import SpherometerSelector from "./SpherometerSelector.vue";
 
-const toN = (a) => Number(normalize(a));
 
 export default {
     name: "App",
     data() {
         return {
-            R: get("__rsphero", "R", "2500"),
-            r: get("__rsphero", "r", "35"),
-            b: get("__rsphero", "b", "3"),
+            R: 2500,
+            r: 35,
+            b: 3,
             curve: "concave",
         };
     },
@@ -80,26 +79,17 @@ export default {
         SpherometerSelector,
     },
     methods: {
-        set(key, value) {
-            set(
-                this,
-                "__rsphero",
-                { R: this.R, r: this.r, curve: this.curve, b: this.b },
-                key,
-                value,
-            );
-        },
         normalize,
         onSpherometerSelected(spherometer) {
-            this.set("r", spherometer.feetRadius.toString());
-            this.set("b", spherometer.ballRadius2.toString());
+            this.r = spherometer.feetRadius;
+            this.b = spherometer.ballRadius2;
         },
     },
     computed: {
         sag() {
-            const r = toN(this.r);
-            const R = toN(this.R);
-            const b = this.curve === "convex" ? toN(this.b) : -toN(this.b);
+            const r = this.r;
+            const R = this.R;
+            const b = this.curve === "convex" ? this.b : -this.b;
             const aR = R + b / 2;
             const sag = aR - Math.sqrt(aR * aR - r * r);
             return sag;

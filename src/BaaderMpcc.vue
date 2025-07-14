@@ -14,7 +14,7 @@
         <input
           class="input is-small"
           :value="d"
-          @input="set('d', Number(normalize(($event.target.value))))"
+@input="d = Number(normalize($event.target.value))"
         />
       </div>
       <div class="field is-horizontal">
@@ -22,7 +22,7 @@
         <input
           class="input is-small"
           :value="f"
-          @input="set('f', Number(normalize(($event.target.value))))"
+@input="f = Number(normalize($event.target.value))"
         />
       </div>
       <hr>
@@ -37,34 +37,25 @@
 
 <script>
 import { fr as langpack_fr, en as langpack_en } from "./lang";
-import {get, set, normalize} from './utils';
+import { normalize } from './utils';
 import OpticalPieceSelector from "./OpticalPieceSelector.vue";
 
 export default {
   name: "App",
   data() {
     return {
-      f: Number(normalize(get("__mpcc", "f", "1200"))),
-      d: Number(normalize(get("__mpcc", "d", "300"))),
+      f: 1200,
+      d: 300,
     };
   },
   components: {
     OpticalPieceSelector,
   },
   methods: {
-    set(key, value) {
-      set(
-        this,
-        "__mpcc",
-        { f: this.f, d: this.d},
-        key,
-        value
-      );
-    },
     normalize,
     onOpticalPieceSelected(piece) {
-      this.set('d', piece.radius * 2); // diameter = 2 * radius
-      this.set('f', piece.radiusOfCurvature / 2); // focal length = ROC / 2
+      this.d = piece.radius * 2; // diameter = 2 * radius
+      this.f = piece.radiusOfCurvature / 2; // focal length = ROC / 2
     },
   },
   computed: {
