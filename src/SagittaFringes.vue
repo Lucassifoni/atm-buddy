@@ -1,97 +1,99 @@
 <template>
     <div>
-        <h3 class="subtitle" style="margin-bottom: 0">
-            ROC Fringes Calculator
-        </h3>
-        <hr />
-        <OpticalPieceSelector @optical-piece-selected="onOpticalPieceSelected" />
-        <div class="field is-horizontal">
-            <label for="" class="label is-small">Lambda (nm): </label>
+        <div class="card-title justify-center mb-3">
+            <div class="badge badge-outline badge-sm">
+                ROC Fringes Calculator
+            </div>
+        </div>
+        <OpticalPieceSelector
+            @optical-piece-selected="onOpticalPieceSelected"
+        />
+        <div class="alert alert-success mt-4 py-2" v-if="!isNaN(rocTestFace)">
+            <span class="text-sm font-semibold"
+                >RoC of face under test:
+                <strong>{{ rocTestFace.toFixed(2) }}</strong> mm</span
+            >
+        </div>
+        <div class="alert alert-error mt-4 py-2" v-else>
+            <span class="text-sm font-semibold">Invalid input values</span>
+        </div>
+        <div class="field-horizontal">
+            <label class="label text-xs font-medium">Lambda (nm):</label>
             <input
-                class="input is-small"
+                class="input input-bordered input-sm w-full"
                 :value="lambda"
                 inputmode="decimal"
                 pattern="[0-9]*[.,]?[0-9]*"
                 @input="set('lambda', $event.target.value)"
             />
         </div>
-        <div class="field is-horizontal">
-            <label for="" class="label is-small">Contact diameter (mm): </label>
+        <div class="field-horizontal">
+            <label class="label text-xs font-medium"
+                >Contact diameter (mm):</label
+            >
             <input
-                class="input is-small"
+                class="input input-bordered input-sm w-full"
                 :value="contactDiameter"
                 inputmode="decimal"
                 pattern="[0-9]*[.,]?[0-9]*"
                 @input="set('contactDiameter', $event.target.value)"
             />
         </div>
-        <div class="field is-horizontal">
-            <label for="" class="label is-small"
-                >Concave caliber RoC (mm):
-            </label>
+        <div class="field-horizontal">
+            <label class="label text-xs font-medium"
+                >Concave caliber RoC (mm):</label
+            >
             <input
-                class="input is-small"
+                class="input input-bordered input-sm w-full"
                 :value="concaveRoc"
                 inputmode="decimal"
                 pattern="[0-9]*[.,]?[0-9]*"
                 @input="set('concaveRoc', $event.target.value)"
             />
         </div>
-        <div class="field is-horizontal">
-            <label for="" class="label is-small">Number of fringes: </label>
+        <div class="field-horizontal">
+            <label class="label text-xs font-medium">Number of fringes:</label>
             <input
-                class="input is-small"
+                class="input input-bordered input-sm w-full"
                 :value="nbFringes"
                 inputmode="decimal"
                 pattern="[0-9]*[.,]?[0-9]*"
                 @input="set('nbFringes', $event.target.value)"
             />
         </div>
-        <div class="field is-horizontal">
-            <label for="" class="label is-small mr-2">Relative shape: </label>
-            <div class="control">
-                <label class="radio">
+        <div class="field-horizontal">
+            <label class="label text-xs font-medium">Relative shape:</label>
+            <div class="flex gap-3">
+                <label class="cursor-pointer flex items-center gap-1">
                     <input
                         type="radio"
                         name="relativeShape"
                         value="1"
                         :checked="relativeShape === '1'"
                         @change="set('relativeShape', '1')"
+                        class="radio radio-primary radio-sm"
                     />
-                    Concavity (+1)
+                    <span class="text-xs">Concavity (+1)</span>
                 </label>
-                <label class="radio" style="margin-left: 1rem">
+                <label class="cursor-pointer flex items-center gap-1">
                     <input
                         type="radio"
                         name="relativeShape"
                         value="-1"
                         :checked="relativeShape === '-1'"
                         @change="set('relativeShape', '-1')"
+                        class="radio radio-primary radio-sm"
                     />
-                    Convexity (-1)
+                    <span class="text-xs">Convexity (-1)</span>
                 </label>
             </div>
-        </div>
-        <hr />
-        <div
-            class="button is-primary"
-            style="white-space: normal"
-            v-if="!isNaN(rocTestFace)"
-        >
-            <span
-                >RoC of face under test: &nbsp;
-                <strong>&nbsp;{{ rocTestFace.toFixed(2) }} mm</strong></span
-            >
-        </div>
-        <div class="button is-danger" style="white-space: normal" v-else>
-            <span>Invalid input values</span>
         </div>
     </div>
 </template>
 
 <script>
 import { get, set } from "./utils.js";
-import OpticalPieceSelector from './OpticalPieceSelector.vue';
+import OpticalPieceSelector from "./OpticalPieceSelector.vue";
 
 const key = "__sagittaFringes";
 
@@ -114,8 +116,8 @@ export default {
             set(this, key, this, field, value);
         },
         onOpticalPieceSelected(piece) {
-            this.set('concaveRoc', piece.radiusOfCurvature); // ROC directly
-            this.set('contactDiameter', piece.radius * 2); // diameter = 2 * radius
+            this.set("concaveRoc", piece.radiusOfCurvature); // ROC directly
+            this.set("contactDiameter", piece.radius * 2); // diameter = 2 * radius
         },
     },
     computed: {

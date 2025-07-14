@@ -1,0 +1,41 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    font-size: 13.5px;
+  }
+  
+  html[data-theme] {
+    color-scheme: light;
+  }
+  
+  body {
+    @apply bg-gray-100 overflow-x-hidden;
+  }
+}
+
+@layer components {
+  .field-horizontal {
+    @apply flex flex-col sm:flex-row sm:items-center gap-1 mb-3;
+  }
+  
+  .field-horizontal label {
+    @apply min-w-[10ch] text-xs font-medium text-gray-700;
+  }
+  
+  .field-horizontal input,
+  .field-horizontal select {
+    @apply flex-1;
+  }
+}
+
+/* Mobile keyboard fix */
+@media screen and (-webkit-min-device-pixel-ratio: 0) {
+  select,
+  textarea,
+  input {
+    font-size: 16px;
+  }
+}

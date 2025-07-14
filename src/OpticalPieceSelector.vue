@@ -1,10 +1,12 @@
 <template>
     <div>
-        <div v-if="savedOpticalPieces.length > 0">
-            <label class="label is-small">Load optical piece: </label>
-            <div class="buttons">
+        <div v-if="savedOpticalPieces.length > 0" class="mb-3">
+            <label class="label text-xs font-medium mb-1"
+                >Load optical piece:</label
+            >
+            <div class="flex flex-wrap gap-1">
                 <button
-                    class="button is-small is-info is-rounded"
+                    class="btn btn-info btn-xs"
                     @click="loadOpticalPiece(piece)"
                     v-for="piece in savedOpticalPieces"
                     :key="piece.name"
@@ -13,18 +15,24 @@
                 </button>
             </div>
         </div>
-        <p
-            v-if="savedOpticalPieces.length === 0"
-            class="has-text-grey is-size-7 mb-3"
-        >
-            💡 Create optical pieces in the
-            <router-link to="/hardware">Hardware</router-link> tab to quickly
-            load their dimensions here.
-        </p>
-        <p v-else class="has-text-grey is-size-7 mb-3">
-            💡 Manage optical pieces in the
-            <router-link to="/hardware">Hardware</router-link> tab.
-        </p>
+        <div class="alert mb-3 py-1">
+            <div class="text-xs">
+                <p v-if="savedOpticalPieces.length === 0">
+                    💡 Create optical pieces in the
+                    <router-link to="/hardware" class="link"
+                        >Hardware</router-link
+                    >
+                    tab to quickly load their dimensions here.
+                </p>
+                <p v-else>
+                    💡 Manage optical pieces in the
+                    <router-link to="/hardware" class="link"
+                        >Hardware</router-link
+                    >
+                    tab.
+                </p>
+            </div>
+        </div>
     </div>
 </template>
 

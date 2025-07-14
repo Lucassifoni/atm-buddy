@@ -1,36 +1,37 @@
 <template>
     <div>
-        <h3 class="subtitle" style="margin-bottom: 0">
-            Sagitta = r² / (2 × ROC)
-        </h3>
-        <hr />
-        <OpticalPieceSelector @optical-piece-selected="onOpticalPieceSelected" />
-        <div class="field is-horizontal">
-            <label for="" class="label is-small"
-                >Mirror radius (in mm):
-            </label>
+        <div class="card-title justify-center mb-3">
+            <div class="badge badge-outline badge-sm">
+                Sagitta = r² / (2 × ROC)
+            </div>
+        </div>
+        <OpticalPieceSelector
+            @optical-piece-selected="onOpticalPieceSelected"
+        />
+        <div class="alert alert-success mt-4 py-2">
+            <span class="text-sm font-semibold"
+                >Sagitta: <strong>{{ sagitta.toFixed(3) }}</strong> mm</span
+            >
+        </div>
+        <div class="field-horizontal">
+            <label class="label text-xs font-medium">Mirror radius (mm):</label>
             <input
-                class="input is-small"
+                class="input input-bordered input-sm w-full"
                 :value="r"
                 inputmode="decimal"
                 pattern="[0-9]*[.,]?[0-9]*"
                 @input="set('r', $event.target.value)"
             />
         </div>
-        <div class="field is-horizontal">
-            <label for="" class="label is-small">ROC (in mm): </label>
+        <div class="field-horizontal">
+            <label class="label text-xs font-medium">ROC (mm):</label>
             <input
-                class="input is-small"
+                class="input input-bordered input-sm w-full"
                 inputmode="decimal"
                 pattern="[0-9]*[.,]?[0-9]*"
                 :value="roc"
                 @input="set('roc', $event.target.value)"
             />
-        </div>
-        <div class="button is-primary" style="white-space: normal">
-            <span
-                >Sagitta: &nbsp; <strong>&nbsp;{{ sagitta.toFixed(3) }}</strong></span
-            >
         </div>
     </div>
 </template>
@@ -54,28 +55,22 @@ export default {
     },
     methods: {
         set(key, value) {
-            set(
-                this,
-                "__sagitta",
-                { r: this.r, roc: this.roc },
-                key,
-                value,
-            );
+            set(this, "__sagitta", { r: this.r, roc: this.roc }, key, value);
         },
         normalize,
         onOpticalPieceSelected(piece) {
-            this.set('r', piece.radius.toString());
-            this.set('roc', piece.radiusOfCurvature.toString());
+            this.set("r", piece.radius.toString());
+            this.set("roc", piece.radiusOfCurvature.toString());
         },
     },
     computed: {
         sagitta() {
             const r = toN(this.r);
             const roc = toN(this.roc);
-            
+
             // Using the equation: sagitta = r² / (2 × ROC)
             // where r is the mirror radius and ROC is the radius of curvature
-            
+
             if (roc === 0) return 0;
             return (r * r) / (2 * roc);
         },

@@ -1,78 +1,68 @@
 <template>
     <div>
-        <h3 class="subtitle" style="margin-bottom: 0">
-            Annular Ring Surface Area Calculator
-        </h3>
-        <hr />
+        <div class="card-title justify-center mb-3">
+            <div class="badge badge-outline badge-sm">Annular Ring Surface Area Calculator</div>
+        </div>
         <OpticalPieceSelector @optical-piece-selected="onOpticalPieceSelected" />
-        <div class="field is-horizontal">
-            <label for="" class="label is-small"
-                >Mirror diameter (in mm):
-            </label>
+        <div class="field-horizontal">
+            <label class="label text-xs font-medium">Mirror diameter (mm):</label>
             <input
-                class="input is-small"
+                class="input input-bordered input-sm w-full"
                 :value="mirrorDiameter"
                 inputmode="decimal"
                 pattern="[0-9]*[.,]?[0-9]*"
                 @input="set('mirrorDiameter', $event.target.value)"
             />
         </div>
-        <div class="field is-horizontal">
-            <label for="" class="label is-small">Input mode: </label>
-            <div class="control">
-                <label class="radio">
-                    <input type="radio" value="percent" v-model="inputMode" />
-                    0..1
+        <div class="field-horizontal">
+            <label class="label text-xs font-medium">Input mode:</label>
+            <div class="flex gap-3">
+                <label class="cursor-pointer flex items-center gap-1">
+                    <input type="radio" value="percent" v-model="inputMode" class="radio radio-primary radio-sm" />
+                    <span class="text-xs">0..1</span>
                 </label>
-                <label class="radio">
-                    <input type="radio" value="mm" v-model="inputMode" />
-                    Millimeters
+                <label class="cursor-pointer flex items-center gap-1">
+                    <input type="radio" value="mm" v-model="inputMode" class="radio radio-primary radio-sm" />
+                    <span class="text-xs">Millimeters</span>
                 </label>
             </div>
         </div>
-        <div class="field is-horizontal">
-            <label for="" class="label is-small">
-                Central obstruction radius ({{
-                    inputMode === "percent" ? "0..1" : "in mm"
-                }}):
+        <div class="field-horizontal">
+            <label class="label text-xs font-medium">
+                Central obstruction radius ({{ inputMode === "percent" ? "0..1" : "mm" }}):
             </label>
             <input
-                class="input is-small"
+                class="input input-bordered input-sm w-full"
                 :value="centralObstruction"
                 inputmode="decimal"
                 pattern="[0-9]*[.,]?[0-9]*"
                 @input="set('centralObstruction', $event.target.value)"
             />
         </div>
-        <div class="field is-horizontal">
-            <label for="" class="label is-small">
-                Zone Start radius ({{
-                    inputMode === "percent" ? "0..1" : "in mm"
-                }}):
+        <div class="field-horizontal">
+            <label class="label text-xs font-medium">
+                Zone Start radius ({{ inputMode === "percent" ? "0..1" : "mm" }}):
             </label>
             <input
-                class="input is-small"
+                class="input input-bordered input-sm w-full"
                 :value="startRadius"
                 inputmode="decimal"
                 pattern="[0-9]*[.,]?[0-9]*"
                 @input="set('startRadius', $event.target.value)"
             />
         </div>
-        <div class="field is-horizontal">
-            <label for="" class="label is-small">
-                Zone End radius ({{
-                    inputMode === "percent" ? "0..1" : "in mm"
-                }}):
+        <div class="field-horizontal">
+            <label class="label text-xs font-medium">
+                Zone End radius ({{ inputMode === "percent" ? "0..1" : "mm" }}):
             </label>
             <input
-                class="input is-small"
+                class="input input-bordered input-sm w-full"
                 :value="endRadius"
                 inputmode="decimal"
                 pattern="[0-9]*[.,]?[0-9]*"
                 @input="set('endRadius', $event.target.value)"
             />
         </div>
-        <hr />
         <div
             style="
                 display: flex;
@@ -96,27 +86,21 @@
                             >&nbsp;{{ percentageTotal.toFixed(2) }}%</span
                         >
                     </div>
-                    <div class="field is-horizontal">
-                        <label class="label">Of Unobstructed Area:</label>
-                        <span class="has-text-weight-bold"
-                            >&nbsp;{{
-                                percentageUnobstructed.toFixed(2)
-                            }}%</span
-                        >
-                    </div>
-                    <div class="field is-horizontal">
-                        <label class="label">Should you fix it ? </label>
-                        <span class="has-text-weight-bold">&nbsp;yes</span>
-                    </div>
+                    <p>Of Unobstructed Area: <strong>{{ percentageUnobstructed.toFixed(2) }}</strong>%</p>
+                    <p>Should you fix it? <strong>yes</strong></p>
                 </div>
             </div>
             <div>
-                <h4 class="subtitle is-6">Visual:</h4>
+            </div>
+        </div>
+        <div class="card bg-base-200 p-3 mt-3">
+            <h4 class="text-sm font-semibold mb-2">Visual:</h4>
+            <div class="flex justify-center">
                 <canvas
                     ref="canvas"
                     width="120"
                     height="120"
-                    style="border: 1px solid #ccc"
+                    class="border border-gray-300 rounded"
                 ></canvas>
             </div>
         </div>

@@ -1,6 +1,10 @@
 import { createApp } from "vue";
 import App from "./App.vue";
 import { createWebHashHistory, createRouter } from "vue-router";
+import "./style.css";
+
+// Enforce light theme
+document.documentElement.setAttribute('data-theme', 'light');
 import BallSpherometer from "./BallSpherometer.vue";
 import ReverseBallSpherometer from "./ReverseBallSpherometer.vue";
 import SineTableEquation from "./SineTableEquation.vue";

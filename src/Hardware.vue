@@ -1,235 +1,202 @@
 <template>
-    <div class="columns">
-        <div class="column is-size-7">
-            <h1 class="title">Hardware Manager</h1>
+    <div class="space-y-6">
+        <div class="text-sm">
+            <div class="card-title justify-center mb-3">
+                <div class="badge badge-outline badge-sm">Hardware Manager</div>
+            </div>
 
             <!-- Import/Export Section -->
-            <div class="mb-4">
-                <h2 class="subtitle">Import/Export</h2>
-                <div class="field is-grouped">
-                    <div class="control">
-                        <button
-                            class="button is-small is-info"
-                            @click="exportData"
-                        >
-                            📤 Export Hardware Data
-                        </button>
-                    </div>
-                    <div class="control">
-                        <label class="button is-small is-success">
-                            📥 Import Hardware Data
-                            <input
-                                type="file"
-                                accept=".json"
-                                @change="importData"
-                                style="display: none"
-                                ref="fileInput"
-                            />
-                        </label>
-                    </div>
+            <div class="card bg-base-200 p-3 mb-3">
+                <h2 class="text-sm font-semibold mb-2">Import/Export</h2>
+                <div class="flex gap-1 flex-wrap">
+                    <button
+                        class="btn btn-info btn-xs"
+                        @click="exportData"
+                    >
+                        📤 Export
+                    </button>
+                    <label class="btn btn-success btn-xs">
+                        📥 Import
+                        <input
+                            type="file"
+                            accept=".json"
+                            @change="importData"
+                            style="display: none"
+                            ref="fileInput"
+                        />
+                    </label>
                 </div>
-                <p class="has-text-grey is-size-7 mt-2">
-                    💡 Export your hardware data to backup or share with other
-                    devices. Import will merge with existing data.
+                <p class="text-gray-500 text-xs mt-1">
+                    💡 Export your hardware data to backup or share with other devices. Import will merge with existing data.
                 </p>
             </div>
 
             <!-- Spherometers Section -->
-            <div class="">
-                <h2 class="subtitle">Spherometers</h2>
+            <div class="card bg-base-200 p-3">
+                <h2 class="text-sm font-semibold mb-2">Spherometers</h2>
 
                 <!-- Add/Edit Spherometer Form -->
-                <div class="field is-grouped">
-                    <div class="control">
-                        <input
-                            class="input is-small"
-                            type="text"
-                            placeholder="Name"
-                            v-model="newSpherometer.name"
-                        />
-                    </div>
-                </div>
-                <div class="field is-grouped">
-                    <div class="control">
-                        <input
-                            class="input is-small"
-                            type="number"
-                            step="0.01"
-                            placeholder="Feet radius (mm)"
-                            v-model.number="newSpherometer.feetRadius"
-                        />
-                    </div>
-                </div>
-                <div class="field is-grouped">
-                    <div class="control">
-                        <input
-                            class="input is-small"
-                            type="number"
-                            step="0.01"
-                            placeholder="Ball diameter (mm)"
-                            v-model.number="newSpherometer.ballRadius2"
-                        />
-                    </div>
-                    <div class="control">
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-1 mb-2">
+                    <input
+                        class="input input-bordered input-sm"
+                        type="text"
+                        placeholder="Name"
+                        v-model="newSpherometer.name"
+                    />
+                    <input
+                        class="input input-bordered input-sm"
+                        type="number"
+                        step="0.01"
+                        placeholder="Feet radius (mm)"
+                        v-model.number="newSpherometer.feetRadius"
+                    />
+                    <input
+                        class="input input-bordered input-sm"
+                        type="number"
+                        step="0.01"
+                        placeholder="Ball diameter (mm)"
+                        v-model.number="newSpherometer.ballRadius2"
+                    />
+                    <div class="flex gap-1">
                         <button
-                            class="button is-small is-primary"
+                            class="btn btn-primary btn-xs flex-1"
                             @click="addSpherometer"
                             :disabled="!isSpherometerValid"
                         >
-                            {{
-                                editingSpherometerIndex !== null
-                                    ? "Update"
-                                    : "Add"
-                            }}
+                            {{ editingSpherometerIndex !== null ? "Update" : "Add" }}
                         </button>
                         <button
                             v-if="editingSpherometerIndex !== null"
-                            class="button is-small ml-2"
+                            class="btn btn-outline btn-xs"
                             @click="cancelEditSpherometer"
                         >
-                            &times;
+                            ×
                         </button>
                     </div>
                 </div>
 
                 <!-- Spherometers List -->
-                <table
-                    class="table is-small is-size-7 is-fullwidth mt-4"
-                    v-if="spherometers.length > 0"
-                >
-                    <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Feet R (mm)</th>
-                            <th>Ball D (mm)</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr
-                            v-for="(spherometer, index) in spherometers"
-                            :key="index"
-                        >
-                            <td>{{ spherometer.name }}</td>
-                            <td>{{ spherometer.feetRadius }}</td>
-                            <td>{{ spherometer.ballRadius2 }}</td>
-                            <td>
-                                <button
-                                    class="button is-small is-info m-1"
-                                    @click="editSpherometer(index)"
-                                >
-                                    Edit
-                                </button>
-                                <button
-                                    class="button is-small is-danger m-1"
-                                    @click="deleteSpherometer(index)"
-                                >
-                                    &times;
-                                </button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-                <p v-else class="has-text-grey">No spherometers added yet.</p>
+                <div class="overflow-x-auto" v-if="spherometers.length > 0">
+                    <table class="table table-xs w-full">
+                        <thead>
+                            <tr>
+                                <th class="text-xs">Name</th>
+                                <th class="text-xs">Feet R (mm)</th>
+                                <th class="text-xs">Ball D (mm)</th>
+                                <th class="text-xs">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr
+                                v-for="(spherometer, index) in spherometers"
+                                :key="index"
+                            >
+                                <td class="text-xs">{{ spherometer.name }}</td>
+                                <td class="text-xs">{{ spherometer.feetRadius }}</td>
+                                <td class="text-xs">{{ spherometer.ballRadius2 }}</td>
+                                <td>
+                                    <button
+                                        class="btn btn-info btn-xs mr-1"
+                                        @click="editSpherometer(index)"
+                                    >
+                                        Edit
+                                    </button>
+                                    <button
+                                        class="btn btn-error btn-xs"
+                                        @click="deleteSpherometer(index)"
+                                    >
+                                        ×
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p v-else class="text-gray-500 text-xs">No spherometers added yet.</p>
             </div>
 
             <!-- Optical Pieces Section -->
-            <div class="mt-5">
-                <h2 class="subtitle">Optical Pieces</h2>
+            <div class="card bg-base-200 p-3">
+                <h2 class="text-sm font-semibold mb-2">Optical Pieces</h2>
 
                 <!-- Add/Edit Optical Piece Form -->
-                <div class="field is-grouped">
-                    <div class="control">
-                        <input
-                            class="input is-small"
-                            type="text"
-                            placeholder="Name"
-                            v-model="newOpticalPiece.name"
-                        />
-                    </div>
-                </div>
-                <div class="field is-grouped">
-                    <div class="control">
-                        <input
-                            class="input is-small"
-                            type="number"
-                            step="0.01"
-                            placeholder="Radius (mm)"
-                            v-model.number="newOpticalPiece.radius"
-                        />
-                    </div>
-                </div>
-                <div class="field is-grouped">
-                    <div class="control">
-                        <input
-                            class="input is-small"
-                            type="number"
-                            step="0.01"
-                            placeholder="Radius of Curvature (mm)"
-                            v-model.number="newOpticalPiece.radiusOfCurvature"
-                        />
-                    </div>
-                    <div class="control">
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-1 mb-2">
+                    <input
+                        class="input input-bordered input-sm"
+                        type="text"
+                        placeholder="Name"
+                        v-model="newOpticalPiece.name"
+                    />
+                    <input
+                        class="input input-bordered input-sm"
+                        type="number"
+                        step="0.01"
+                        placeholder="Radius (mm)"
+                        v-model.number="newOpticalPiece.radius"
+                    />
+                    <input
+                        class="input input-bordered input-sm"
+                        type="number"
+                        step="0.01"
+                        placeholder="ROC (mm)"
+                        v-model.number="newOpticalPiece.radiusOfCurvature"
+                    />
+                    <div class="flex gap-1">
                         <button
-                            class="button is-small is-primary"
+                            class="btn btn-primary btn-xs flex-1"
                             @click="addOpticalPiece"
                             :disabled="!isOpticalPieceValid"
                         >
-                            {{
-                                editingOpticalPieceIndex !== null
-                                    ? "Update"
-                                    : "Add"
-                            }}
+                            {{ editingOpticalPieceIndex !== null ? "Update" : "Add" }}
                         </button>
                         <button
                             v-if="editingOpticalPieceIndex !== null"
-                            class="button is-small ml-2"
+                            class="btn btn-outline btn-xs"
                             @click="cancelEditOpticalPiece"
                         >
-                            &times;
+                            ×
                         </button>
                     </div>
                 </div>
 
                 <!-- Optical Pieces List -->
-                <table
-                    class="table is-small is-fullwidth mt-4"
-                    v-if="opticalPieces.length > 0"
-                >
-                    <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>R (mm)</th>
-                            <th>RoC (mm)</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr
-                            v-for="(piece, index) in opticalPieces"
-                            :key="index"
-                        >
-                            <td>{{ piece.name }}</td>
-                            <td>{{ piece.radius }}</td>
-                            <td>{{ piece.radiusOfCurvature }}</td>
-                            <td class="">
-                                <button
-                                    class="button is-small is-info m-1"
-                                    @click="editOpticalPiece(index)"
-                                >
-                                    Edit
-                                </button>
-                                <button
-                                    class="button is-small is-danger m-1"
-                                    @click="deleteOpticalPiece(index)"
-                                >
-                                    &times;
-                                </button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-                <p v-else class="has-text-grey">No optical pieces added yet.</p>
+                <div class="overflow-x-auto" v-if="opticalPieces.length > 0">
+                    <table class="table table-xs w-full">
+                        <thead>
+                            <tr>
+                                <th class="text-xs">Name</th>
+                                <th class="text-xs">R (mm)</th>
+                                <th class="text-xs">RoC (mm)</th>
+                                <th class="text-xs">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr
+                                v-for="(piece, index) in opticalPieces"
+                                :key="index"
+                            >
+                                <td class="text-xs">{{ piece.name }}</td>
+                                <td class="text-xs">{{ piece.radius }}</td>
+                                <td class="text-xs">{{ piece.radiusOfCurvature }}</td>
+                                <td>
+                                    <button
+                                        class="btn btn-info btn-xs mr-1"
+                                        @click="editOpticalPiece(index)"
+                                    >
+                                        Edit
+                                    </button>
+                                    <button
+                                        class="btn btn-error btn-xs"
+                                        @click="deleteOpticalPiece(index)"
+                                    >
+                                        ×
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p v-else class="text-gray-500 text-xs">No optical pieces added yet.</p>
             </div>
         </div>
     </div>
