@@ -19,7 +19,7 @@
                 Contribute on
                 <a
                     class="underline"
-                    href="https://lucassifoni.github.io/atm-buddy"
+                    href="https://github.com/lucassifoni/atm-buddy"
                     >github</a
                 >.
             </p>
