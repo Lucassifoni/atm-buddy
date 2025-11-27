@@ -15,6 +15,14 @@
                     <router-view></router-view>
                 </div>
             </div>
+            <p class="text-center text-xs mt-2">
+                Contribute on
+                <a
+                    class="underline"
+                    href="https://lucassifoni.github.io/atm-buddy"
+                    >github</a
+                >.
+            </p>
         </div>
 
         <!-- Floating Menu Button -->
@@ -39,7 +47,7 @@
                     ></path>
                 </svg>
             </div>
-            
+
             <ul
                 v-show="isMenuOpen"
                 ref="dropdown"
@@ -76,13 +84,13 @@ export default {
         },
     },
     mounted() {
-        document.addEventListener('click', this.handleClickOutside);
+        document.addEventListener("click", this.handleClickOutside);
         this.$router.afterEach(() => {
             this.closeMenu();
         });
     },
     beforeUnmount() {
-        document.removeEventListener('click', this.handleClickOutside);
+        document.removeEventListener("click", this.handleClickOutside);
     },
     methods: {
         toggleMenu() {
@@ -92,11 +100,15 @@ export default {
             this.isMenuOpen = false;
         },
         handleClickOutside(event) {
-            const button = this.$el.querySelector('.btn-circle');
+            const button = this.$el.querySelector(".btn-circle");
             const dropdown = this.$refs.dropdown;
-            
-            if (dropdown && !dropdown.contains(event.target) && 
-                button && !button.contains(event.target)) {
+
+            if (
+                dropdown &&
+                !dropdown.contains(event.target) &&
+                button &&
+                !button.contains(event.target)
+            ) {
                 this.closeMenu();
             }
         },
