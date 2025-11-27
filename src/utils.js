@@ -30,12 +30,14 @@ export const getHardware = () => {
         const storage = JSON.parse(localStorage.getItem('__hardware')) || {};
         return {
             spherometers: storage.spherometers || [],
-            opticalPieces: storage.opticalPieces || []
+            opticalPieces: storage.opticalPieces || [],
+            polishers: storage.polishers || []
         };
     } catch (e) {
         return {
             spherometers: [],
-            opticalPieces: []
+            opticalPieces: [],
+            polishers: []
         };
     }
 };
@@ -46,4 +48,8 @@ export const getSpherometers = () => {
 
 export const getOpticalPieces = () => {
     return getHardware().opticalPieces;
+};
+
+export const getPolishers = () => {
+    return getHardware().polishers;
 };

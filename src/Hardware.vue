@@ -218,6 +218,102 @@
                     No optical pieces added yet.
                 </p>
             </div>
+
+            <!-- Polishers Section -->
+            <div class="card bg-base-200 p-3">
+                <h2 class="text-sm font-semibold mb-2">Polishers</h2>
+
+                <!-- Add/Edit Polisher Form -->
+                <div
+                    class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-1 mb-2"
+                >
+                    <input
+                        class="input input-bordered input-sm"
+                        type="text"
+                        placeholder="Name"
+                        v-model="newPolisher.name"
+                    />
+                    <input
+                        class="input input-bordered input-sm"
+                        inputmode="decimal"
+                        pattern="[0-9]*[.,]?[0-9]*"
+                        placeholder="Diameter (mm)"
+                        v-model.number="newPolisher.diameter"
+                    />
+                    <input
+                        class="input input-bordered input-sm"
+                        inputmode="decimal"
+                        pattern="[0-9]*[.,]?[0-9]*"
+                        placeholder="Weight (g)"
+                        v-model.number="newPolisher.weight"
+                    />
+                    <div class="flex gap-1">
+                        <button
+                            class="btn btn-primary btn-xs flex-1"
+                            @click="addPolisher"
+                            :disabled="!isPolisherValid"
+                        >
+                            {{
+                                editingPolisherIndex !== null
+                                    ? "Update"
+                                    : "Add"
+                            }}
+                        </button>
+                        <button
+                            v-if="editingPolisherIndex !== null"
+                            class="btn btn-outline btn-xs"
+                            @click="cancelEditPolisher"
+                        >
+                            ×
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Polishers List -->
+                <div class="overflow-x-auto" v-if="polishers.length > 0">
+                    <table class="table table-xs w-full">
+                        <thead>
+                            <tr>
+                                <th class="text-xs">Name</th>
+                                <th class="text-xs">Diameter (mm)</th>
+                                <th class="text-xs">Weight (g)</th>
+                                <th class="text-xs">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr
+                                v-for="(polisher, index) in polishers"
+                                :key="index"
+                            >
+                                <td class="text-xs">{{ polisher.name }}</td>
+                                <td class="text-xs">
+                                    {{ polisher.diameter }}
+                                </td>
+                                <td class="text-xs">
+                                    {{ polisher.weight }}
+                                </td>
+                                <td>
+                                    <button
+                                        class="btn btn-info btn-xs mr-1"
+                                        @click="editPolisher(index)"
+                                    >
+                                        Edit
+                                    </button>
+                                    <button
+                                        class="btn btn-error btn-xs"
+                                        @click="deletePolisher(index)"
+                                    >
+                                        ×
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p v-else class="text-gray-500 text-xs">
+                    No polishers added yet.
+                </p>
+            </div>
         </div>
     </div>
 </template>
@@ -231,6 +327,7 @@ export default {
         return {
             spherometers: [],
             opticalPieces: [],
+            polishers: [],
             newSpherometer: {
                 name: "",
                 feetRadius: null,
@@ -241,8 +338,14 @@ export default {
                 radius: null,
                 radiusOfCurvature: null,
             },
+            newPolisher: {
+                name: "",
+                diameter: null,
+                weight: null,
+            },
             editingSpherometerIndex: null,
             editingOpticalPieceIndex: null,
+            editingPolisherIndex: null,
         };
     },
     computed: {
@@ -260,6 +363,13 @@ export default {
                 this.newOpticalPiece.radiusOfCurvature > 0
             );
         },
+        isPolisherValid() {
+            return (
+                this.newPolisher.name &&
+                this.newPolisher.diameter > 0 &&
+                this.newPolisher.weight > 0
+            );
+        },
     },
     mounted() {
         this.loadData();
@@ -268,11 +378,13 @@ export default {
         loadData() {
             this.spherometers = utils.get("__hardware", "spherometers", []);
             this.opticalPieces = utils.get("__hardware", "opticalPieces", []);
+            this.polishers = utils.get("__hardware", "polishers", []);
         },
         saveData() {
-            const storage = utils.get("__hardware", null, {});
+            const storage = utils.getHardware();
             storage.spherometers = this.spherometers;
             storage.opticalPieces = this.opticalPieces;
+            storage.polishers = this.polishers;
             localStorage.setItem("__hardware", JSON.stringify(storage));
         },
         addSpherometer() {
@@ -359,10 +471,52 @@ export default {
                 radiusOfCurvature: null,
             };
         },
+        addPolisher() {
+            if (!this.isPolisherValid) return;
+
+            const polisher = {
+                name: this.newPolisher.name,
+                diameter: this.newPolisher.diameter,
+                weight: this.newPolisher.weight,
+            };
+
+            if (this.editingPolisherIndex !== null) {
+                this.polishers[this.editingPolisherIndex] = polisher;
+                this.editingPolisherIndex = null;
+            } else {
+                this.polishers.push(polisher);
+            }
+
+            this.saveData();
+            this.resetPolisherForm();
+        },
+        editPolisher(index) {
+            const polisher = this.polishers[index];
+            this.newPolisher = { ...polisher };
+            this.editingPolisherIndex = index;
+        },
+        deletePolisher(index) {
+            if (confirm("Are you sure you want to delete this polisher?")) {
+                this.polishers.splice(index, 1);
+                this.saveData();
+            }
+        },
+        cancelEditPolisher() {
+            this.editingPolisherIndex = null;
+            this.resetPolisherForm();
+        },
+        resetPolisherForm() {
+            this.newPolisher = {
+                name: "",
+                diameter: null,
+                weight: null,
+            };
+        },
         exportData() {
             const data = {
                 spherometers: this.spherometers,
                 opticalPieces: this.opticalPieces,
+                polishers: this.polishers,
                 exportDate: new Date().toISOString(),
                 version: "1.0",
             };
@@ -398,6 +552,7 @@ export default {
                     // Merge imported data with existing data
                     const importedSpherometers = data.spherometers || [];
                     const importedOpticalPieces = data.opticalPieces || [];
+                    const importedPolishers = data.polishers || [];
 
                     // Check for duplicates and merge
                     importedSpherometers.forEach((imported) => {
@@ -438,9 +593,28 @@ export default {
                         }
                     });
 
+                    importedPolishers.forEach((imported) => {
+                        const existing = this.polishers.find(
+                            (p) => p.name === imported.name,
+                        );
+                        if (existing) {
+                            if (
+                                confirm(
+                                    `Polisher "${imported.name}" already exists. Replace it?`,
+                                )
+                            ) {
+                                const index =
+                                    this.polishers.indexOf(existing);
+                                this.polishers[index] = imported;
+                            }
+                        } else {
+                            this.polishers.push(imported);
+                        }
+                    });
+
                     this.saveData();
                     alert(
-                        `Import completed! Added ${importedSpherometers.length} spherometers and ${importedOpticalPieces.length} optical pieces.`,
+                        `Import completed! Added ${importedSpherometers.length} spherometers, ${importedOpticalPieces.length} optical pieces, and ${importedPolishers.length} polishers.`,
                     );
                 } catch (error) {
                     alert(
@@ -459,7 +633,8 @@ export default {
             // Check if it has the expected structure
             if (
                 !Array.isArray(data.spherometers) &&
-                !Array.isArray(data.opticalPieces)
+                !Array.isArray(data.opticalPieces) &&
+                !Array.isArray(data.polishers)
             ) {
                 return false;
             }
@@ -484,6 +659,19 @@ export default {
                         !piece.name ||
                         typeof piece.radius !== "number" ||
                         typeof piece.radiusOfCurvature !== "number"
+                    ) {
+                        return false;
+                    }
+                }
+            }
+
+            // Validate polishers structure
+            if (data.polishers) {
+                for (const polisher of data.polishers) {
+                    if (
+                        !polisher.name ||
+                        typeof polisher.diameter !== "number" ||
+                        typeof polisher.weight !== "number"
                     ) {
                         return false;
                     }

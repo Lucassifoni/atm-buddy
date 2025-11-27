@@ -14,6 +14,7 @@ import StigReminder from "./StigReminder.vue";
 import SagittaCalculator from "./SagittaCalculator.vue";
 import AnnularRing from "./AnnularRing.vue";
 import SagittaFringes from "./SagittaFringes.vue";
+import PressureCalculator from "./PressureCalculator.vue";
 import Hardware from "./Hardware.vue";
 import Home from "./Home.vue";
 
@@ -69,6 +70,11 @@ const router = createRouter({
       path: "/sagitta_fringes",
       name: "🌊 ROC Fringes",
       component: SagittaFringes,
+    },
+    {
+      path: "/pressure",
+      name: "⚖️ Pressure Calculator",
+      component: PressureCalculator,
     },
     {
       path: "/hardware",
