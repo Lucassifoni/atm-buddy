@@ -4,6 +4,14 @@ This is an app that provides mobile utilities to amateur optics workers. It is t
 
 It is live at https://lucassifoni.github.io/atm-buddy and can be added to your home screen thanks to the app manifest.
 
+## Develop
+
+```
+npm i -g yarn
+yarn
+yarn dev
+```
+
 ## Features
 - Save (locally) your optical pieces, tools, and spherometers
 - Use little tools :
