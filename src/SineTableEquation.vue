@@ -27,6 +27,8 @@
             <input
                 class="input input-bordered input-sm w-full"
                 :value="r"
+                inputmode="decimal"
+                pattern="[0-9]*[.,]?[0-9]*"
                 @input="r = $event.target.value"
             />
         </div>
@@ -35,6 +37,8 @@
             <input
                 class="input input-bordered input-sm w-full"
                 :value="R"
+                inputmode="decimal"
+                pattern="[0-9]*[.,]?[0-9]*"
                 @input="R = $event.target.value"
             />
         </div>

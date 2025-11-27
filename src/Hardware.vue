@@ -9,10 +9,7 @@
             <div class="card bg-base-200 p-3 mb-3">
                 <h2 class="text-sm font-semibold mb-2">Import/Export</h2>
                 <div class="flex gap-1 flex-wrap">
-                    <button
-                        class="btn btn-info btn-xs"
-                        @click="exportData"
-                    >
+                    <button class="btn btn-info btn-xs" @click="exportData">
                         📤 Export
                     </button>
                     <label class="btn btn-success btn-xs">
@@ -27,7 +24,8 @@
                     </label>
                 </div>
                 <p class="text-gray-500 text-xs mt-1">
-                    💡 Export your hardware data to backup or share with other devices. Import will merge with existing data.
+                    💡 Export your hardware data to backup or share with other
+                    devices. Import will merge with existing data.
                 </p>
             </div>
 
@@ -36,7 +34,9 @@
                 <h2 class="text-sm font-semibold mb-2">Spherometers</h2>
 
                 <!-- Add/Edit Spherometer Form -->
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-1 mb-2">
+                <div
+                    class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-1 mb-2"
+                >
                     <input
                         class="input input-bordered input-sm"
                         type="text"
@@ -45,15 +45,15 @@
                     />
                     <input
                         class="input input-bordered input-sm"
-                        type="number"
-                        step="0.01"
+                        inputmode="decimal"
+                        pattern="[0-9]*[.,]?[0-9]*"
                         placeholder="Feet radius (mm)"
                         v-model.number="newSpherometer.feetRadius"
                     />
                     <input
                         class="input input-bordered input-sm"
-                        type="number"
-                        step="0.01"
+                        inputmode="decimal"
+                        pattern="[0-9]*[.,]?[0-9]*"
                         placeholder="Ball diameter (mm)"
                         v-model.number="newSpherometer.ballRadius2"
                     />
@@ -63,7 +63,11 @@
                             @click="addSpherometer"
                             :disabled="!isSpherometerValid"
                         >
-                            {{ editingSpherometerIndex !== null ? "Update" : "Add" }}
+                            {{
+                                editingSpherometerIndex !== null
+                                    ? "Update"
+                                    : "Add"
+                            }}
                         </button>
                         <button
                             v-if="editingSpherometerIndex !== null"
@@ -92,8 +96,12 @@
                                 :key="index"
                             >
                                 <td class="text-xs">{{ spherometer.name }}</td>
-                                <td class="text-xs">{{ spherometer.feetRadius }}</td>
-                                <td class="text-xs">{{ spherometer.ballRadius2 }}</td>
+                                <td class="text-xs">
+                                    {{ spherometer.feetRadius }}
+                                </td>
+                                <td class="text-xs">
+                                    {{ spherometer.ballRadius2 }}
+                                </td>
                                 <td>
                                     <button
                                         class="btn btn-info btn-xs mr-1"
@@ -112,7 +120,9 @@
                         </tbody>
                     </table>
                 </div>
-                <p v-else class="text-gray-500 text-xs">No spherometers added yet.</p>
+                <p v-else class="text-gray-500 text-xs">
+                    No spherometers added yet.
+                </p>
             </div>
 
             <!-- Optical Pieces Section -->
@@ -120,7 +130,9 @@
                 <h2 class="text-sm font-semibold mb-2">Optical Pieces</h2>
 
                 <!-- Add/Edit Optical Piece Form -->
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-1 mb-2">
+                <div
+                    class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-1 mb-2"
+                >
                     <input
                         class="input input-bordered input-sm"
                         type="text"
@@ -129,15 +141,15 @@
                     />
                     <input
                         class="input input-bordered input-sm"
-                        type="number"
-                        step="0.01"
+                        inputmode="decimal"
+                        pattern="[0-9]*[.,]?[0-9]*"
                         placeholder="Radius (mm)"
                         v-model.number="newOpticalPiece.radius"
                     />
                     <input
                         class="input input-bordered input-sm"
-                        type="number"
-                        step="0.01"
+                        inputmode="decimal"
+                        pattern="[0-9]*[.,]?[0-9]*"
                         placeholder="ROC (mm)"
                         v-model.number="newOpticalPiece.radiusOfCurvature"
                     />
@@ -147,7 +159,11 @@
                             @click="addOpticalPiece"
                             :disabled="!isOpticalPieceValid"
                         >
-                            {{ editingOpticalPieceIndex !== null ? "Update" : "Add" }}
+                            {{
+                                editingOpticalPieceIndex !== null
+                                    ? "Update"
+                                    : "Add"
+                            }}
                         </button>
                         <button
                             v-if="editingOpticalPieceIndex !== null"
@@ -177,7 +193,9 @@
                             >
                                 <td class="text-xs">{{ piece.name }}</td>
                                 <td class="text-xs">{{ piece.radius }}</td>
-                                <td class="text-xs">{{ piece.radiusOfCurvature }}</td>
+                                <td class="text-xs">
+                                    {{ piece.radiusOfCurvature }}
+                                </td>
                                 <td>
                                     <button
                                         class="btn btn-info btn-xs mr-1"
@@ -196,7 +214,9 @@
                         </tbody>
                     </table>
                 </div>
-                <p v-else class="text-gray-500 text-xs">No optical pieces added yet.</p>
+                <p v-else class="text-gray-500 text-xs">
+                    No optical pieces added yet.
+                </p>
             </div>
         </div>
     </div>

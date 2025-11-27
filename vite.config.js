@@ -5,4 +5,12 @@ import vue from '@vitejs/plugin-vue'
 export default defineConfig({
   plugins: [vue()],
   base: '/atm-buddy/',
+  build: {
+    rollupOptions: {
+      input: {
+        main: './index.html',
+        sw: './public/sw.js'
+      }
+    }
+  }
 })

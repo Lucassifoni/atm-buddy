@@ -19,56 +19,88 @@
 
         <!-- Floating Menu Button -->
         <div class="fixed bottom-4 left-4 z-50">
-            <div class="dropdown dropdown-top">
-                <div
-                    tabindex="0"
-                    role="button"
-                    class="btn btn-circle btn-primary shadow-lg"
+            <div
+                tabindex="0"
+                role="button"
+                class="btn btn-circle btn-primary shadow-lg"
+                @click="toggleMenu"
+            >
+                <svg
+                    class="w-6 h-6"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
                 >
-                    <svg
-                        class="w-6 h-6"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                    >
-                        <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="2"
-                            d="M4 6h16M4 12h16M4 18h16"
-                        ></path>
-                    </svg>
-                </div>
-                <ul
-                    tabindex="0"
-                    class="menu dropdown-content bg-white rounded-box shadow-xl p-2 w-64 mb-2"
-                >
-                    <li v-for="route in routes" :key="route.path">
-                        <router-link
-                            :to="route.path"
-                            :class="{
-                                'active bg-blue-100 text-blue-800':
-                                    route.path === $route.path,
-                            }"
-                            class="text-gray-800 text-xs py-2"
-                        >
-                            {{ route.name }}
-                        </router-link>
-                    </li>
-                </ul>
+                    <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M4 6h16M4 12h16M4 18h16"
+                    ></path>
+                </svg>
             </div>
+            
+            <ul
+                v-show="isMenuOpen"
+                ref="dropdown"
+                class="menu bg-white rounded-box shadow-xl p-2 w-64 mb-2 absolute bottom-full left-0"
+            >
+                <li v-for="route in routes" :key="route.path">
+                    <router-link
+                        :to="route.path"
+                        :class="{
+                            'active bg-blue-100 text-blue-800':
+                                route.path === $route.path,
+                        }"
+                        class="text-gray-800 text-xs py-2"
+                        @click="closeMenu"
+                    >
+                        {{ route.name }}
+                    </router-link>
+                </li>
+            </ul>
         </div>
     </div>
 </template>
 
 <script>
 export default {
+    data() {
+        return {
+            isMenuOpen: false,
+        };
+    },
     computed: {
         routes() {
             return this.$router.getRoutes();
         },
     },
-    mounted() {},
+    mounted() {
+        document.addEventListener('click', this.handleClickOutside);
+        this.$router.afterEach(() => {
+            this.closeMenu();
+        });
+    },
+    beforeUnmount() {
+        document.removeEventListener('click', this.handleClickOutside);
+    },
+    methods: {
+        toggleMenu() {
+            this.isMenuOpen = !this.isMenuOpen;
+        },
+        closeMenu() {
+            this.isMenuOpen = false;
+        },
+        handleClickOutside(event) {
+            const button = this.$el.querySelector('.btn-circle');
+            const dropdown = this.$refs.dropdown;
+            
+            if (dropdown && !dropdown.contains(event.target) && 
+                button && !button.contains(event.target)) {
+                this.closeMenu();
+            }
+        },
+    },
 };
 </script>
 
