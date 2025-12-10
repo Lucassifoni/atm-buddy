@@ -15,6 +15,7 @@ import SagittaCalculator from "./SagittaCalculator.vue";
 import AnnularRing from "./AnnularRing.vue";
 import SagittaFringes from "./SagittaFringes.vue";
 import PressureCalculator from "./PressureCalculator.vue";
+import ComaFreeRadius from "./ComaFreeRadius.vue";
 import Hardware from "./Hardware.vue";
 import Home from "./Home.vue";
 
@@ -75,6 +76,11 @@ const router = createRouter({
       path: "/pressure",
       name: "⚖️ Pressure Calculator",
       component: PressureCalculator,
+    },
+    {
+      path: "/coma_free",
+      name: "☄️ Coma-free Radius",
+      component: ComaFreeRadius,
     },
     {
       path: "/hardware",
