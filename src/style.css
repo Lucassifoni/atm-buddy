@@ -4,13 +4,13 @@
 
 @layer base {
   html {
-    font-size: 13.5px;
+    font-size: 16px;
   }
-  
+
   html[data-theme] {
     color-scheme: light;
   }
-  
+
   body {
     @apply bg-gray-100 overflow-x-hidden;
   }
@@ -20,11 +20,11 @@
   .field-horizontal {
     @apply flex flex-col sm:flex-row sm:items-center gap-1 mb-3;
   }
-  
+
   .field-horizontal label {
-    @apply min-w-[10ch] text-xs font-medium text-gray-700;
+    @apply min-w-[10ch] text-sm font-medium text-gray-700;
   }
-  
+
   .field-horizontal input,
   .field-horizontal select {
     @apply flex-1;

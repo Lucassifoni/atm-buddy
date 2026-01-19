@@ -13,6 +13,7 @@ yarn dev
 ```
 
 ## Features
+
 - Save (locally) your optical pieces, tools, and spherometers
 - Use little tools :
   - 📏 Spherometer to ROC
@@ -26,7 +27,7 @@ yarn dev
   - 🌊 ROC Fringes
   - ⚖️ Pressure Calculator
   - 🔧 Hardware manager
-  
+
 ### Feature lifecycle as of 2025
 
 ```
@@ -38,7 +39,7 @@ Paul asks for a feature
 
 ### You can add features too !
 
-This is a low-stakes, low-key, low-tech tool. You can add features manually or by using LLMs if you want and if they are genuinely useful in an amateur optics setting. Just explore a bit the code, loosely respect the current informal conventions,  and send a PR.
+This is a low-stakes, low-key, low-tech tool. You can add features manually or by using LLMs if you want and if they are genuinely useful in an amateur optics setting. Just explore a bit the code, loosely respect the current informal conventions, and send a PR.
 
 ### Current roadmap
 
