@@ -184,7 +184,8 @@ export default {
       script.id = "plausible-script";
       script.defer = true;
       script.dataset.domain = "atm-buddy.app";
-      script.src = "https://stats.documents.design/js/script.js";
+      script.src = "https://stats.documents.design/js/script.manual.js";
+      script.onload = () => this.trackPageview();
       document.head.appendChild(script);
     },
     unmountAnalyticsScript() {

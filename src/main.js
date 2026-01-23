@@ -119,7 +119,7 @@ app.use(router).mount("#app");
 if ("serviceWorker" in navigator) {
   window.addEventListener("load", () => {
     navigator.serviceWorker
-      .register("/atm-buddy/sw.js")
+      .register("/sw.js")
       .then((registration) => {
         console.log("SW registered: ", registration);
       })
