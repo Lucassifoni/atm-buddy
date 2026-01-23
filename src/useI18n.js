@@ -5,13 +5,18 @@ import fr from "./strings.fr.js";
 const STORAGE_KEY = "atm-buddy-language";
 const DEFAULT_LANGUAGE = "en";
 const AVAILABLE_LANGUAGES = { en, fr };
+const isBrowser = typeof window !== "undefined";
 
-const currentLanguage = ref(localStorage.getItem(STORAGE_KEY) || DEFAULT_LANGUAGE);
+const currentLanguage = ref(
+  isBrowser ? localStorage.getItem(STORAGE_KEY) || DEFAULT_LANGUAGE : DEFAULT_LANGUAGE
+);
 
 function setLanguage(lang) {
   if (AVAILABLE_LANGUAGES[lang]) {
     currentLanguage.value = lang;
-    localStorage.setItem(STORAGE_KEY, lang);
+    if (isBrowser) {
+      localStorage.setItem(STORAGE_KEY, lang);
+    }
   }
 }
 

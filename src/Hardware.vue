@@ -341,7 +341,9 @@ export default {
       storage.spherometers = this.spherometers;
       storage.opticalPieces = this.opticalPieces;
       storage.polishers = this.polishers;
-      localStorage.setItem("__hardware", JSON.stringify(storage));
+      if (typeof window !== "undefined") {
+        localStorage.setItem("__hardware", JSON.stringify(storage));
+      }
     },
     addSpherometer() {
       if (!this.isSpherometerValid) return;

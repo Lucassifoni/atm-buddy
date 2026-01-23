@@ -97,6 +97,7 @@ export default {
       this.trackPageview();
     });
     this.analyticsOptedOut =
+      typeof window !== "undefined" &&
       localStorage.getItem("atm-buddy-analytics-opt-out") === "true";
     if (!this.analyticsOptedOut) {
       this.mountAnalyticsScript();
@@ -124,10 +125,12 @@ export default {
     },
     toggleAnalytics() {
       this.analyticsOptedOut = !this.analyticsOptedOut;
-      localStorage.setItem(
-        "atm-buddy-analytics-opt-out",
-        this.analyticsOptedOut.toString(),
-      );
+      if (typeof window !== "undefined") {
+        localStorage.setItem(
+          "atm-buddy-analytics-opt-out",
+          this.analyticsOptedOut.toString(),
+        );
+      }
       if (this.analyticsOptedOut) {
         this.unmountAnalyticsScript();
       } else {

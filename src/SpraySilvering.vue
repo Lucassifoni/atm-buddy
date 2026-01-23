@@ -210,7 +210,7 @@ export default {
         { name: "FFP2 masks", key: "bomMasks", checked: false },
       ];
 
-      const savedItems = localStorage.getItem("bomItems");
+      const savedItems = typeof window !== "undefined" ? localStorage.getItem("bomItems") : null;
       if (savedItems) {
         const parsedItems = JSON.parse(savedItems);
         if (!parsedItems) {
@@ -230,7 +230,9 @@ export default {
       this.saveBomItems();
     },
     saveBomItems() {
-      localStorage.setItem("bomItems", JSON.stringify(this.bomItems));
+      if (typeof window !== "undefined") {
+        localStorage.setItem("bomItems", JSON.stringify(this.bomItems));
+      }
     },
   },
   watch: {

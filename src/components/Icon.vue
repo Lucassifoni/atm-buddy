@@ -19,9 +19,8 @@ import iconSprite from "../assets/icons.svg?raw";
 
 const ICON_SIZE = 24;
 
-const parser = new DOMParser();
-const doc = parser.parseFromString(iconSprite, "image/svg+xml");
-const spriteContent = doc.documentElement.innerHTML;
+const match = iconSprite.match(/<svg[^>]*>([\s\S]*)<\/svg>/);
+const spriteContent = match ? match[1] : "";
 
 export default {
   props: {
