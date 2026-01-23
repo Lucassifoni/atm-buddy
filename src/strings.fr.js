@@ -30,7 +30,7 @@ export default {
       "uniquement pour savoir quels outils sont utilisés ou non. Si vous ne le souhaitez pas, vous pouvez utiliser un bloqueur de publicités ou",
     optOut: "cliquez ici pour refuser",
     optIn: "réactiver",
-    credits: `Un projet par <a class="underline" href="https://lucassifoni.info">Lucas Sifoni</a>, <a class="underline" href="https://gallifrey-optics.fr">Paul Faÿs de Gallifrey Optics</a>, et <a class="underline" href="https://la3emedim.fr">Raphaël Labro de La3emedim.fr</a>`,
+    credits: `Un projet par <a class="underline" href="https://lucassifoni.info">Lucas Sifoni</a>, <a class="underline" href="http://gallifrey-optics.fr">Paul Faÿs de Gallifrey Optics</a>, et <a class="underline" href="https://la3emedim.fr">Raphaël Labro de La3emedim.fr</a>`,
   },
 
   home: {

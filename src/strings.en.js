@@ -29,7 +29,7 @@ export default {
       "only to know which tools are or aren't used. If you do not want that, you can use an adblocker or",
     optOut: "click here to opt-out",
     optIn: "opt back in",
-    credits: `A project by <a class="underline" href="https://lucassifoni.info">Lucas Sifoni</a>, <a class="underline" href="https://gallifrey-optics.fr">Paul Faÿs from Gallifrey Optics</a>, and <a class="underline" href="https://la3emedim.fr">Raphaël Labro from La3emedim.fr</a>`,
+    credits: `A project by <a class="underline" href="https://lucassifoni.info">Lucas Sifoni</a>, <a class="underline" href="http://gallifrey-optics.fr">Paul Faÿs from Gallifrey Optics</a>, and <a class="underline" href="https://la3emedim.fr">Raphaël Labro from La3emedim.fr</a>`,
   },
 
   home: {
