@@ -198,7 +198,7 @@ export default {
       if (this.analyticsOptedOut || typeof window.plausible !== "function") {
         return;
       }
-      window.plausible("pageview");
+      window.plausible("pageview", { u: location.href });
     },
     handleClickOutside(event) {
       const button = this.$el.querySelector(".btn-circle");
