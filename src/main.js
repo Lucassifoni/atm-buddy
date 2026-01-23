@@ -2,8 +2,8 @@ import { createApp } from "vue";
 import App from "./App.vue";
 import { createWebHashHistory, createRouter } from "vue-router";
 import "./style.css";
+import { i18n } from "./useI18n.js";
 
-// Enforce light theme
 document.documentElement.setAttribute("data-theme", "light");
 import BallSpherometer from "./BallSpherometer.vue";
 import ReverseBallSpherometer from "./ReverseBallSpherometer.vue";
@@ -25,92 +25,95 @@ const router = createRouter({
   routes: [
     {
       path: "/",
-      name: "Home",
+      name: "home",
       component: Home,
-      meta: { icon: "home" },
+      meta: { icon: "home", titleKey: "routes.home" },
     },
     {
       path: "/sphero",
-      name: "Spherometer to ROC",
+      name: "spherometer",
       component: BallSpherometer,
-      meta: { icon: "sphero" },
+      meta: { icon: "sphero", titleKey: "routes.spherometer" },
     },
     {
       path: "/reverse_sphero",
-      name: "ROC to Spherometer",
+      name: "reverseSpherometer",
       component: ReverseBallSpherometer,
-      meta: { icon: "reverse_sphero" },
+      meta: { icon: "reverse_sphero", titleKey: "routes.reverseSpherometer" },
     },
     {
       path: "/sagitta",
-      name: "Sagitta Calculator",
+      name: "sagitta",
       component: SagittaCalculator,
-      meta: { icon: "sagitta" },
+      meta: { icon: "sagitta", titleKey: "routes.sagitta" },
     },
     {
       path: "/sine_table",
-      name: "Sine table",
+      name: "sineTable",
       component: SineTableEquation,
-      meta: { icon: "sine_table" },
+      meta: { icon: "sine_table", titleKey: "routes.sineTable" },
     },
     {
       path: "/mpcc_hyperbolic",
-      name: "Baader MPCCIII Hyperbola",
+      name: "mpcc",
       component: BaaderMpcc,
-      meta: { icon: "mpcc_hyperbolic" },
+      meta: { icon: "mpcc_hyperbolic", titleKey: "routes.mpcc" },
     },
     {
       path: "/spray_silvering",
-      name: "Spray Silvering",
+      name: "spraySilvering",
       component: SpraySilvering,
-      meta: { icon: "spray_silvering" },
+      meta: { icon: "spray_silvering", titleKey: "routes.spraySilvering" },
     },
     {
       path: "/stig",
-      name: "Stig Correction",
+      name: "stig",
       component: StigReminder,
-      meta: { icon: "stig" },
+      meta: { icon: "stig", titleKey: "routes.stig" },
     },
     {
       path: "/annular_ring",
-      name: "Annular Ring",
+      name: "annularRing",
       component: AnnularRing,
-      meta: { icon: "annular_ring" },
+      meta: { icon: "annular_ring", titleKey: "routes.annularRing" },
     },
     {
       path: "/sagitta_fringes",
-      name: "ROC Fringes",
+      name: "sagittaFringes",
       component: SagittaFringes,
-      meta: { icon: "sagitta_fringes" },
+      meta: { icon: "sagitta_fringes", titleKey: "routes.sagittaFringes" },
     },
     {
       path: "/pressure",
-      name: "Pressure Calculator",
+      name: "pressure",
       component: PressureCalculator,
-      meta: { icon: "pressure" },
+      meta: { icon: "pressure", titleKey: "routes.pressure" },
     },
     {
       path: "/coma_free",
-      name: "Coma-free Radius",
+      name: "comaFree",
       component: ComaFreeRadius,
-      meta: { icon: "coma_free" },
+      meta: { icon: "coma_free", titleKey: "routes.comaFree" },
     },
     {
       path: "/foucault_la",
-      name: "Foucault LA",
+      name: "foucaultLA",
       component: FoucaultLA,
-      meta: { icon: "foucault_la" },
+      meta: { icon: "foucault_la", titleKey: "routes.foucaultLA" },
     },
     {
       path: "/hardware",
-      name: "Hardware",
+      name: "hardware",
       component: Hardware,
-      meta: { icon: "hardware" },
+      meta: { icon: "hardware", titleKey: "routes.hardware" },
     },
   ],
 });
 
-createApp(App).use(router).mount("#app");
+const app = createApp(App);
+app.config.globalProperties.$t = i18n.t;
+app.config.globalProperties.$i18n = i18n;
+app.use(router).mount("#app");
 
 // Register service worker
 if ("serviceWorker" in navigator) {

@@ -2,17 +2,17 @@
   <div>
     <div class="card-title justify-center mb-3">
       <div class="badge badge-outline badge-sm">
-        Sagitta = ROC ± b/2 - sqrt((ROC ± b/2)² - r²)
+        {{ $t('reverseSpherometer.formula') }}
       </div>
     </div>
     <SpherometerSelector @spherometer-selected="onSpherometerSelected" />
     <div class="alert alert-success mt-4 py-2">
       <span class="text-sm font-semibold"
-        >Sagitta: <strong>{{ sag.toFixed(3) }}</strong> mm</span
+        >{{ $t('reverseSpherometer.sagittaLabel') }} <strong>{{ sag.toFixed(3) }}</strong> {{ $t('common.mm') }}</span
       >
     </div>
     <div class="field-horizontal">
-      <label class="label text-xs font-medium">Radius of feet (mm):</label>
+      <label class="label text-xs font-medium">{{ $t('reverseSpherometer.feetRadius') }}</label>
       <input
         class="input input-bordered input-sm w-full"
         inputmode="decimal"
@@ -22,7 +22,7 @@
       />
     </div>
     <div class="field-horizontal">
-      <label class="label text-xs font-medium">Desired ROC (mm):</label>
+      <label class="label text-xs font-medium">{{ $t('reverseSpherometer.desiredRoc') }}</label>
       <input
         class="input input-bordered input-sm w-full"
         inputmode="decimal"
@@ -32,7 +32,7 @@
       />
     </div>
     <div class="field-horizontal">
-      <label class="label text-xs font-medium">Ball diameter (mm):</label>
+      <label class="label text-xs font-medium">{{ $t('reverseSpherometer.ballDiameter') }}</label>
       <input
         class="input input-bordered input-sm w-full"
         inputmode="decimal"
@@ -42,7 +42,7 @@
       />
     </div>
     <div class="field-horizontal">
-      <label class="label text-xs font-medium">Curve:</label>
+      <label class="label text-xs font-medium">{{ $t('reverseSpherometer.curveLabel') }}</label>
       <div class="flex gap-3">
         <label class="cursor-pointer flex items-center gap-1">
           <div>
@@ -53,7 +53,7 @@
               class="radio radio-primary radio-sm"
             />
           </div>
-          <span class="text-xs">Concave</span>
+          <span class="text-xs">{{ $t('common.concave') }}</span>
         </label>
         <label class="cursor-pointer flex items-center gap-1">
           <div>
@@ -64,7 +64,7 @@
               class="radio radio-primary radio-sm"
             />
           </div>
-          <span class="text-xs">Convex</span>
+          <span class="text-xs">{{ $t('common.convex') }}</span>
         </label>
       </div>
     </div>
@@ -72,12 +72,11 @@
 </template>
 
 <script>
-import { fr as langpack_fr, en as langpack_en } from "./lang";
 import { normalize, parseFloat } from "./utils";
 import SpherometerSelector from "./SpherometerSelector.vue";
 
 export default {
-  name: "App",
+  name: "ReverseBallSpherometer",
   data() {
     return {
       R: "2500",

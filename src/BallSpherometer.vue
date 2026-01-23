@@ -1,16 +1,16 @@
 <template>
   <div>
     <div class="card-title justify-center mb-3">
-      <div class="badge badge-outline badge-sm">ROC = (r² + s²) / 2s ± b/2</div>
+      <div class="badge badge-outline badge-sm">{{ $t('spherometer.formula') }}</div>
     </div>
     <SpherometerSelector @spherometer-selected="onSpherometerSelected" />
     <div class="alert alert-success mt-4 py-2">
       <span class="text-sm font-semibold"
-        >ROC: <strong>{{ roc.toFixed(2) }}</strong> mm</span
+        >{{ $t('spherometer.rocLabel') }} <strong>{{ roc.toFixed(2) }}</strong> {{ $t('common.mm') }}</span
       >
     </div>
     <div class="field-horizontal">
-      <label class="label text-xs font-medium">Radius of feet (mm):</label>
+      <label class="label text-xs font-medium">{{ $t('spherometer.feetRadius') }}</label>
       <input
         class="input input-bordered input-sm w-full"
         :value="r"
@@ -20,7 +20,7 @@
       />
     </div>
     <div class="field-horizontal">
-      <label class="label text-xs font-medium">Sagitta (mm):</label>
+      <label class="label text-xs font-medium">{{ $t('spherometer.sagitta') }}</label>
       <input
         class="input input-bordered input-sm w-full"
         inputmode="decimal"
@@ -30,7 +30,7 @@
       />
     </div>
     <div class="field-horizontal">
-      <label class="label text-xs font-medium">Ball diameter (mm):</label>
+      <label class="label text-xs font-medium">{{ $t('spherometer.ballDiameter') }}</label>
       <input
         class="input input-bordered input-sm w-full"
         :value="b"
@@ -40,7 +40,7 @@
       />
     </div>
     <div class="field-horizontal">
-      <label class="label text-xs font-medium">Curve:</label>
+      <label class="label text-xs font-medium">{{ $t('spherometer.curveLabel') }}</label>
       <div class="flex gap-3">
         <label class="cursor-pointer flex items-center gap-1">
           <div>
@@ -51,7 +51,7 @@
               class="radio radio-primary radio-sm"
             />
           </div>
-          <span class="text-xs">Concave</span>
+          <span class="text-xs">{{ $t('common.concave') }}</span>
         </label>
         <label class="cursor-pointer flex items-center gap-1">
           <div>
@@ -62,7 +62,7 @@
               class="radio radio-primary radio-sm"
             />
           </div>
-          <span class="text-xs">Convex</span>
+          <span class="text-xs">{{ $t('common.convex') }}</span>
         </label>
       </div>
     </div>
@@ -70,12 +70,11 @@
 </template>
 
 <script>
-import { fr as langpack_fr, en as langpack_en } from "./lang";
 import { normalize, parseFloat } from "./utils";
 import SpherometerSelector from "./SpherometerSelector.vue";
 
 export default {
-  name: "App",
+  name: "BallSpherometer",
   data() {
     return {
       r: "40",

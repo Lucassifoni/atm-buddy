@@ -1,16 +1,16 @@
 <template>
   <div>
     <div class="card-title justify-center mb-3">
-      <div class="badge badge-outline badge-sm">M = π × r² × P - W</div>
+      <div class="badge badge-outline badge-sm">{{ $t('pressure.formula') }}</div>
     </div>
     <PolisherSelector @polisher-selected="onPolisherSelected" />
     <div class="alert alert-success mt-4 py-2">
       <span class="text-sm font-semibold"
-        >Weight to add: <strong>{{ weightToAdd.toFixed(0) }}</strong> g</span
+        >{{ $t('pressure.weightToAdd') }} <strong>{{ weightToAdd.toFixed(0) }}</strong> {{ $t('common.grams') }}</span
       >
     </div>
     <div class="field-horizontal">
-      <label class="label text-xs font-medium">Polisher diameter (mm):</label>
+      <label class="label text-xs font-medium">{{ $t('pressure.polisherDiameter') }}</label>
       <input
         class="input input-bordered input-sm w-full"
         :value="diameter"
@@ -20,7 +20,7 @@
       />
     </div>
     <div class="field-horizontal">
-      <label class="label text-xs font-medium">Polisher weight (g):</label>
+      <label class="label text-xs font-medium">{{ $t('pressure.polisherWeight') }}</label>
       <input
         class="input input-bordered input-sm w-full"
         :value="polisherWeight"
@@ -30,7 +30,7 @@
       />
     </div>
     <div class="field-horizontal">
-      <label class="label text-xs font-medium">Target pressure (g/cm²):</label>
+      <label class="label text-xs font-medium">{{ $t('pressure.targetPressure') }}</label>
       <input
         class="input input-bordered input-sm w-full"
         :value="pressure"
@@ -41,13 +41,13 @@
     </div>
     <div class="alert alert-info mt-4 py-2">
       <span class="text-xs">
-        Total mass needed: <strong>{{ totalMass.toFixed(0) }}</strong> g
+        {{ $t('pressure.totalMass') }} <strong>{{ totalMass.toFixed(0) }}</strong> {{ $t('common.grams') }}
       </span>
     </div>
     <div v-if="polisherTooHeavy" class="alert alert-warning mt-4 py-2">
       <span class="text-xs">
-        Polisher alone exceeds target pressure ({{ actualPressure.toFixed(1) }}
-        g/cm²)
+        {{ $t('pressure.exceedsPressure') }} ({{ actualPressure.toFixed(1) }}
+        {{ $t('pressure.pressureUnit') }})
       </span>
     </div>
   </div>

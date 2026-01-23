@@ -1,7 +1,7 @@
 <template>
   <div>
     <div v-if="savedSpherometers.length > 0" class="mb-3">
-      <label class="label text-xs font-medium mb-1">Load spherometer:</label>
+      <label class="label text-xs font-medium mb-1">{{ $t('selectors.loadSpherometer') }}</label>
       <div class="flex flex-wrap gap-1">
         <button
           v-for="sphero in savedSpherometers"
@@ -16,14 +16,14 @@
     <div class="alert mb-3 py-1">
       <div class="text-xs">
         <p v-if="savedSpherometers.length === 0">
-          💡 Create spherometers in the
-          <router-link to="/hardware" class="link">Hardware</router-link>
-          tab to quickly load their dimensions here.
+          {{ $t('selectors.createSpherometersHint') }}
+          <router-link to="/hardware" class="link">{{ $t('common.hardware') }}</router-link>
+          {{ $t('selectors.tabSuffix') }}
         </p>
         <p v-else>
-          💡 Manage spherometers in the
-          <router-link to="/hardware" class="link">Hardware</router-link>
-          tab.
+          {{ $t('selectors.manageSpherometersHint') }}
+          <router-link to="/hardware" class="link">{{ $t('common.hardware') }}</router-link>
+          {{ $t('selectors.tabSuffixManage') }}
         </p>
       </div>
     </div>

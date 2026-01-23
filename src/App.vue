@@ -1,12 +1,22 @@
 <template>
   <div id="app" class="min-h-screen bg-gray-100">
+    <div class="text-center pt-2">
+      <select
+        v-model="currentLang"
+        @change="changeLanguage"
+        class="select select-bordered select-xs"
+      >
+        <option value="en">English</option>
+        <option value="fr">Français</option>
+      </select>
+    </div>
     <div class="container mx-auto px-2 py-3">
       <div class="card bg-white shadow-lg max-w-2xl mx-auto">
         <div class="card-body p-4 pb-24">
           <div class="text-center mb-4">
             <router-link to="/"
               ><h1 class="text-xl font-light text-gray-500 tracking-wide">
-                ATM Buddy
+                {{ $t("app.title") }}
               </h1></router-link
             >
           </div>
@@ -14,22 +24,22 @@
         </div>
       </div>
       <p class="text-center text-sm mt-2">
-        Contribute on
-        <a class="underline" href="https://github.com/lucassifoni/atm-buddy"
-          >github</a
+        {{ $t("app.contributeOn") }}
+        <a class="underline" href="https://github.com/lucassifoni/atm-buddy">{{
+          $t("app.github")
+        }}</a
         >.
       </p>
       <p class="text-xs text-center max-w-[45ch] mx-auto my-2">
-        Note : I use reasonably private analytics powered by
-        <a href="https://plausible.io">Plausible.io</a> only to know which tools
-        are or aren't used. If you do not want that, you can use an adblocker or
+        {{ $t("app.analyticsNote") }}
+        <a href="https://plausible.io">Plausible.io</a>
+        {{ $t("app.analyticsExplain") }}
         <button class="bg-gray-300 rounded-sm px-1" @click="toggleAnalytics">
-          {{ analyticsOptedOut ? 'opt back in' : 'click here to opt-out' }}
-        </button>.
+          {{ analyticsOptedOut ? $t("app.optIn") : $t("app.optOut") }}</button
+        >.
       </p>
     </div>
 
-    <!-- Floating Menu Button -->
     <div class="fixed bottom-4 left-4 z-50">
       <div
         tabindex="0"
@@ -67,10 +77,10 @@
         >
           <img
             :src="icons[route.meta.icon]"
-            :alt="route.name"
+            :alt="getRouteTitle(route)"
             class="menu-icon"
           />
-          <span class="menu-label">{{ route.name }}</span>
+          <span class="menu-label">{{ getRouteTitle(route) }}</span>
         </router-link>
       </div>
     </div>
@@ -98,6 +108,7 @@ export default {
     return {
       isMenuOpen: false,
       analyticsOptedOut: false,
+      currentLang: this.$i18n.currentLanguage,
       icons: {
         sphero,
         reverse_sphero,
@@ -127,7 +138,8 @@ export default {
       this.closeMenu();
       this.trackPageview();
     });
-    this.analyticsOptedOut = localStorage.getItem("atm-buddy-analytics-opt-out") === "true";
+    this.analyticsOptedOut =
+      localStorage.getItem("atm-buddy-analytics-opt-out") === "true";
     if (!this.analyticsOptedOut) {
       this.mountAnalyticsScript();
     }
@@ -136,6 +148,16 @@ export default {
     document.removeEventListener("click", this.handleClickOutside);
   },
   methods: {
+    getRouteTitle(route) {
+      if (route.meta && route.meta.titleKey) {
+        return this.$t(route.meta.titleKey);
+      }
+      return route.name;
+    },
+    changeLanguage() {
+      this.$i18n.setLanguage(this.currentLang);
+      this.$forceUpdate();
+    },
     toggleMenu() {
       this.isMenuOpen = !this.isMenuOpen;
     },
@@ -144,7 +166,10 @@ export default {
     },
     toggleAnalytics() {
       this.analyticsOptedOut = !this.analyticsOptedOut;
-      localStorage.setItem("atm-buddy-analytics-opt-out", this.analyticsOptedOut.toString());
+      localStorage.setItem(
+        "atm-buddy-analytics-opt-out",
+        this.analyticsOptedOut.toString(),
+      );
       if (this.analyticsOptedOut) {
         this.unmountAnalyticsScript();
       } else {

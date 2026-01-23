@@ -2,12 +2,12 @@
   <div>
     <div class="card-title justify-center mb-3">
       <div class="badge badge-outline badge-sm">
-        Annular Ring Surface Area Calculator
+        {{ $t('annularRing.title') }}
       </div>
     </div>
     <OpticalPieceSelector @optical-piece-selected="onOpticalPieceSelected" />
     <div class="field-horizontal">
-      <label class="label text-xs font-medium">Mirror diameter (mm):</label>
+      <label class="label text-xs font-medium">{{ $t('annularRing.mirrorDiameter') }}</label>
       <input
         class="input input-bordered input-sm w-full"
         :value="mirrorDiameter"
@@ -17,7 +17,7 @@
       />
     </div>
     <div class="field-horizontal">
-      <label class="label text-xs font-medium">Input mode:</label>
+      <label class="label text-xs font-medium">{{ $t('annularRing.inputMode') }}</label>
       <div class="flex gap-3">
         <label class="cursor-pointer flex items-center gap-1">
           <div>
@@ -28,7 +28,7 @@
               class="radio radio-primary radio-sm"
             />
           </div>
-          <span class="text-xs">0..1</span>
+          <span class="text-xs">{{ $t('annularRing.normalized') }}</span>
         </label>
         <label class="cursor-pointer flex items-center gap-1">
           <div>
@@ -39,14 +39,14 @@
               class="radio radio-primary radio-sm"
             />
           </div>
-          <span class="text-xs">Millimeters</span>
+          <span class="text-xs">{{ $t('annularRing.millimeters') }}</span>
         </label>
       </div>
     </div>
     <div class="field-horizontal">
       <label class="label text-xs font-medium">
-        Central obstruction radius ({{
-          inputMode === "percent" ? "0..1" : "mm"
+        {{ $t('annularRing.centralObstruction') }} ({{
+          inputMode === "percent" ? $t('annularRing.normalized') : $t('common.mm')
         }}):
       </label>
       <input
@@ -59,7 +59,7 @@
     </div>
     <div class="field-horizontal">
       <label class="label text-xs font-medium">
-        Zone Start radius ({{ inputMode === "percent" ? "0..1" : "mm" }}):
+        {{ $t('annularRing.zoneStart') }} ({{ inputMode === "percent" ? $t('annularRing.normalized') : $t('common.mm') }}):
       </label>
       <input
         class="input input-bordered input-sm w-full"
@@ -71,7 +71,7 @@
     </div>
     <div class="field-horizontal">
       <label class="label text-xs font-medium">
-        Zone End radius ({{ inputMode === "percent" ? "0..1" : "mm" }}):
+        {{ $t('annularRing.zoneEnd') }} ({{ inputMode === "percent" ? $t('annularRing.normalized') : $t('common.mm') }}):
       </label>
       <input
         class="input input-bordered input-sm w-full"
@@ -85,32 +85,32 @@
       style="display: flex; align-items: flex-start; gap: 20px; flex-wrap: wrap"
     >
       <div style="flex: 1">
-        <h4 class="subtitle is-6">Results:</h4>
+        <h4 class="subtitle is-6">{{ $t('annularRing.results') }}</h4>
         <div class="">
           <div class="flex items-center">
-            <label class="">Surface Area:</label>
+            <label class="">{{ $t('annularRing.surfaceArea') }}</label>
             <span class="font-bold"
-              >&nbsp;{{ surfaceArea.toFixed(2) }} mm²</span
+              >&nbsp;{{ surfaceArea.toFixed(2) }} {{ $t('common.mm') }}²</span
             >
           </div>
           <div class="flex items-center">
-            <label class="">Of Total Area:</label>
+            <label class="">{{ $t('annularRing.ofTotalArea') }}</label>
             <span class="font-bold"
-              >&nbsp;{{ percentageTotal.toFixed(2) }}%</span
+              >&nbsp;{{ percentageTotal.toFixed(2) }}{{ $t('common.percent') }}</span
             >
           </div>
           <p>
-            Of Unobstructed Area:
+            {{ $t('annularRing.ofUnobstructedArea') }}
             <strong>{{ percentageUnobstructed.toFixed(2) }}</strong
-            >%
+            >{{ $t('common.percent') }}
           </p>
-          <p>Should you fix it? <strong>yes</strong></p>
+          <p>{{ $t('annularRing.shouldFix') }}</p>
         </div>
       </div>
       <div></div>
     </div>
     <div class="card bg-base-200 p-3 mt-3">
-      <h4 class="text-sm font-semibold mb-2">Visual:</h4>
+      <h4 class="text-sm font-semibold mb-2">{{ $t('annularRing.visual') }}</h4>
       <div class="flex justify-center">
         <canvas
           ref="canvas"
@@ -164,7 +164,7 @@ export default {
     },
     normalize,
     onOpticalPieceSelected(piece) {
-      this.set("mirrorDiameter", piece.radius * 2); // diameter = 2 * radius
+      this.set("mirrorDiameter", piece.radius * 2);
     },
     drawCanvas() {
       const canvas = this.$refs.canvas;

@@ -1,7 +1,7 @@
 <template>
   <div>
     <div v-if="savedPolishers.length > 0" class="mb-3">
-      <label class="label text-xs font-medium mb-1">Load polisher:</label>
+      <label class="label text-xs font-medium mb-1">{{ $t('selectors.loadPolisher') }}</label>
       <div class="flex flex-wrap gap-1">
         <button
           v-for="polisher in savedPolishers"
@@ -16,14 +16,14 @@
     <div class="alert mb-3 py-1">
       <div class="text-xs">
         <p v-if="savedPolishers.length === 0">
-          💡 Create polishers in the
-          <router-link to="/hardware" class="link">Hardware</router-link>
-          tab to quickly load their dimensions here.
+          {{ $t('selectors.createPolishersHint') }}
+          <router-link to="/hardware" class="link">{{ $t('common.hardware') }}</router-link>
+          {{ $t('selectors.tabSuffix') }}
         </p>
         <p v-else>
-          💡 Manage polishers in the
-          <router-link to="/hardware" class="link">Hardware</router-link>
-          tab.
+          {{ $t('selectors.managePolishersHint') }}
+          <router-link to="/hardware" class="link">{{ $t('common.hardware') }}</router-link>
+          {{ $t('selectors.tabSuffixManage') }}
         </p>
       </div>
     </div>

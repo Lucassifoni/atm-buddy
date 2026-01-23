@@ -1,16 +1,16 @@
 <template>
   <div>
     <div class="card-title justify-center mb-3">
-      <div class="badge badge-outline badge-sm">Sagitta = r² / (2 × ROC)</div>
+      <div class="badge badge-outline badge-sm">{{ $t('sagittaCalc.formula') }}</div>
     </div>
     <OpticalPieceSelector @optical-piece-selected="onOpticalPieceSelected" />
     <div class="alert alert-success mt-4 py-2">
       <span class="text-sm font-semibold"
-        >Sagitta: <strong>{{ sagitta.toFixed(3) }}</strong> mm</span
+        >{{ $t('sagittaCalc.sagittaLabel') }} <strong>{{ sagitta.toFixed(3) }}</strong> {{ $t('common.mm') }}</span
       >
     </div>
     <div class="field-horizontal">
-      <label class="label text-xs font-medium">Mirror radius (mm):</label>
+      <label class="label text-xs font-medium">{{ $t('sagittaCalc.mirrorRadius') }}</label>
       <input
         class="input input-bordered input-sm w-full"
         :value="r"
@@ -20,7 +20,7 @@
       />
     </div>
     <div class="field-horizontal">
-      <label class="label text-xs font-medium">ROC (mm):</label>
+      <label class="label text-xs font-medium">{{ $t('sagittaCalc.rocLabel') }}</label>
       <input
         class="input input-bordered input-sm w-full"
         inputmode="decimal"
@@ -63,10 +63,6 @@ export default {
     sagitta() {
       const r = toN(this.r);
       const roc = toN(this.roc);
-
-      // Using the equation: sagitta = r² / (2 × ROC)
-      // where r is the mirror radius and ROC is the radius of curvature
-
       if (roc === 0) return 0;
       return (r * r) / (2 * roc);
     },

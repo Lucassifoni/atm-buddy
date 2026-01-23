@@ -1,25 +1,21 @@
 <template>
   <div>
     <div class="card-title justify-center mb-3">
-      <div class="badge badge-outline badge-sm">Sine table: sin(x) = r / R</div>
+      <div class="badge badge-outline badge-sm">{{ $t('sineTable.formula') }}</div>
     </div>
     <div class="alert mb-3 py-2">
       <div>
-        <p class="text-xs">
-          Where x is the angle between the two planes.<br />
-          r is the cup radius<br />(measure outside for a concave curve, inside
-          for a convex curve !)
-        </p>
+        <p class="text-xs" v-html="$t('sineTable.explanation')"></p>
       </div>
     </div>
     <OpticalPieceSelector @optical-piece-selected="onOpticalPieceSelected" />
     <div class="alert alert-success mt-4 py-2">
       <span class="text-sm font-semibold"
-        >Angle x in degrees: <strong>{{ x.toFixed(2) }}°</strong></span
+        >{{ $t('sineTable.angleLabel') }} <strong>{{ x.toFixed(2) }}{{ $t('common.degrees') }}</strong></span
       >
     </div>
     <div class="field-horizontal">
-      <label class="label text-xs font-medium">Cup radius (mm):</label>
+      <label class="label text-xs font-medium">{{ $t('sineTable.cupRadius') }}</label>
       <input
         class="input input-bordered input-sm w-full"
         :value="r"
@@ -29,7 +25,7 @@
       />
     </div>
     <div class="field-horizontal">
-      <label class="label text-xs font-medium">Desired ROC (mm):</label>
+      <label class="label text-xs font-medium">{{ $t('sineTable.desiredRoc') }}</label>
       <input
         class="input input-bordered input-sm w-full"
         :value="R"
@@ -42,12 +38,11 @@
 </template>
 
 <script>
-import { fr as langpack_fr, en as langpack_en } from "./lang";
 import { normalize, parseFloat } from "./utils";
 import OpticalPieceSelector from "./OpticalPieceSelector.vue";
 
 export default {
-  name: "App",
+  name: "SineTableEquation",
   components: {
     OpticalPieceSelector,
   },
@@ -60,7 +55,7 @@ export default {
   methods: {
     normalize,
     onOpticalPieceSelected(piece) {
-      this.R = piece.radiusOfCurvature.toString(); // ROC directly
+      this.R = piece.radiusOfCurvature.toString();
     },
   },
   computed: {

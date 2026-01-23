@@ -7,7 +7,7 @@
     </div>
     <OpticalPieceSelector @optical-piece-selected="onOpticalPieceSelected" />
     <div class="field-horizontal">
-      <label class="label text-xs font-medium">Mirror diameter (mm):</label>
+      <label class="label text-xs font-medium">{{ $t('foucault.mirrorDiameter') }}</label>
       <input
         class="input input-bordered input-sm w-full"
         :value="mirrorDiameter"
@@ -17,7 +17,7 @@
       />
     </div>
     <div class="field-horizontal">
-      <label class="label text-xs font-medium">Paraxial ROC (mm):</label>
+      <label class="label text-xs font-medium">{{ $t('foucault.paraxialRoc') }}</label>
       <input
         class="input input-bordered input-sm w-full"
         :value="roc"
@@ -27,7 +27,7 @@
       />
     </div>
     <div class="field-horizontal">
-      <label class="label text-xs font-medium">Conic constant (K):</label>
+      <label class="label text-xs font-medium">{{ $t('foucault.conicConstant') }}</label>
       <input
         class="input input-bordered input-sm w-full"
         :value="conic"
@@ -37,7 +37,7 @@
       />
     </div>
     <div class="field-horizontal">
-      <label class="label text-xs font-medium">Source configuration:</label>
+      <label class="label text-xs font-medium">{{ $t('foucault.sourceConfig') }}</label>
       <div class="flex gap-3">
         <label class="cursor-pointer flex items-center gap-1">
           <div>
@@ -49,7 +49,7 @@
               class="radio radio-primary radio-sm"
             />
           </div>
-          <span class="text-xs">Fixed source</span>
+          <span class="text-xs">{{ $t('foucault.fixedSource') }}</span>
         </label>
         <label class="cursor-pointer flex items-center gap-1">
           <div>
@@ -61,20 +61,20 @@
               class="radio radio-primary radio-sm"
             />
           </div>
-          <span class="text-xs">Moving source</span>
+          <span class="text-xs">{{ $t('foucault.movingSource') }}</span>
         </label>
       </div>
     </div>
 
     <div class="card bg-base-200 p-3 mt-3">
-      <h4 class="text-sm font-semibold mb-2">Standard Zones (Tirages):</h4>
+      <h4 class="text-sm font-semibold mb-2">{{ $t('foucault.standardZones') }}</h4>
       <div class="overflow-x-auto">
         <table class="table table-xs w-full">
           <thead>
             <tr>
-              <th class="text-xs">Zone</th>
-              <th class="text-xs">Radius (mm)</th>
-              <th class="text-xs">LA (mm)</th>
+              <th class="text-xs">{{ $t('common.zone') }}</th>
+              <th class="text-xs">{{ $t('foucault.radiusMm') }}</th>
+              <th class="text-xs">{{ $t('foucault.laMm') }}</th>
             </tr>
           </thead>
           <tbody>
@@ -89,9 +89,9 @@
     </div>
 
     <div class="card bg-base-200 p-3 mt-3">
-      <h4 class="text-sm font-semibold mb-2">Custom Zones:</h4>
+      <h4 class="text-sm font-semibold mb-2">{{ $t('foucault.customZones') }}</h4>
       <div class="field-horizontal">
-        <label class="label text-xs font-medium">Dividing mode:</label>
+        <label class="label text-xs font-medium">{{ $t('foucault.dividingMode') }}</label>
         <div class="flex gap-3">
           <label class="cursor-pointer flex items-center gap-1">
             <div>
@@ -103,7 +103,7 @@
                 class="radio radio-primary radio-sm"
               />
             </div>
-            <span class="text-xs">Linear</span>
+            <span class="text-xs">{{ $t('foucault.linear') }}</span>
           </label>
           <label class="cursor-pointer flex items-center gap-1">
             <div>
@@ -115,12 +115,12 @@
                 class="radio radio-primary radio-sm"
               />
             </div>
-            <span class="text-xs">Equal area</span>
+            <span class="text-xs">{{ $t('foucault.equalArea') }}</span>
           </label>
         </div>
       </div>
       <div class="field-horizontal">
-        <label class="label text-xs font-medium">Input mode:</label>
+        <label class="label text-xs font-medium">{{ $t('foucault.inputMode') }}</label>
         <div class="flex gap-3">
           <label class="cursor-pointer flex items-center gap-1">
             <div>
@@ -132,7 +132,7 @@
                 class="radio radio-primary radio-sm"
               />
             </div>
-            <span class="text-xs">0..1</span>
+            <span class="text-xs">{{ $t('foucault.normalized') }}</span>
           </label>
           <label class="cursor-pointer flex items-center gap-1">
             <div>
@@ -144,13 +144,13 @@
                 class="radio radio-primary radio-sm"
               />
             </div>
-            <span class="text-xs">Millimeters</span>
+            <span class="text-xs">{{ $t('foucault.millimeters') }}</span>
           </label>
         </div>
       </div>
       <div class="field-horizontal">
         <label class="label text-xs font-medium">
-          Start zone ({{ inputMode === "normalized" ? "0..1" : "mm" }}):
+          {{ $t('foucault.startZone') }} ({{ inputMode === "normalized" ? $t('foucault.normalized') : $t('common.mm') }}):
         </label>
         <input
           class="input input-bordered input-sm w-full"
@@ -162,7 +162,7 @@
       </div>
       <div class="field-horizontal">
         <label class="label text-xs font-medium">
-          End zone ({{ inputMode === "normalized" ? "0..1" : "mm" }}):
+          {{ $t('foucault.endZone') }} ({{ inputMode === "normalized" ? $t('foucault.normalized') : $t('common.mm') }}):
         </label>
         <input
           class="input input-bordered input-sm w-full"
@@ -173,7 +173,7 @@
         />
       </div>
       <div class="field-horizontal">
-        <label class="label text-xs font-medium">Number of zones:</label>
+        <label class="label text-xs font-medium">{{ $t('foucault.numZones') }}</label>
         <input
           class="input input-bordered input-sm w-full"
           :value="numZones"
@@ -186,10 +186,10 @@
         <table class="table table-xs w-full">
           <thead>
             <tr>
-              <th class="text-xs">Zone</th>
-              <th class="text-xs">Radius (mm)</th>
-              <th class="text-xs">LA (mm)</th>
-              <th class="text-xs">Relative LA</th>
+              <th class="text-xs">{{ $t('common.zone') }}</th>
+              <th class="text-xs">{{ $t('foucault.radiusMm') }}</th>
+              <th class="text-xs">{{ $t('foucault.laMm') }}</th>
+              <th class="text-xs">{{ $t('foucault.relativeLa') }}</th>
             </tr>
           </thead>
           <tbody>
@@ -205,12 +205,12 @@
     </div>
 
     <div class="card bg-base-200 p-3 mt-3">
-      <h4 class="text-sm font-semibold mb-2">Summary:</h4>
+      <h4 class="text-sm font-semibold mb-2">{{ $t('foucault.summary') }}</h4>
       <p class="text-xs">
-        Total LA (center to edge): <strong>{{ totalLA.toFixed(3) }} mm</strong>
+        {{ $t('foucault.totalLa') }} <strong>{{ totalLA.toFixed(3) }} {{ $t('common.mm') }}</strong>
       </p>
       <p class="text-xs">
-        Conic: <strong>{{ conicDescription }}</strong>
+        {{ $t('foucault.conic') }} <strong>{{ conicDescription }}</strong>
       </p>
       <p class="text-xs text-gray-500 mt-1">{{ sourceConfigDescription }}</p>
     </div>
@@ -280,13 +280,13 @@ export default {
     },
     formulaDisplay() {
       return this.sourceConfig === "moving"
-        ? "LA = -K × h² / 2R"
-        : "LA = -K × h² / R";
+        ? this.$t('foucault.formulaMoving')
+        : this.$t('foucault.formulaFixed');
     },
     sourceConfigDescription() {
       return this.sourceConfig === "moving"
-        ? "Moving source: source and knife edge move together"
-        : "Fixed source: stationary light source, moving knife edge";
+        ? this.$t('foucault.movingDesc')
+        : this.$t('foucault.fixedDesc');
     },
     standardZones() {
       const normalizedValues = [0.25, 0.5, 0.75, 1];
@@ -345,11 +345,11 @@ export default {
     },
     conicDescription() {
       const k = toN(this.conic);
-      if (k === 0) return "Sphere";
-      if (k === -1) return "Parabola";
-      if (k > 0) return "Oblate ellipsoid";
-      if (k > -1) return "Prolate ellipsoid";
-      return "Hyperbola";
+      if (k === 0) return this.$t('foucault.sphere');
+      if (k === -1) return this.$t('foucault.parabola');
+      if (k > 0) return this.$t('foucault.oblateEllipsoid');
+      if (k > -1) return this.$t('foucault.prolateEllipsoid');
+      return this.$t('foucault.hyperbola');
     },
   },
 };

@@ -2,7 +2,7 @@
   <div>
     <div class="text-center mb-6">
       <p class="text-base text-gray-600">
-        Mobile-friendly collection of tools for Amateur Telescope Makers
+        {{ $t('home.subtitle') }}
       </p>
     </div>
 
@@ -15,19 +15,17 @@
       >
         <img
           :src="icons[route.meta.icon]"
-          :alt="route.name"
+          :alt="getRouteTitle(route)"
           class="tool-icon"
         />
-        <span class="tool-name">{{ route.name }}</span>
+        <span class="tool-name">{{ getRouteTitle(route) }}</span>
       </router-link>
     </div>
 
     <div class="card bg-base-200 p-4 mt-6">
-      <h2 class="text-base font-semibold mb-2">About</h2>
+      <h2 class="text-base font-semibold mb-2">{{ $t('home.aboutTitle') }}</h2>
       <p class="text-sm text-gray-600">
-        This application provides specialized calculators and reference tools
-        for Amateur Telescope Makers (ATMs). All calculations are performed
-        client-side and work offline after initial load.
+        {{ $t('home.aboutText') }}
       </p>
     </div>
   </div>
@@ -75,6 +73,14 @@ export default {
     },
     toolRoutes() {
       return this.routes.filter((r) => r.path !== "/");
+    },
+  },
+  methods: {
+    getRouteTitle(route) {
+      if (route.meta && route.meta.titleKey) {
+        return this.$t(route.meta.titleKey);
+      }
+      return route.name;
     },
   },
 };

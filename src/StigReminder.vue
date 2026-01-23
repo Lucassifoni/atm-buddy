@@ -1,33 +1,32 @@
 <template>
   <div>
     <h3 class="subtitle" style="margin-bottom: 0">
-      Astigmatism correction reminder.
+      {{ $t('stig.title') }}
     </h3>
     <p>
-      Fix by following the "Polish" column with straight strokes with a full
-      size tool.
+      {{ $t('stig.instruction') }}
     </p>
     <table class="table" style="margin-bottom: 0.75em; margin: auto">
       <thead>
         <tr>
-          <th>Axis</th>
-          <th>Elevation</th>
-          <th>Radius</th>
-          <th>Fix</th>
+          <th>{{ $t('stig.axis') }}</th>
+          <th>{{ $t('stig.elevation') }}</th>
+          <th>{{ $t('stig.radius') }}</th>
+          <th>{{ $t('stig.fix') }}</th>
         </tr>
       </thead>
       <tbody>
         <tr>
-          <td><span class="tag is-danger">Red</span></td>
-          <td><strong>HIGH</strong></td>
-          <td><strong>SHORT</strong></td>
-          <td><strong>TOT</strong></td>
+          <td><span class="tag is-danger">{{ $t('stig.red') }}</span></td>
+          <td><strong>{{ $t('stig.high') }}</strong></td>
+          <td><strong>{{ $t('stig.short') }}</strong></td>
+          <td><strong>{{ $t('stig.tot') }}</strong></td>
         </tr>
         <tr>
-          <td><span class="tag is-info">Blue</span></td>
-          <td><strong>LOW</strong></td>
-          <td><strong>LONG</strong></td>
-          <td><strong>MOT</strong></td>
+          <td><span class="tag is-info">{{ $t('stig.blue') }}</span></td>
+          <td><strong>{{ $t('stig.low') }}</strong></td>
+          <td><strong>{{ $t('stig.long') }}</strong></td>
+          <td><strong>{{ $t('stig.mot') }}</strong></td>
         </tr>
       </tbody>
     </table>

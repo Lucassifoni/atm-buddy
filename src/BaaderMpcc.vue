@@ -2,34 +2,31 @@
   <div>
     <div class="card-title justify-center mb-3">
       <div class="badge badge-outline badge-sm">
-        Baader MPCC Conic calculator
+        {{ $t('mpcc.title') }}
       </div>
     </div>
     <div class="alert alert mb-3 py-1">
       <div class="text-xs">
-        <p>
-          In waves @550nm:<br />Correction of a parabola: D (mm) / (1.1264 *
-          (F/D)^3)<br />MPCC S.A. undercorrection: (4 / (F/D))^4 * 0.81
-        </p>
+        <p v-html="$t('mpcc.explanation')"></p>
       </div>
     </div>
     <OpticalPieceSelector @optical-piece-selected="onOpticalPieceSelected" />
     <div class="alert alert-success mt-4 py-2">
       <div class="text-xs">
-        <p><strong>Focal ratio:</strong> {{ ratio.toFixed(2) }}</p>
+        <p><strong>{{ $t('mpcc.focalRatio') }}</strong> {{ ratio.toFixed(2) }}</p>
         <p>
-          <strong>Parabola correction:</strong>
+          <strong>{{ $t('mpcc.parabolaCorrection') }}</strong>
           {{ correction.toFixed(2) }}
         </p>
         <p>
-          <strong>MPCC Undercorrection:</strong>
+          <strong>{{ $t('mpcc.mpccUndercorrection') }}</strong>
           {{ undercorrection.toFixed(2) }}
         </p>
-        <p><strong>Target conic:</strong> {{ target.toFixed(3) }}</p>
+        <p><strong>{{ $t('mpcc.targetConic') }}</strong> {{ target.toFixed(3) }}</p>
       </div>
     </div>
     <div class="field-horizontal">
-      <label class="label text-xs font-medium">Diameter (mm):</label>
+      <label class="label text-xs font-medium">{{ $t('mpcc.diameter') }}</label>
       <input
         class="input input-bordered input-sm w-full"
         :value="d"
@@ -39,7 +36,7 @@
       />
     </div>
     <div class="field-horizontal">
-      <label class="label text-xs font-medium">Focal length (mm):</label>
+      <label class="label text-xs font-medium">{{ $t('mpcc.focalLength') }}</label>
       <input
         class="input input-bordered input-sm w-full"
         :value="f"
@@ -52,12 +49,11 @@
 </template>
 
 <script>
-import { fr as langpack_fr, en as langpack_en } from "./lang";
 import { normalize, parseFloat } from "./utils";
 import OpticalPieceSelector from "./OpticalPieceSelector.vue";
 
 export default {
-  name: "App",
+  name: "BaaderMpcc",
   data() {
     return {
       f: "1200",
@@ -70,8 +66,8 @@ export default {
   methods: {
     normalize,
     onOpticalPieceSelected(piece) {
-      this.d = (piece.radius * 2).toString(); // diameter = 2 * radius
-      this.f = (piece.radiusOfCurvature / 2).toString(); // focal length = ROC / 2
+      this.d = (piece.radius * 2).toString();
+      this.f = (piece.radiusOfCurvature / 2).toString();
     },
   },
   computed: {

@@ -1,20 +1,20 @@
 <template>
   <div>
     <div class="card-title justify-center mb-3">
-      <div class="badge badge-outline badge-sm">ROC Fringes Calculator</div>
+      <div class="badge badge-outline badge-sm">{{ $t('sagittaFringes.title') }}</div>
     </div>
     <OpticalPieceSelector @optical-piece-selected="onOpticalPieceSelected" />
     <div class="alert alert-success mt-4 py-2" v-if="!isNaN(rocTestFace)">
       <span class="text-sm font-semibold"
-        >RoC of face under test:
-        <strong>{{ rocTestFace.toFixed(2) }}</strong> mm</span
+        >{{ $t('sagittaFringes.rocLabel') }}
+        <strong>{{ rocTestFace.toFixed(2) }}</strong> {{ $t('common.mm') }}</span
       >
     </div>
     <div class="alert alert-error mt-4 py-2" v-else>
-      <span class="text-sm font-semibold">Invalid input values</span>
+      <span class="text-sm font-semibold">{{ $t('sagittaFringes.invalidInput') }}</span>
     </div>
     <div class="field-horizontal">
-      <label class="label text-xs font-medium">Lambda (nm):</label>
+      <label class="label text-xs font-medium">{{ $t('sagittaFringes.lambda') }}</label>
       <input
         class="input input-bordered input-sm w-full"
         :value="lambda"
@@ -24,7 +24,7 @@
       />
     </div>
     <div class="field-horizontal">
-      <label class="label text-xs font-medium">Contact diameter (mm):</label>
+      <label class="label text-xs font-medium">{{ $t('sagittaFringes.contactDiameter') }}</label>
       <input
         class="input input-bordered input-sm w-full"
         :value="contactDiameter"
@@ -34,7 +34,7 @@
       />
     </div>
     <div class="field-horizontal">
-      <label class="label text-xs font-medium">Concave caliber RoC (mm):</label>
+      <label class="label text-xs font-medium">{{ $t('sagittaFringes.concaveRoc') }}</label>
       <input
         class="input input-bordered input-sm w-full"
         :value="concaveRoc"
@@ -44,7 +44,7 @@
       />
     </div>
     <div class="field-horizontal">
-      <label class="label text-xs font-medium">Number of fringes:</label>
+      <label class="label text-xs font-medium">{{ $t('sagittaFringes.nbFringes') }}</label>
       <input
         class="input input-bordered input-sm w-full"
         :value="nbFringes"
@@ -54,7 +54,7 @@
       />
     </div>
     <div class="field-horizontal">
-      <label class="label text-xs font-medium">Relative shape:</label>
+      <label class="label text-xs font-medium">{{ $t('sagittaFringes.relativeShape') }}</label>
       <div class="flex gap-3">
         <label class="cursor-pointer flex items-center gap-1">
           <input
@@ -65,7 +65,7 @@
             @change="set('relativeShape', '1')"
             class="radio radio-primary radio-sm"
           />
-          <span class="text-xs">Concavity (+1)</span>
+          <span class="text-xs">{{ $t('sagittaFringes.concavity') }}</span>
         </label>
         <label class="cursor-pointer flex items-center gap-1">
           <input
@@ -76,7 +76,7 @@
             @change="set('relativeShape', '-1')"
             class="radio radio-primary radio-sm"
           />
-          <span class="text-xs">Convexity (-1)</span>
+          <span class="text-xs">{{ $t('sagittaFringes.convexity') }}</span>
         </label>
       </div>
     </div>
@@ -108,8 +108,8 @@ export default {
       set(this, key, this, field, value);
     },
     onOpticalPieceSelected(piece) {
-      this.set("concaveRoc", piece.radiusOfCurvature); // ROC directly
-      this.set("contactDiameter", piece.radius * 2); // diameter = 2 * radius
+      this.set("concaveRoc", piece.radiusOfCurvature);
+      this.set("contactDiameter", piece.radius * 2);
     },
   },
   computed: {
