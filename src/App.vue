@@ -23,8 +23,8 @@
           <router-view></router-view>
         </div>
       </div>
-      <p class="text-center text-sm mt-2">
-        {{ $t("app.contributeOn") }}
+      <p class="text-center text-xs max-w-[45ch] mx-auto my-2">
+        <span v-html="$t(`app.credits`)" /><br />{{ $t("app.contributeOn") }}
         <a class="underline" href="https://github.com/lucassifoni/atm-buddy">{{
           $t("app.github")
         }}</a
@@ -47,7 +47,7 @@
         class="btn btn-circle btn-primary shadow-lg"
         @click="toggleMenu"
       >
-<Icon name="menu" class="w-6 h-6" />
+        <Icon name="menu" class="w-6 h-6" />
       </div>
 
       <div
@@ -63,7 +63,7 @@
           class="menu-item"
           @click="closeMenu"
         >
-<Icon :name="route.meta.icon" class="menu-icon" />
+          <Icon :name="route.meta.icon" class="menu-icon" />
           <span class="menu-label">{{ getRouteTitle(route) }}</span>
         </router-link>
       </div>

@@ -25,15 +25,19 @@ export default {
     contributeOn: "Contribute on",
     github: "github",
     analyticsNote: "Note : I use reasonably private analytics powered by",
-    analyticsExplain: "only to know which tools are or aren't used. If you do not want that, you can use an adblocker or",
+    analyticsExplain:
+      "only to know which tools are or aren't used. If you do not want that, you can use an adblocker or",
     optOut: "click here to opt-out",
     optIn: "opt back in",
+    credits: `A project by <a class="underline" href="https://lucassifoni.info">Lucas Sifoni</a>, <a class="underline" href="https://gallifrey-optics.fr">Paul Faÿs from Gallifrey Optics</a>, and <a class="underline" href="https://la3emedim.fr">Raphaël Labro from La3emedim.fr</a>`,
   },
 
   home: {
-    subtitle: "Mobile-friendly collection of tools for Amateur Telescope Makers",
+    subtitle:
+      "Mobile-friendly collection of tools for Amateur Telescope Makers",
     aboutTitle: "About",
-    aboutText: "This application provides specialized calculators and reference tools for Amateur Telescope Makers (ATMs). All calculations are performed client-side and work offline after initial load.",
+    aboutText:
+      "This application provides specialized calculators and reference tools for Amateur Telescope Makers (ATMs). All calculations are performed client-side and work offline after initial load.",
   },
 
   routes: {
@@ -80,7 +84,8 @@ export default {
 
   sineTable: {
     formula: "Sine table: sin(x) = r / R",
-    explanation: "Where x is the angle between the two planes.<br />r is the cup radius<br />(measure outside for a concave curve, inside for a convex curve !)",
+    explanation:
+      "Where x is the angle between the two planes.<br />r is the cup radius<br />(measure outside for a concave curve, inside for a convex curve !)",
     angleLabel: "Angle x in degrees:",
     cupRadius: "Cup radius (mm):",
     desiredRoc: "Desired ROC (mm):",
@@ -88,7 +93,8 @@ export default {
 
   mpcc: {
     title: "Baader MPCC Conic calculator",
-    explanation: "In waves @550nm:<br />Correction of a parabola: D (mm) / (1.1264 * (F/D)^3)<br />MPCC S.A. undercorrection: (4 / (F/D))^4 * 0.81",
+    explanation:
+      "In waves @550nm:<br />Correction of a parabola: D (mm) / (1.1264 * (F/D)^3)<br />MPCC S.A. undercorrection: (4 / (F/D))^4 * 0.81",
     focalRatio: "Focal ratio:",
     parabolaCorrection: "Parabola correction:",
     mpccUndercorrection: "MPCC Undercorrection:",
@@ -99,7 +105,8 @@ export default {
 
   stig: {
     title: "Astigmatism correction reminder.",
-    instruction: "Fix by following the \"Polish\" column with straight strokes with a full size tool.",
+    instruction:
+      'Fix by following the "Polish" column with straight strokes with a full size tool.',
     axis: "Axis",
     elevation: "Elevation",
     radius: "Radius",
@@ -211,7 +218,8 @@ export default {
     importExport: "Import/Export",
     exportBtn: "Export",
     importBtn: "Import",
-    exportHelp: "Export your hardware data to backup or share with other devices. Import will merge with existing data.",
+    exportHelp:
+      "Export your hardware data to backup or share with other devices. Import will merge with existing data.",
     spherometers: "Spherometers",
     feetRadiusMm: "Feet radius (mm)",
     ballDiameterMm: "Ball diameter (mm)",
@@ -228,15 +236,19 @@ export default {
     diameterMm: "Diameter (mm)",
     weightG: "Weight (g)",
     noPolishers: "No polishers added yet.",
-    confirmDeleteSpherometer: "Are you sure you want to delete this spherometer?",
-    confirmDeleteOpticalPiece: "Are you sure you want to delete this optical piece?",
+    confirmDeleteSpherometer:
+      "Are you sure you want to delete this spherometer?",
+    confirmDeleteOpticalPiece:
+      "Are you sure you want to delete this optical piece?",
     confirmDeletePolisher: "Are you sure you want to delete this polisher?",
     confirmReplace: "already exists. Replace it?",
     spherometerWord: "Spherometer",
     opticalPieceWord: "Optical piece",
     polisherWord: "Polisher",
-    invalidFile: "Invalid file format. Please select a valid ATM Buddy hardware export file.",
-    importSuccess: "Import completed! Added {spherometers} spherometers, {opticalPieces} optical pieces, and {polishers} polishers.",
+    invalidFile:
+      "Invalid file format. Please select a valid ATM Buddy hardware export file.",
+    importSuccess:
+      "Import completed! Added {spherometers} spherometers, {opticalPieces} optical pieces, and {polishers} polishers.",
     importError: "Error reading file. Please make sure it's a valid JSON file.",
   },
 
@@ -256,7 +268,8 @@ export default {
 
   spraySilvering: {
     title: "Spray silvering proportions & recipe",
-    baseQuantityInfo: "Base quantity is 150ml distilled water + 1.6g silver nitrate.<br />Other quantities are derived from that.<br />Recipe from Gerhard S. on Cloudy Nights",
+    baseQuantityInfo:
+      "Base quantity is 150ml distilled water + 1.6g silver nitrate.<br />Other quantities are derived from that.<br />Recipe from Gerhard S. on Cloudy Nights",
     bomTitle: "BOM for a session",
     resetBom: "Reset BOM",
     chemicalsTitle: "The chemicals",
@@ -265,7 +278,8 @@ export default {
     calibrate: "Calibrate",
     bottle1: "Bottle 1",
     bottle2: "Bottle 2",
-    calibrateInstruction: "with water, ensuring that the same quantity of water is sprayed with 100 sprays.",
+    calibrateInstruction:
+      "with water, ensuring that the same quantity of water is sprayed with 100 sprays.",
     step1: "Step 1",
     prepareSolutions: "Prepare the solutions",
     baseQuantity: "Base quantity (ml):",
@@ -288,17 +302,22 @@ export default {
     step2_3: "3 : Add all of",
     step2_4: "4 : Add the rest of",
     step2_4b: "(the solution will turn brown)",
-    step2_5: "5 : Carefully add ammonia solution drop by drop while stirring until a transparent, slightly brownish solution is obtained.",
-    precipitateNote: "Any precipitate that may still be present should be completely dissolved",
+    step2_5:
+      "5 : Carefully add ammonia solution drop by drop while stirring until a transparent, slightly brownish solution is obtained.",
+    precipitateNote:
+      "Any precipitate that may still be present should be completely dissolved",
     cleaningTitle: "The cleaning and spraying",
     cleanMirror: "Clean the mirror",
-    cleaningInstructions: "Use chalk precipitate in distilled/demin water on small cotton balls. Change often and start with thick sauce, thinning it progressively. The center will clean fast but the edge and chamfer need a LOT of time.<br /><br />Rough guideline : (diameter_in_mm/15)^1.4 = time.<br />Yes, that is an advice of 1h40 for a 400mm mirror.<br /><br />Rinse with demin water and if possible, high pressure.",
+    cleaningInstructions:
+      "Use chalk precipitate in distilled/demin water on small cotton balls. Change often and start with thick sauce, thinning it progressively. The center will clean fast but the edge and chamfer need a LOT of time.<br /><br />Rough guideline : (diameter_in_mm/15)^1.4 = time.<br />Yes, that is an advice of 1h40 for a 400mm mirror.<br /><br />Rinse with demin water and if possible, high pressure.",
     mirrorDiameter: "Mirror diameter in mm:",
     cleaningTime: "Cleaning time :",
     sprayMirror: "Spray the mirror",
-    sprayingInstructions: "Spray the mirror with both sprays, ensuring that they mix on the surface. You will see a faint blue film appear first.<br />Then it will turn yellowish. If you see dark brown or black streaks, this means your cleaning wasn't thorough enough.<br />A thin coating is preferable to a thick one and it should still be a tad transparent at the end.",
+    sprayingInstructions:
+      "Spray the mirror with both sprays, ensuring that they mix on the surface. You will see a faint blue film appear first.<br />Then it will turn yellowish. If you see dark brown or black streaks, this means your cleaning wasn't thorough enough.<br />A thin coating is preferable to a thick one and it should still be a tad transparent at the end.",
     dryStore: "Dry & store",
-    storageInstructions: "Immediately dry with a hot air gun and store in an airtight box with dessicant packs, or better, silver protector felt. Silver protector felt is felt impregnated with tiny silver particles that are there to react with oxydants first and protect your coating.",
+    storageInstructions:
+      "Immediately dry with a hot air gun and store in an airtight box with dessicant packs, or better, silver protector felt. Silver protector felt is felt impregnated with tiny silver particles that are there to react with oxydants first and protect your coating.",
     bomGloves: "Gloves",
     bomChalk: "Chalk to wash the mirrors",
     bomMirrorStands: "Mirror stands",
