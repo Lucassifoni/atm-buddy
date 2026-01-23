@@ -1,0 +1,17 @@
+export default {
+  home: [1, 1],
+  sphero: [2, 1],
+  reverse_sphero: [3, 1],
+  sagitta: [4, 1],
+  sine_table: [1, 2],
+  mpcc_hyperbolic: [2, 2],
+  spray_silvering: [3, 2],
+  stig: [4, 2],
+  annular_ring: [1, 3],
+  sagitta_fringes: [2, 3],
+  pressure: [3, 3],
+  coma_free: [4, 3],
+  foucault_la: [1, 4],
+  hardware: [2, 4],
+  menu: [3, 4],
+};

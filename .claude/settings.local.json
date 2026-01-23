@@ -1,6 +1,11 @@
 {
   "permissions": {
-    "allow": ["WebSearch", "WebFetch(domain:www.telescope-optics.net)"]
+    "allow": [
+      "WebSearch",
+      "WebFetch(domain:www.telescope-optics.net)",
+      "Bash(wc:*)",
+      "Bash(ls:*)"
+    ]
   },
   "enableAllProjectMcpServers": false
 }

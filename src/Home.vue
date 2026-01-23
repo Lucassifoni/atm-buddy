@@ -13,11 +13,7 @@
         :to="route.path"
         class="tool-card"
       >
-        <img
-          :src="icons[route.meta.icon]"
-          :alt="getRouteTitle(route)"
-          class="tool-icon"
-        />
+<Icon :name="route.meta.icon" class="tool-icon" />
         <span class="tool-name">{{ getRouteTitle(route) }}</span>
       </router-link>
     </div>
@@ -31,41 +27,11 @@
   </div>
 </template>
 <script>
-import sphero from "./assets/icons/sphero.svg";
-import reverse_sphero from "./assets/icons/reverse_sphero.svg";
-import sagitta from "./assets/icons/sagitta.svg";
-import sine_table from "./assets/icons/sine_table.svg";
-import mpcc_hyperbolic from "./assets/icons/mpcc_hyperbolic.svg";
-import spray_silvering from "./assets/icons/spray_silvering.svg";
-import stig from "./assets/icons/stig.svg";
-import annular_ring from "./assets/icons/annular_ring.svg";
-import sagitta_fringes from "./assets/icons/sagitta_fringes.svg";
-import pressure from "./assets/icons/pressure.svg";
-import coma_free from "./assets/icons/coma_free.svg";
-import foucault_la from "./assets/icons/foucault_la.svg";
-import hardware from "./assets/icons/hardware.svg";
-import home from "./assets/icons/home.svg";
+import Icon from "./components/Icon.vue";
 
 export default {
-  data() {
-    return {
-      icons: {
-        sphero,
-        reverse_sphero,
-        sagitta,
-        sine_table,
-        mpcc_hyperbolic,
-        spray_silvering,
-        stig,
-        annular_ring,
-        sagitta_fringes,
-        pressure,
-        coma_free,
-        foucault_la,
-        hardware,
-        home,
-      },
-    };
+  components: {
+    Icon,
   },
   computed: {
     routes() {
