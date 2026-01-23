@@ -19,6 +19,14 @@
           >github</a
         >.
       </p>
+      <p class="text-xs text-center max-w-[45ch] mx-auto my-2">
+        Note : I use reasonably private analytics powered by
+        <a href="https://plausible.io">Plausible.io</a> only to know which tools
+        are or aren't used. If you do not want that, you can use an adblocker or
+        <button class="bg-gray-300 rounded-sm px-1" @click="toggleAnalytics">
+          {{ analyticsOptedOut ? 'opt back in' : 'click here to opt-out' }}
+        </button>.
+      </p>
     </div>
 
     <!-- Floating Menu Button -->
@@ -89,6 +97,7 @@ export default {
   data() {
     return {
       isMenuOpen: false,
+      analyticsOptedOut: false,
       icons: {
         sphero,
         reverse_sphero,
@@ -117,6 +126,10 @@ export default {
     this.$router.afterEach(() => {
       this.closeMenu();
     });
+    this.analyticsOptedOut = localStorage.getItem("atm-buddy-analytics-opt-out") === "true";
+    if (!this.analyticsOptedOut) {
+      this.mountAnalyticsScript();
+    }
   },
   beforeUnmount() {
     document.removeEventListener("click", this.handleClickOutside);
@@ -127,6 +140,32 @@ export default {
     },
     closeMenu() {
       this.isMenuOpen = false;
+    },
+    toggleAnalytics() {
+      this.analyticsOptedOut = !this.analyticsOptedOut;
+      localStorage.setItem("atm-buddy-analytics-opt-out", this.analyticsOptedOut.toString());
+      if (this.analyticsOptedOut) {
+        this.unmountAnalyticsScript();
+      } else {
+        this.mountAnalyticsScript();
+      }
+    },
+    mountAnalyticsScript() {
+      if (document.getElementById("plausible-script")) {
+        return;
+      }
+      const script = document.createElement("script");
+      script.id = "plausible-script";
+      script.defer = true;
+      script.dataset.domain = "atm-buddy.app";
+      script.src = "https://stats.documents.design/js/script.js";
+      document.head.appendChild(script);
+    },
+    unmountAnalyticsScript() {
+      const script = document.getElementById("plausible-script");
+      if (script) {
+        script.remove();
+      }
     },
     handleClickOutside(event) {
       const button = this.$el.querySelector(".btn-circle");
