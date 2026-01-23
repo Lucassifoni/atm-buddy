@@ -125,6 +125,7 @@ export default {
     document.addEventListener("click", this.handleClickOutside);
     this.$router.afterEach(() => {
       this.closeMenu();
+      this.trackPageview();
     });
     this.analyticsOptedOut = localStorage.getItem("atm-buddy-analytics-opt-out") === "true";
     if (!this.analyticsOptedOut) {
@@ -166,6 +167,12 @@ export default {
       if (script) {
         script.remove();
       }
+    },
+    trackPageview() {
+      if (this.analyticsOptedOut || typeof window.plausible !== "function") {
+        return;
+      }
+      window.plausible("pageview");
     },
     handleClickOutside(event) {
       const button = this.$el.querySelector(".btn-circle");
