@@ -71,6 +71,7 @@
 
 <script>
 import { normalize, parseFloat } from "./utils";
+import { ballSpherometerROC } from "./formulas";
 import SpherometerSelector from "./SpherometerSelector.vue";
 
 export default {
@@ -95,12 +96,12 @@ export default {
   },
   computed: {
     roc() {
-      const r = parseFloat(this.r);
-      const s = parseFloat(this.s);
-      const b =
-        this.curve === "concave" ? parseFloat(this.b) : -parseFloat(this.b);
-      const roc = (r * r + s * s) / (2 * s) + b / 2;
-      return roc;
+      return ballSpherometerROC({
+        feetRadius: parseFloat(this.r),
+        sagitta: parseFloat(this.s),
+        ballDiameter: parseFloat(this.b),
+        curve: this.curve,
+      });
     },
   },
 };

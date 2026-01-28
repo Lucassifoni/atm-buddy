@@ -84,10 +84,12 @@
 </template>
 
 <script>
-import { get, set } from "./utils.js";
+import { get, set, normalize } from "./utils.js";
+import { sagittaFringes } from "./formulas";
 import OpticalPieceSelector from "./OpticalPieceSelector.vue";
 
 const key = "__sagittaFringes";
+const toN = (a) => Number(normalize(a));
 
 export default {
   name: "SagittaFringes",
@@ -114,29 +116,13 @@ export default {
   },
   computed: {
     rocTestFace() {
-      const normalize = (a) => (a || "").replace(",", ".");
-      const toN = (a) => Number(normalize(a));
-
-      const f9 = toN(this.lambda);
-      const f10 = toN(this.contactDiameter);
-      const f11 = toN(this.concaveRoc);
-      const f15 = toN(this.nbFringes);
-      const f16 = toN(this.relativeShape);
-
-      if (f10 === 0 || f11 === 0) return NaN;
-
-      const halfDiameter = f10 / 2;
-      const sqrtTerm = Math.sqrt(f11 * f11 - halfDiameter * halfDiameter);
-
-      if (isNaN(sqrtTerm)) return NaN;
-
-      const term1 = f11 - sqrtTerm;
-      const term2 = (f16 * f15 * f9) / 2000000;
-      const numerator = term1 - term2;
-
-      const result = numerator / 2 + (f10 * f10) / (8 * numerator);
-
-      return result;
+      return sagittaFringes.rocFromFringes({
+        wavelengthNm: toN(this.lambda),
+        contactDiameter: toN(this.contactDiameter),
+        concaveROC: toN(this.concaveRoc),
+        fringeCount: toN(this.nbFringes),
+        relativeShape: toN(this.relativeShape),
+      });
     },
   },
 };

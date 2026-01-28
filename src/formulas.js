@@ -53,23 +53,17 @@ export const mpccTargetConic = ({ diameter, focalLength }) => {
 export const circleArea = (radius) => Math.PI * radius * radius;
 
 export const pressure = {
-  totalMassForPressure: ({ diameter, targetPressure, mmToCmFactor = 0.1 }) => {
-    const radiusCm = (diameter * mmToCmFactor) / 2;
-    return circleArea(radiusCm) * targetPressure;
+  totalMassForPressure: ({ radius, targetPressure }) => {
+    return circleArea(radius) * targetPressure;
   },
 
-  weightToAdd: ({ diameter, polisherWeight, targetPressure, mmToCmFactor = 0.1 }) => {
-    const totalMass = pressure.totalMassForPressure({
-      diameter,
-      targetPressure,
-      mmToCmFactor,
-    });
+  weightToAdd: ({ radius, polisherWeight, targetPressure }) => {
+    const totalMass = pressure.totalMassForPressure({ radius, targetPressure });
     return Math.max(0, totalMass - polisherWeight);
   },
 
-  actualPressure: ({ diameter, polisherWeight, mmToCmFactor = 0.1 }) => {
-    const radiusCm = (diameter * mmToCmFactor) / 2;
-    const area = circleArea(radiusCm);
+  actualPressure: ({ radius, polisherWeight }) => {
+    const area = circleArea(radius);
     return area > 0 ? polisherWeight / area : 0;
   },
 };

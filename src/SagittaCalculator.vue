@@ -34,6 +34,7 @@
 
 <script>
 import { get, set, normalize } from "./utils";
+import { sagitta as sagittaFormula } from "./formulas";
 import OpticalPieceSelector from "./OpticalPieceSelector.vue";
 
 const toN = (a) => Number(normalize(a));
@@ -61,10 +62,10 @@ export default {
   },
   computed: {
     sagitta() {
-      const r = toN(this.r);
-      const roc = toN(this.roc);
-      if (roc === 0) return 0;
-      return (r * r) / (2 * roc);
+      return sagittaFormula({
+        mirrorRadius: toN(this.r),
+        radiusOfCurvature: toN(this.roc),
+      });
     },
   },
 };

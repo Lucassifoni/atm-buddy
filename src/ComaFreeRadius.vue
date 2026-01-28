@@ -73,6 +73,7 @@
 
 <script>
 import { normalize, parseFloat } from "./utils";
+import { focalRatio, comaFree } from "./formulas";
 import OpticalPieceSelector from "./OpticalPieceSelector.vue";
 
 export default {
@@ -97,30 +98,43 @@ export default {
   },
   computed: {
     ratio() {
-      const f = parseFloat(this.f);
-      const d = parseFloat(this.d);
-      return f / d;
+      return focalRatio({
+        focalLength: parseFloat(this.f),
+        diameter: parseFloat(this.d),
+      });
     },
     comaFreeLinear() {
-      const r = this.ratio;
-      return 0.022 * r * r * r;
+      return comaFree.linearRadius({
+        focalLength: parseFloat(this.f),
+        diameter: parseFloat(this.d),
+      });
     },
     comaFreeApparent() {
-      const f = parseFloat(this.f);
-      return 2 * Math.atan(this.comaFreeLinear / (2 * f)) * (180 / Math.PI);
+      return comaFree.apparentField({
+        focalLength: parseFloat(this.f),
+        diameter: parseFloat(this.d),
+      });
     },
     magnification() {
-      const f = parseFloat(this.f);
-      const eyepieceFl = parseFloat(this.eyepieceFl);
-      return f / eyepieceFl;
+      return comaFree.magnification({
+        focalLength: parseFloat(this.f),
+        eyepieceFocalLength: parseFloat(this.eyepieceFl),
+      });
     },
     trueFov() {
-      const afov = parseFloat(this.afov);
-      return afov / this.magnification;
+      return comaFree.trueFieldOfView({
+        focalLength: parseFloat(this.f),
+        eyepieceFocalLength: parseFloat(this.eyepieceFl),
+        apparentFOV: parseFloat(this.afov),
+      });
     },
     comaFreeInEyepiece() {
-      const afov = parseFloat(this.afov);
-      return (this.comaFreeApparent / this.trueFov) * afov;
+      return comaFree.inEyepiece({
+        focalLength: parseFloat(this.f),
+        diameter: parseFloat(this.d),
+        eyepieceFocalLength: parseFloat(this.eyepieceFl),
+        apparentFOV: parseFloat(this.afov),
+      });
     },
   },
 };

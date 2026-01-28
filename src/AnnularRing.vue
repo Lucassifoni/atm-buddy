@@ -125,6 +125,7 @@
 
 <script>
 import { get, set, normalize } from "./utils";
+import { annularRing, circleArea } from "./formulas";
 import OpticalPieceSelector from "./OpticalPieceSelector.vue";
 
 const toN = (a) => Number(normalize(a));
@@ -232,50 +233,53 @@ export default {
     },
   },
   computed: {
+    mirrorRadius() {
+      return toN(this.mirrorDiameter) / 2;
+    },
     startRadiusMm() {
-      const diameter = toN(this.mirrorDiameter);
-      const radius = diameter / 2;
       if (this.inputMode === "percent") {
-        return radius * toN(this.startRadius);
+        return annularRing.normalizedToMm(toN(this.startRadius), this.mirrorRadius);
       }
       return toN(this.startRadius);
     },
     endRadiusMm() {
-      const diameter = toN(this.mirrorDiameter);
-      const radius = diameter / 2;
       if (this.inputMode === "percent") {
-        return radius * toN(this.endRadius);
+        return annularRing.normalizedToMm(toN(this.endRadius), this.mirrorRadius);
       }
       return toN(this.endRadius);
     },
     obstructionRadiusMm() {
-      const diameter = toN(this.mirrorDiameter);
-      const radius = diameter / 2;
       if (this.inputMode === "percent") {
-        return radius * toN(this.centralObstruction);
+        return annularRing.normalizedToMm(toN(this.centralObstruction), this.mirrorRadius);
       }
       return toN(this.centralObstruction);
     },
     surfaceArea() {
-      const outerRadius = Math.max(this.startRadiusMm, this.endRadiusMm);
-      const innerRadius = Math.min(this.startRadiusMm, this.endRadiusMm);
-      return Math.PI * (outerRadius * outerRadius - innerRadius * innerRadius);
+      return annularRing.surfaceArea({
+        outerRadius: Math.max(this.startRadiusMm, this.endRadiusMm),
+        innerRadius: Math.min(this.startRadiusMm, this.endRadiusMm),
+      });
     },
     totalMirrorArea() {
-      const diameter = toN(this.mirrorDiameter);
-      return Math.PI * (diameter / 2) * (diameter / 2);
+      return circleArea(this.mirrorRadius);
     },
     unobstructedMirrorArea() {
-      const obstructionArea =
-        Math.PI * this.obstructionRadiusMm * this.obstructionRadiusMm;
-      return this.totalMirrorArea - obstructionArea;
+      return this.totalMirrorArea - circleArea(this.obstructionRadiusMm);
     },
     percentageTotal() {
-      return (this.surfaceArea / this.totalMirrorArea) * 100;
+      return annularRing.percentageOfTotal({
+        outerRadius: Math.max(this.startRadiusMm, this.endRadiusMm),
+        innerRadius: Math.min(this.startRadiusMm, this.endRadiusMm),
+        mirrorRadius: this.mirrorRadius,
+      });
     },
     percentageUnobstructed() {
-      if (this.unobstructedMirrorArea <= 0) return 0;
-      return (this.surfaceArea / this.unobstructedMirrorArea) * 100;
+      return annularRing.percentageOfUnobstructed({
+        outerRadius: Math.max(this.startRadiusMm, this.endRadiusMm),
+        innerRadius: Math.min(this.startRadiusMm, this.endRadiusMm),
+        mirrorRadius: this.mirrorRadius,
+        obstructionRadius: this.obstructionRadiusMm,
+      });
     },
   },
   watch: {

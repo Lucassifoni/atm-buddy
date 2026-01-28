@@ -50,6 +50,12 @@
 
 <script>
 import { normalize, parseFloat } from "./utils";
+import {
+  focalRatio,
+  mpccCorrection,
+  mpccUndercorrection,
+  mpccTargetConic,
+} from "./formulas";
 import OpticalPieceSelector from "./OpticalPieceSelector.vue";
 
 export default {
@@ -72,20 +78,28 @@ export default {
   },
   computed: {
     ratio() {
-      const f = parseFloat(this.f);
-      const d = parseFloat(this.d);
-      return f / d;
+      return focalRatio({
+        focalLength: parseFloat(this.f),
+        diameter: parseFloat(this.d),
+      });
     },
     correction() {
-      const d = parseFloat(this.d);
-      return d / (1.1264 * (this.ratio * this.ratio * this.ratio));
+      return mpccCorrection({
+        diameter: parseFloat(this.d),
+        focalLength: parseFloat(this.f),
+      });
     },
     undercorrection() {
-      const c = 4 / this.ratio;
-      return c * c * c * c * 0.81;
+      return mpccUndercorrection({
+        focalLength: parseFloat(this.f),
+        diameter: parseFloat(this.d),
+      });
     },
     target() {
-      return -1 - this.undercorrection / this.correction;
+      return mpccTargetConic({
+        diameter: parseFloat(this.d),
+        focalLength: parseFloat(this.f),
+      });
     },
   },
 };

@@ -208,31 +208,29 @@ describe("pressure calculations", () => {
   describe("totalMassForPressure", () => {
     it("calculates total mass needed for target pressure", () => {
       const result = pressure.totalMassForPressure({
-        diameter: 200,
+        radius: 10,
         targetPressure: 30,
       });
       expect(result).toBeCloseTo(9424.78, 0);
     });
 
-    it("uses mmToCmFactor for unit conversion", () => {
+    it("is unit-agnostic (works with any consistent units)", () => {
+      const cmResult = pressure.totalMassForPressure({
+        radius: 10,
+        targetPressure: 30,
+      });
       const mmResult = pressure.totalMassForPressure({
-        diameter: 200,
-        targetPressure: 30,
-        mmToCmFactor: 0.1,
+        radius: 100,
+        targetPressure: 0.3,
       });
-      const directCmResult = pressure.totalMassForPressure({
-        diameter: 20,
-        targetPressure: 30,
-        mmToCmFactor: 1,
-      });
-      expect(mmResult).toBeCloseTo(directCmResult, 5);
+      expect(cmResult).toBeCloseTo(mmResult, 5);
     });
   });
 
   describe("weightToAdd", () => {
     it("calculates weight to add when polisher is lighter", () => {
       const result = pressure.weightToAdd({
-        diameter: 200,
+        radius: 10,
         polisherWeight: 500,
         targetPressure: 30,
       });
@@ -241,7 +239,7 @@ describe("pressure calculations", () => {
 
     it("returns 0 when polisher is already heavy enough", () => {
       const result = pressure.weightToAdd({
-        diameter: 200,
+        radius: 10,
         polisherWeight: 20000,
         targetPressure: 30,
       });
@@ -252,15 +250,15 @@ describe("pressure calculations", () => {
   describe("actualPressure", () => {
     it("calculates actual pressure from polisher weight", () => {
       const result = pressure.actualPressure({
-        diameter: 200,
+        radius: 10,
         polisherWeight: 9424.78,
       });
       expect(result).toBeCloseTo(30, 1);
     });
 
-    it("returns 0 for zero diameter", () => {
+    it("returns 0 for zero radius", () => {
       const result = pressure.actualPressure({
-        diameter: 0,
+        radius: 0,
         polisherWeight: 500,
       });
       expect(result).toBe(0);

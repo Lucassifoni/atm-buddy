@@ -39,6 +39,7 @@
 
 <script>
 import { normalize, parseFloat } from "./utils";
+import { sineTableAngle } from "./formulas";
 import OpticalPieceSelector from "./OpticalPieceSelector.vue";
 
 export default {
@@ -60,12 +61,10 @@ export default {
   },
   computed: {
     x() {
-      const r = parseFloat(this.r);
-      const R = parseFloat(this.R);
-      const sinx = r / R;
-      const rad = Math.asin(sinx);
-      const deg = rad * (180 / Math.PI);
-      return deg;
+      return sineTableAngle({
+        cupRadius: parseFloat(this.r),
+        targetROC: parseFloat(this.R),
+      });
     },
   },
 };

@@ -33,10 +33,10 @@
       <label class="label text-xs font-medium">{{ $t('pressure.targetPressure') }}</label>
       <input
         class="input input-bordered input-sm w-full"
-        :value="pressure"
+        :value="targetPressure"
         inputmode="decimal"
         pattern="[0-9]*[.,]?[0-9]*"
-        @input="pressure = $event.target.value"
+        @input="targetPressure = $event.target.value"
       />
     </div>
     <div class="alert alert-info mt-4 py-2">
@@ -55,7 +55,10 @@
 
 <script>
 import { parseFloat } from "./utils";
+import { pressure } from "./formulas";
 import PolisherSelector from "./PolisherSelector.vue";
+
+const MM_TO_CM = 0.1;
 
 export default {
   name: "PressureCalculator",
@@ -66,7 +69,7 @@ export default {
     return {
       diameter: "200",
       polisherWeight: "500",
-      pressure: "30",
+      targetPressure: "30",
     };
   },
   methods: {
@@ -76,24 +79,30 @@ export default {
     },
   },
   computed: {
+    radiusCm() {
+      return (parseFloat(this.diameter) * MM_TO_CM) / 2;
+    },
     totalMass() {
-      const d = parseFloat(this.diameter) / 10;
-      const p = parseFloat(this.pressure);
-      const r = d / 2;
-      return Math.PI * r * r * p;
+      return pressure.totalMassForPressure({
+        radius: this.radiusCm,
+        targetPressure: parseFloat(this.targetPressure),
+      });
     },
     weightToAdd() {
-      const w = parseFloat(this.polisherWeight);
-      return Math.max(0, this.totalMass - w);
+      return pressure.weightToAdd({
+        radius: this.radiusCm,
+        polisherWeight: parseFloat(this.polisherWeight),
+        targetPressure: parseFloat(this.targetPressure),
+      });
     },
     polisherTooHeavy() {
       return parseFloat(this.polisherWeight) > this.totalMass;
     },
     actualPressure() {
-      const d = parseFloat(this.diameter) / 10;
-      const r = d / 2;
-      const area = Math.PI * r * r;
-      return area > 0 ? parseFloat(this.polisherWeight) / area : 0;
+      return pressure.actualPressure({
+        radius: this.radiusCm,
+        polisherWeight: parseFloat(this.polisherWeight),
+      });
     },
   },
 };

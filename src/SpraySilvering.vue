@@ -168,6 +168,7 @@
 
 <script>
 import { get, set, normalize } from "./utils";
+import { spraySilvering } from "./formulas";
 import OpticalPieceSelector from "./OpticalPieceSelector.vue";
 
 export default {
@@ -245,26 +246,26 @@ export default {
   },
   computed: {
     cleaning_time() {
-      const minutes = Math.pow(this.diameter / 15, 1.4).toFixed(2);
+      const minutes = spraySilvering.cleaningTimeMinutes(this.diameter);
       const hours = Math.floor(minutes / 60);
       const rminutes = Math.trunc(minutes - hours * 60);
       const p = (n) => (n + "").padStart("0", 2);
       return `${p(hours)}h${p(rminutes)}m`;
     },
     silver() {
-      return Number((1.6 * (this.b / 150)).toFixed(2));
+      return Number(spraySilvering.silverNitrate(this.b).toFixed(2));
     },
     soda() {
-      return Number((2.5 * (this.b / 150)).toFixed(2));
+      return Number(spraySilvering.sodiumHydroxide(this.b).toFixed(2));
     },
     sugarwater() {
-      return Number((300 * (this.b / 150)).toFixed(2));
+      return Number(spraySilvering.sugarWater(this.b).toFixed(2));
     },
     sugar() {
-      return Number((12 * (this.b / 150)).toFixed(2));
+      return Number(spraySilvering.glucose(this.b).toFixed(2));
     },
     firstQty() {
-      return Number((100 * (this.b / 150)).toFixed(2));
+      return Number(spraySilvering.firstQuantity(this.b).toFixed(2));
     },
   },
 };

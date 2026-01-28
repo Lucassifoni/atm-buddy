@@ -73,6 +73,7 @@
 
 <script>
 import { normalize, parseFloat } from "./utils";
+import { reverseBallSpherometerSagitta } from "./formulas";
 import SpherometerSelector from "./SpherometerSelector.vue";
 
 export default {
@@ -97,13 +98,12 @@ export default {
   },
   computed: {
     sag() {
-      const r = parseFloat(this.r);
-      const R = parseFloat(this.R);
-      const b =
-        this.curve === "convex" ? parseFloat(this.b) : -parseFloat(this.b);
-      const aR = R + b / 2;
-      const sag = aR - Math.sqrt(aR * aR - r * r);
-      return sag;
+      return reverseBallSpherometerSagitta({
+        feetRadius: parseFloat(this.r),
+        targetROC: parseFloat(this.R),
+        ballDiameter: parseFloat(this.b),
+        curve: this.curve,
+      });
     },
   },
 };

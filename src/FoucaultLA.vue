@@ -219,6 +219,7 @@
 
 <script>
 import { get, set, normalize } from "./utils";
+import { foucault } from "./formulas";
 import OpticalPieceSelector from "./OpticalPieceSelector.vue";
 
 const toN = (a) => Number(normalize(a));
@@ -267,11 +268,12 @@ export default {
       this.set("roc", piece.radiusOfCurvature.toString());
     },
     calculateLA(radiusMm) {
-      const rocVal = toN(this.roc);
-      const k = toN(this.conic);
-      if (rocVal === 0) return 0;
-      const divisor = this.sourceConfig === "moving" ? 2 * rocVal : rocVal;
-      return (-k * radiusMm * radiusMm) / divisor;
+      return foucault.longitudinalAberration({
+        zoneRadius: radiusMm,
+        radiusOfCurvature: toN(this.roc),
+        conicConstant: toN(this.conic),
+        sourceConfig: this.sourceConfig,
+      });
     },
   },
   computed: {
@@ -312,33 +314,16 @@ export default {
       return toN(this.endZone);
     },
     customZones() {
-      const n = Math.max(2, Math.min(50, Math.floor(toN(this.numZones))));
-      const start = this.startZoneMm;
-      const end = this.endZoneMm;
-      const baseLa = this.calculateLA(start);
-
-      const result = [];
-      for (let i = 0; i < n; i++) {
-        let radiusMm;
-        if (this.dividingMode === "equal_area") {
-          const startSq = start * start;
-          const endSq = end * end;
-          radiusMm = Math.sqrt(startSq + (i * (endSq - startSq)) / (n - 1));
-        } else {
-          radiusMm = start + (i * (end - start)) / (n - 1);
-        }
-        const normalized =
-          this.mirrorRadius > 0 ? radiusMm / this.mirrorRadius : 0;
-        const la = this.calculateLA(radiusMm);
-        result.push({
-          index: i,
-          normalized,
-          radiusMm,
-          la,
-          relativeLa: la - baseLa,
-        });
-      }
-      return result;
+      return foucault.generateZones({
+        mirrorRadius: this.mirrorRadius,
+        radiusOfCurvature: toN(this.roc),
+        conicConstant: toN(this.conic),
+        sourceConfig: this.sourceConfig,
+        startRadius: this.startZoneMm,
+        endRadius: this.endZoneMm,
+        numZones: toN(this.numZones),
+        dividingMode: this.dividingMode,
+      });
     },
     totalLA() {
       return this.calculateLA(this.mirrorRadius);
