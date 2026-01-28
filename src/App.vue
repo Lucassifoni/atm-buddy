@@ -11,6 +11,9 @@
       </select>
     </div>
     <div class="container mx-auto px-2 py-3">
+      <p class="text-center mx-auto mb-2">
+        Real meaningful icons are coming soon !
+      </p>
       <div class="card bg-white shadow-lg max-w-2xl mx-auto">
         <div class="card-body p-4 pb-24">
           <div class="text-center mb-4">
