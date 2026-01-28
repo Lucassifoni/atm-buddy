@@ -5,9 +5,11 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite-ssg build",
+    "build": "vitest run && vite-ssg build",
     "preview": "vite preview",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "test": "vitest",
+    "test:run": "vitest run"
   },
   "dependencies": {
     "@unhead/vue": "^2.1.2",
@@ -22,6 +24,7 @@
     "postcss": "^8.5.6",
     "prettier": "^3.4.2",
     "tailwindcss": "^3.4.17",
-    "vite": "^7.3.1"
+    "vite": "^7.3.1",
+    "vitest": "^4.0.18"
   }
 }

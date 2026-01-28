@@ -4,7 +4,8 @@
       "WebSearch",
       "WebFetch(domain:www.telescope-optics.net)",
       "Bash(wc:*)",
-      "Bash(ls:*)"
+      "Bash(ls:*)",
+      "Bash(find:*)"
     ]
   },
   "enableAllProjectMcpServers": false

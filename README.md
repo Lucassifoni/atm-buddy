@@ -1,8 +1,8 @@
 # ATM-BUDDY
 
-This is an app that provides mobile utilities to amateur optics workers. It is to my knowledge only used by Paul, my friend from Gallifrey Optics, and me.
+This is an app that provides mobile utilities to amateur optics workers. It is to my knowledge only used by Paul, my friend from Gallifrey Optics, and me, and maybe some other ATMs.
 
-It is live at https://lucassifoni.github.io/atm-buddy and can be added to your home screen thanks to the app manifest.
+It is live at https://atm-buddy.app and can be added to your home screen thanks to the app manifest.
 
 ## Develop
 
@@ -16,17 +16,18 @@ yarn dev
 
 - Save (locally) your optical pieces, tools, and spherometers
 - Use little tools :
-  - 📏 Spherometer to ROC
-  - 🔄 ROC to Spherometer
-  - 📐 Sagitta Calculator
-  - 📊 Sine tablext-xs
-  - 🔭 Baader MPCCIII Hyperbola
-  - 🪞 Spray Silvering calculations
-  - 👁️ Stig Correction Reminder
-  - ⭕ Annular Ring Calculatorxt-xs
-  - 🌊 ROC Fringes
-  - ⚖️ Pressure Calculator
-  - 🔧 Hardware manager
+  - Spherometer to ROC
+  - ROC to Spherometer
+  - Sagitta Calculator
+  - Sine tablext-xs
+  - Baader MPCCIII Hyperbola
+  - Spray Silvering calculations
+  - Stig Correction Reminder
+  - Annular Ring Calculatorxt-xs
+  - ROC Fringes
+  - Pressure Calculator
+  - Hardware manager
+  - Foucault LA calculator
 
 ### Feature lifecycle as of 2025
 
@@ -39,7 +40,7 @@ Paul asks for a feature
 
 ### You can add features too !
 
-This is a low-stakes, low-key, low-tech tool. You can add features manually or by using LLMs if you want and if they are genuinely useful in an amateur optics setting. Just explore a bit the code, loosely respect the current informal conventions, and send a PR.
+This is a low-stakes, low-key, low-tech tool. You can add features manually or by using LLMs if you want and if they are genuinely useful in an amateur optics setting. Just explore a bit the code, loosely respect the current informal conventions, and send a PR. Write tests for formulae if you introduce some.
 
 ### Current roadmap
 
