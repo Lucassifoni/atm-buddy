@@ -2,22 +2,26 @@
   <div>
     <div class="card-title justify-center mb-3">
       <div class="badge badge-outline badge-sm">
-        {{ $t('annularRing.title') }}
+        {{ $t("annularRing.title") }}
       </div>
     </div>
     <OpticalPieceSelector @optical-piece-selected="onOpticalPieceSelected" />
     <div class="field-horizontal">
-      <label class="label text-xs font-medium">{{ $t('annularRing.mirrorDiameter') }}</label>
+      <label class="label text-xs font-medium"
+        >{{ $t("annularRing.mirrorDiameter") }} ({{ lengthUnit }}):</label
+      >
       <input
         class="input input-bordered input-sm w-full"
-        :value="mirrorDiameter"
+        :value="displayMirrorDiameter"
         inputmode="decimal"
         pattern="[0-9]*[.,]?[0-9]*"
-        @input="set('mirrorDiameter', $event.target.value)"
+        @input="setMirrorDiameter($event.target.value)"
       />
     </div>
     <div class="field-horizontal">
-      <label class="label text-xs font-medium">{{ $t('annularRing.inputMode') }}</label>
+      <label class="label text-xs font-medium">{{
+        $t("annularRing.inputMode")
+      }}</label>
       <div class="flex gap-3">
         <label class="cursor-pointer flex items-center gap-1">
           <div>
@@ -28,7 +32,7 @@
               class="radio radio-primary radio-sm"
             />
           </div>
-          <span class="text-xs">{{ $t('annularRing.normalized') }}</span>
+          <span class="text-xs">{{ $t("annularRing.normalized") }}</span>
         </label>
         <label class="cursor-pointer flex items-center gap-1">
           <div>
@@ -39,78 +43,83 @@
               class="radio radio-primary radio-sm"
             />
           </div>
-          <span class="text-xs">{{ $t('annularRing.millimeters') }}</span>
+          <span class="text-xs">{{ $t("annularRing.millimeters") }}</span>
         </label>
       </div>
     </div>
     <div class="field-horizontal">
       <label class="label text-xs font-medium">
-        {{ $t('annularRing.centralObstruction') }} ({{
-          inputMode === "percent" ? $t('annularRing.normalized') : $t('common.mm')
+        {{ $t("annularRing.centralObstruction") }} ({{
+          inputMode === "percent" ? $t("annularRing.normalized") : lengthUnit
         }}):
       </label>
       <input
         class="input input-bordered input-sm w-full"
-        :value="centralObstruction"
+        :value="displayCentralObstruction"
         inputmode="decimal"
         pattern="[0-9]*[.,]?[0-9]*"
-        @input="set('centralObstruction', $event.target.value)"
+        @input="setCentralObstruction($event.target.value)"
       />
     </div>
     <div class="field-horizontal">
       <label class="label text-xs font-medium">
-        {{ $t('annularRing.zoneStart') }} ({{ inputMode === "percent" ? $t('annularRing.normalized') : $t('common.mm') }}):
+        {{ $t("annularRing.zoneStart") }} ({{
+          inputMode === "percent" ? $t("annularRing.normalized") : lengthUnit
+        }}):
       </label>
       <input
         class="input input-bordered input-sm w-full"
-        :value="startRadius"
+        :value="displayStartRadius"
         inputmode="decimal"
         pattern="[0-9]*[.,]?[0-9]*"
-        @input="set('startRadius', $event.target.value)"
+        @input="setStartRadius($event.target.value)"
       />
     </div>
     <div class="field-horizontal">
       <label class="label text-xs font-medium">
-        {{ $t('annularRing.zoneEnd') }} ({{ inputMode === "percent" ? $t('annularRing.normalized') : $t('common.mm') }}):
+        {{ $t("annularRing.zoneEnd") }} ({{
+          inputMode === "percent" ? $t("annularRing.normalized") : lengthUnit
+        }}):
       </label>
       <input
         class="input input-bordered input-sm w-full"
-        :value="endRadius"
+        :value="displayEndRadius"
         inputmode="decimal"
         pattern="[0-9]*[.,]?[0-9]*"
-        @input="set('endRadius', $event.target.value)"
+        @input="setEndRadius($event.target.value)"
       />
     </div>
     <div
       style="display: flex; align-items: flex-start; gap: 20px; flex-wrap: wrap"
     >
       <div style="flex: 1">
-        <h4 class="subtitle is-6">{{ $t('annularRing.results') }}</h4>
+        <h4 class="subtitle is-6">{{ $t("annularRing.results") }}</h4>
         <div class="">
           <div class="flex items-center">
-            <label class="">{{ $t('annularRing.surfaceArea') }}</label>
+            <label class="">{{ $t("annularRing.surfaceArea") }}</label>
             <span class="font-bold"
-              >&nbsp;{{ surfaceArea.toFixed(2) }} {{ $t('common.mm') }}²</span
+              >&nbsp;{{ surfaceAreaDisplay }} {{ lengthUnit }}²</span
             >
           </div>
           <div class="flex items-center">
-            <label class="">{{ $t('annularRing.ofTotalArea') }}</label>
+            <label class="">{{ $t("annularRing.ofTotalArea") }}</label>
             <span class="font-bold"
-              >&nbsp;{{ percentageTotal.toFixed(2) }}{{ $t('common.percent') }}</span
+              >&nbsp;{{ percentageTotal.toFixed(2)
+              }}{{ $t("common.percent") }}</span
             >
           </div>
           <p>
-            {{ $t('annularRing.ofUnobstructedArea') }}
+            {{ $t("annularRing.ofUnobstructedArea") }}
             <strong>{{ percentageUnobstructed.toFixed(2) }}</strong
-            >{{ $t('common.percent') }}
+            >{{ $t("common.percent") }}
           </p>
-          <p>{{ $t('annularRing.shouldFix') }}</p>
+          <p>{{ $t("annularRing.shouldFix") }}</p>
         </div>
       </div>
       <div></div>
     </div>
     <div class="card bg-base-200 p-3 mt-3">
-      <h4 class="text-sm font-semibold mb-2">{{ $t('annularRing.visual') }}</h4>
+      <h4 class="text-sm font-semibold mb-2">{{ $t("annularRing.visual") }}</h4>
       <div class="flex justify-center">
         <canvas
           ref="canvas"
@@ -124,11 +133,9 @@
 </template>
 
 <script>
-import { get, set, normalize } from "./utils";
+import { normalize } from "./utils";
 import { annularRing, circleArea } from "./formulas";
 import OpticalPieceSelector from "./OpticalPieceSelector.vue";
-
-const toN = (a) => Number(normalize(a));
 
 export default {
   name: "AnnularRing",
@@ -137,35 +144,52 @@ export default {
   },
   data() {
     return {
-      mirrorDiameter: get("__annular", "mirrorDiameter", "200"),
-      startRadius: get("__annular", "startRadius", "0.95"),
-      endRadius: get("__annular", "endRadius", "0.85"),
-      inputMode: get("__annular", "inputMode", "percent"),
-      centralObstruction: get("__annular", "centralObstruction", "0.3"),
+      mirrorDiameterMm: 200,
+      startRadiusNorm: 0.95,
+      endRadiusNorm: 0.85,
+      inputMode: "percent",
+      centralObstructionNorm: 0.3,
     };
   },
   mounted() {
     this.drawCanvas();
   },
   methods: {
-    set(key, value) {
-      set(
-        this,
-        "__annular",
-        {
-          mirrorDiameter: this.mirrorDiameter,
-          startRadius: this.startRadius,
-          endRadius: this.endRadius,
-          inputMode: this.inputMode,
-          centralObstruction: this.centralObstruction,
-        },
-        key,
-        value,
+    normalize,
+    setMirrorDiameter(value) {
+      this.mirrorDiameterMm = this.$units.convert.lengthFromDisplay(
+        parseFloat(value) || 0,
       );
     },
-    normalize,
+    setStartRadius(value) {
+      const parsed = parseFloat(value) || 0;
+      if (this.inputMode === "percent") {
+        this.startRadiusNorm = parsed;
+      } else {
+        this.startRadiusNorm =
+          this.$units.convert.lengthFromDisplay(parsed) / this.mirrorRadius;
+      }
+    },
+    setEndRadius(value) {
+      const parsed = parseFloat(value) || 0;
+      if (this.inputMode === "percent") {
+        this.endRadiusNorm = parsed;
+      } else {
+        this.endRadiusNorm =
+          this.$units.convert.lengthFromDisplay(parsed) / this.mirrorRadius;
+      }
+    },
+    setCentralObstruction(value) {
+      const parsed = parseFloat(value) || 0;
+      if (this.inputMode === "percent") {
+        this.centralObstructionNorm = parsed;
+      } else {
+        this.centralObstructionNorm =
+          this.$units.convert.lengthFromDisplay(parsed) / this.mirrorRadius;
+      }
+    },
     onOpticalPieceSelected(piece) {
-      this.set("mirrorDiameter", piece.radius * 2);
+      this.mirrorDiameterMm = piece.radius * 2;
     },
     drawCanvas() {
       const canvas = this.$refs.canvas;
@@ -180,24 +204,10 @@ export default {
       ctx.fillStyle = "white";
       ctx.fillRect(0, 0, 120, 120);
 
-      const mirrorDiameterMm = toN(this.mirrorDiameter);
-      const mirrorRadiusMm = mirrorDiameterMm / 2;
-
-      let startRadiusMm, endRadiusMm;
-      if (this.inputMode === "percent") {
-        startRadiusMm = mirrorRadiusMm * toN(this.startRadius);
-        endRadiusMm = mirrorRadiusMm * toN(this.endRadius);
-      } else {
-        startRadiusMm = toN(this.startRadius);
-        endRadiusMm = toN(this.endRadius);
-      }
-
-      let obstructionRadiusMm;
-      if (this.inputMode === "percent") {
-        obstructionRadiusMm = mirrorRadiusMm * toN(this.centralObstruction);
-      } else {
-        obstructionRadiusMm = toN(this.centralObstruction);
-      }
+      const mirrorRadiusMm = this.mirrorRadius;
+      const startRadiusMm = this.startRadiusMm;
+      const endRadiusMm = this.endRadiusMm;
+      const obstructionRadiusMm = this.obstructionRadiusMm;
 
       const scaleFactor = maxRadius / mirrorRadiusMm;
 
@@ -233,32 +243,60 @@ export default {
     },
   },
   computed: {
+    displayMirrorDiameter() {
+      return this.$units.convert.lengthToDisplay(this.mirrorDiameterMm);
+    },
+    displayStartRadius() {
+      if (this.inputMode === "percent") {
+        return this.startRadiusNorm;
+      }
+      return this.$units.convert.lengthToDisplay(
+        this.startRadiusNorm * this.mirrorRadius,
+      );
+    },
+    displayEndRadius() {
+      if (this.inputMode === "percent") {
+        return this.endRadiusNorm;
+      }
+      return this.$units.convert.lengthToDisplay(
+        this.endRadiusNorm * this.mirrorRadius,
+      );
+    },
+    displayCentralObstruction() {
+      if (this.inputMode === "percent") {
+        return this.centralObstructionNorm;
+      }
+      return this.$units.convert.lengthToDisplay(
+        this.centralObstructionNorm * this.mirrorRadius,
+      );
+    },
+    lengthUnit() {
+      return this.$units.convert.lengthUnit();
+    },
     mirrorRadius() {
-      return toN(this.mirrorDiameter) / 2;
+      return this.mirrorDiameterMm / 2;
     },
     startRadiusMm() {
-      if (this.inputMode === "percent") {
-        return annularRing.normalizedToMm(toN(this.startRadius), this.mirrorRadius);
-      }
-      return toN(this.startRadius);
+      return this.startRadiusNorm * this.mirrorRadius;
     },
     endRadiusMm() {
-      if (this.inputMode === "percent") {
-        return annularRing.normalizedToMm(toN(this.endRadius), this.mirrorRadius);
-      }
-      return toN(this.endRadius);
+      return this.endRadiusNorm * this.mirrorRadius;
     },
     obstructionRadiusMm() {
-      if (this.inputMode === "percent") {
-        return annularRing.normalizedToMm(toN(this.centralObstruction), this.mirrorRadius);
-      }
-      return toN(this.centralObstruction);
+      return this.centralObstructionNorm * this.mirrorRadius;
     },
     surfaceArea() {
       return annularRing.surfaceArea({
         outerRadius: Math.max(this.startRadiusMm, this.endRadiusMm),
         innerRadius: Math.min(this.startRadiusMm, this.endRadiusMm),
       });
+    },
+    surfaceAreaDisplay() {
+      const areaMm2 = this.surfaceArea;
+      const areaDisplay = this.$units.convert.lengthToDisplay(
+        Math.sqrt(areaMm2),
+      );
+      return (areaDisplay * areaDisplay).toFixed(2);
     },
     totalMirrorArea() {
       return circleArea(this.mirrorRadius);
@@ -283,19 +321,19 @@ export default {
     },
   },
   watch: {
-    mirrorDiameter() {
+    mirrorDiameterMm() {
       this.$nextTick(() => this.drawCanvas());
     },
-    startRadius() {
+    startRadiusNorm() {
       this.$nextTick(() => this.drawCanvas());
     },
-    endRadius() {
+    endRadiusNorm() {
       this.$nextTick(() => this.drawCanvas());
     },
     inputMode() {
       this.$nextTick(() => this.drawCanvas());
     },
-    centralObstruction() {
+    centralObstructionNorm() {
       this.$nextTick(() => this.drawCanvas());
     },
   },

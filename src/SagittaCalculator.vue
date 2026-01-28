@@ -1,71 +1,93 @@
 <template>
   <div>
     <div class="card-title justify-center mb-3">
-      <div class="badge badge-outline badge-sm">{{ $t('sagittaCalc.formula') }}</div>
+      <div class="badge badge-outline badge-sm">
+        {{ $t("sagittaCalc.formula") }}
+      </div>
     </div>
     <OpticalPieceSelector @optical-piece-selected="onOpticalPieceSelected" />
     <div class="alert alert-success mt-4 py-2">
       <span class="text-sm font-semibold"
-        >{{ $t('sagittaCalc.sagittaLabel') }} <strong>{{ sagitta.toFixed(3) }}</strong> {{ $t('common.mm') }}</span
+        >{{ $t("sagittaCalc.sagittaLabel") }}
+        <strong>{{ sagittaDisplay }}</strong> {{ lengthUnit }}</span
       >
     </div>
     <div class="field-horizontal">
-      <label class="label text-xs font-medium">{{ $t('sagittaCalc.mirrorRadius') }}</label>
+      <label class="label text-xs font-medium"
+        >{{ $t("sagittaCalc.mirrorRadius") }} ({{ lengthUnit }}):</label
+      >
       <input
         class="input input-bordered input-sm w-full"
-        :value="r"
+        :value="displayR"
         inputmode="decimal"
         pattern="[0-9]*[.,]?[0-9]*"
-        @input="set('r', $event.target.value)"
+        @input="setR($event.target.value)"
       />
     </div>
     <div class="field-horizontal">
-      <label class="label text-xs font-medium">{{ $t('sagittaCalc.rocLabel') }}</label>
+      <label class="label text-xs font-medium"
+        >{{ $t("sagittaCalc.rocLabel") }} ({{ lengthUnit }}):</label
+      >
       <input
         class="input input-bordered input-sm w-full"
         inputmode="decimal"
         pattern="[0-9]*[.,]?[0-9]*"
-        :value="roc"
-        @input="set('roc', $event.target.value)"
+        :value="displayRoc"
+        @input="setRoc($event.target.value)"
       />
     </div>
   </div>
 </template>
 
 <script>
-import { get, set, normalize } from "./utils";
+import { normalize } from "./utils";
 import { sagitta as sagittaFormula } from "./formulas";
 import OpticalPieceSelector from "./OpticalPieceSelector.vue";
-
-const toN = (a) => Number(normalize(a));
 
 export default {
   name: "SagittaCalculator",
   data() {
     return {
-      r: get("__sagitta", "r", "100"),
-      roc: get("__sagitta", "roc", "2000"),
+      rMm: 100,
+      rocMm: 2000,
     };
   },
   components: {
     OpticalPieceSelector,
   },
   methods: {
-    set(key, value) {
-      set(this, "__sagitta", { r: this.r, roc: this.roc }, key, value);
-    },
     normalize,
+    setR(value) {
+      this.rMm = this.$units.convert.lengthFromDisplay(parseFloat(value) || 0);
+    },
+    setRoc(value) {
+      this.rocMm = this.$units.convert.lengthFromDisplay(
+        parseFloat(value) || 0,
+      );
+    },
     onOpticalPieceSelected(piece) {
-      this.set("r", piece.radius.toString());
-      this.set("roc", piece.radiusOfCurvature.toString());
+      this.rMm = piece.radius;
+      this.rocMm = piece.radiusOfCurvature;
     },
   },
   computed: {
+    displayR() {
+      return this.$units.convert.lengthToDisplay(this.rMm);
+    },
+    displayRoc() {
+      return this.$units.convert.lengthToDisplay(this.rocMm);
+    },
+    lengthUnit() {
+      return this.$units.convert.lengthUnit();
+    },
     sagitta() {
       return sagittaFormula({
-        mirrorRadius: toN(this.r),
-        radiusOfCurvature: toN(this.roc),
+        mirrorRadius: this.rMm,
+        radiusOfCurvature: this.rocMm,
       });
+    },
+    sagittaDisplay() {
+      return this.$units.convert.formatLength(this.sagitta);
     },
   },
 };

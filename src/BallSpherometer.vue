@@ -1,46 +1,57 @@
 <template>
   <div>
     <div class="card-title justify-center mb-3">
-      <div class="badge badge-outline badge-sm">{{ $t('spherometer.formula') }}</div>
+      <div class="badge badge-outline badge-sm">
+        {{ $t("spherometer.formula") }}
+      </div>
     </div>
     <SpherometerSelector @spherometer-selected="onSpherometerSelected" />
     <div class="alert alert-success mt-4 py-2">
       <span class="text-sm font-semibold"
-        >{{ $t('spherometer.rocLabel') }} <strong>{{ roc.toFixed(2) }}</strong> {{ $t('common.mm') }}</span
+        >{{ $t("spherometer.rocLabel") }} <strong>{{ rocDisplay }}</strong>
+        {{ lengthUnit }}</span
       >
     </div>
     <div class="field-horizontal">
-      <label class="label text-xs font-medium">{{ $t('spherometer.feetRadius') }}</label>
+      <label class="label text-xs font-medium"
+        >{{ $t("spherometer.feetRadius") }} ({{ lengthUnit }}):</label
+      >
       <input
         class="input input-bordered input-sm w-full"
-        :value="r"
+        :value="displayR"
         inputmode="decimal"
         pattern="[0-9]*[.,]?[0-9]*"
-        @input="r = $event.target.value"
+        @input="setR($event.target.value)"
       />
     </div>
     <div class="field-horizontal">
-      <label class="label text-xs font-medium">{{ $t('spherometer.sagitta') }}</label>
+      <label class="label text-xs font-medium"
+        >{{ $t("spherometer.sagitta") }} ({{ lengthUnit }}):</label
+      >
       <input
         class="input input-bordered input-sm w-full"
         inputmode="decimal"
         pattern="[0-9]*[.,]?[0-9]*"
-        :value="s"
-        @input="s = $event.target.value"
+        :value="displayS"
+        @input="setS($event.target.value)"
       />
     </div>
     <div class="field-horizontal">
-      <label class="label text-xs font-medium">{{ $t('spherometer.ballDiameter') }}</label>
+      <label class="label text-xs font-medium"
+        >{{ $t("spherometer.ballDiameter") }} ({{ lengthUnit }}):</label
+      >
       <input
         class="input input-bordered input-sm w-full"
-        :value="b"
+        :value="displayB"
         inputmode="decimal"
         pattern="[0-9]*[.,]?[0-9]*"
-        @input="b = $event.target.value"
+        @input="setB($event.target.value)"
       />
     </div>
     <div class="field-horizontal">
-      <label class="label text-xs font-medium">{{ $t('spherometer.curveLabel') }}</label>
+      <label class="label text-xs font-medium">{{
+        $t("spherometer.curveLabel")
+      }}</label>
       <div class="flex gap-3">
         <label class="cursor-pointer flex items-center gap-1">
           <div>
@@ -51,7 +62,7 @@
               class="radio radio-primary radio-sm"
             />
           </div>
-          <span class="text-xs">{{ $t('common.concave') }}</span>
+          <span class="text-xs">{{ $t("common.concave") }}</span>
         </label>
         <label class="cursor-pointer flex items-center gap-1">
           <div>
@@ -62,7 +73,7 @@
               class="radio radio-primary radio-sm"
             />
           </div>
-          <span class="text-xs">{{ $t('common.convex') }}</span>
+          <span class="text-xs">{{ $t("common.convex") }}</span>
         </label>
       </div>
     </div>
@@ -78,9 +89,9 @@ export default {
   name: "BallSpherometer",
   data() {
     return {
-      r: "40",
-      s: "3",
-      b: "3",
+      rMm: 40,
+      sMm: 3,
+      bMm: 3,
       curve: "concave",
     };
   },
@@ -90,18 +101,42 @@ export default {
   methods: {
     normalize,
     onSpherometerSelected(spherometer) {
-      this.r = spherometer.feetRadius.toString();
-      this.b = spherometer.ballRadius2.toString();
+      this.rMm = spherometer.feetRadius;
+      this.bMm = spherometer.ballRadius2;
+    },
+    setR(value) {
+      this.rMm = this.$units.convert.lengthFromDisplay(parseFloat(value) || 0);
+    },
+    setS(value) {
+      this.sMm = this.$units.convert.lengthFromDisplay(parseFloat(value) || 0);
+    },
+    setB(value) {
+      this.bMm = this.$units.convert.lengthFromDisplay(parseFloat(value) || 0);
     },
   },
   computed: {
+    displayR() {
+      return this.$units.convert.lengthToDisplay(this.rMm);
+    },
+    displayS() {
+      return this.$units.convert.lengthToDisplay(this.sMm);
+    },
+    displayB() {
+      return this.$units.convert.lengthToDisplay(this.bMm);
+    },
+    lengthUnit() {
+      return this.$units.convert.lengthUnit();
+    },
     roc() {
       return ballSpherometerROC({
-        feetRadius: parseFloat(this.r),
-        sagitta: parseFloat(this.s),
-        ballDiameter: parseFloat(this.b),
+        feetRadius: this.rMm,
+        sagitta: this.sMm,
+        ballDiameter: this.bMm,
         curve: this.curve,
       });
+    },
+    rocDisplay() {
+      return this.$units.convert.formatLength(this.roc);
     },
   },
 };

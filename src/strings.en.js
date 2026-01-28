@@ -1,8 +1,11 @@
 export default {
   common: {
     mm: "mm",
+    inches: "in",
     degrees: "°",
     grams: "g",
+    pounds: "lb",
+    psi: "psi",
     percent: "%",
     concave: "Concave",
     convex: "Convex",
@@ -60,26 +63,26 @@ export default {
   spherometer: {
     formula: "ROC = (r² + s²) / 2s ± b/2",
     rocLabel: "ROC:",
-    feetRadius: "Radius of feet (mm):",
-    sagitta: "Sagitta (mm):",
-    ballDiameter: "Ball diameter (mm):",
+    feetRadius: "Radius of feet",
+    sagitta: "Sagitta",
+    ballDiameter: "Ball diameter",
     curveLabel: "Curve:",
   },
 
   reverseSpherometer: {
     formula: "Sagitta = ROC ± b/2 - sqrt((ROC ± b/2)² - r²)",
     sagittaLabel: "Sagitta:",
-    feetRadius: "Radius of feet (mm):",
-    desiredRoc: "Desired ROC (mm):",
-    ballDiameter: "Ball diameter (mm):",
+    feetRadius: "Radius of feet",
+    desiredRoc: "Desired ROC",
+    ballDiameter: "Ball diameter",
     curveLabel: "Curve:",
   },
 
   sagittaCalc: {
     formula: "Sagitta = r² / (2 × ROC)",
     sagittaLabel: "Sagitta:",
-    mirrorRadius: "Mirror radius (mm):",
-    rocLabel: "ROC (mm):",
+    mirrorRadius: "Mirror radius",
+    rocLabel: "ROC",
   },
 
   sineTable: {
@@ -87,8 +90,8 @@ export default {
     explanation:
       "Where x is the angle between the two planes.<br />r is the cup radius<br />(measure outside for a concave curve, inside for a convex curve !)",
     angleLabel: "Angle x in degrees:",
-    cupRadius: "Cup radius (mm):",
-    desiredRoc: "Desired ROC (mm):",
+    cupRadius: "Cup radius",
+    desiredRoc: "Desired ROC",
   },
 
   mpcc: {
@@ -99,8 +102,8 @@ export default {
     parabolaCorrection: "Parabola correction:",
     mpccUndercorrection: "MPCC Undercorrection:",
     targetConic: "Target conic:",
-    diameter: "Diameter (mm):",
-    focalLength: "Focal length (mm):",
+    diameter: "Diameter",
+    focalLength: "Focal length",
   },
 
   stig: {
@@ -123,7 +126,7 @@ export default {
 
   annularRing: {
     title: "Annular Ring Surface Area Calculator",
-    mirrorDiameter: "Mirror diameter (mm):",
+    mirrorDiameter: "Mirror diameter",
     inputMode: "Input mode:",
     normalized: "0..1",
     millimeters: "Millimeters",
@@ -143,8 +146,8 @@ export default {
     rocLabel: "RoC of face under test:",
     invalidInput: "Invalid input values",
     lambda: "Lambda (nm):",
-    contactDiameter: "Contact diameter (mm):",
-    concaveRoc: "Concave caliber RoC (mm):",
+    contactDiameter: "Contact diameter",
+    concaveRoc: "Concave caliber RoC",
     nbFringes: "Number of fringes:",
     relativeShape: "Relative shape:",
     concavity: "Concavity (+1)",
@@ -154,9 +157,9 @@ export default {
   pressure: {
     formula: "M = π × r² × P - W",
     weightToAdd: "Weight to add:",
-    polisherDiameter: "Polisher diameter (mm):",
-    polisherWeight: "Polisher weight (g):",
-    targetPressure: "Target pressure (g/cm²):",
+    polisherDiameter: "Polisher diameter",
+    polisherWeight: "Polisher weight",
+    targetPressure: "Target pressure",
     totalMass: "Total mass needed:",
     exceedsPressure: "Polisher alone exceeds target pressure",
     pressureUnit: "g/cm²",
@@ -172,16 +175,16 @@ export default {
     comaFreeEyepiece: "Coma-free in eyepiece:",
     ofAfov: "° of",
     afov: "AFOV",
-    diameter: "Diameter (mm):",
-    focalLength: "Focal length (mm):",
-    eyepieceFl: "Eyepiece focal length (mm):",
+    diameter: "Diameter",
+    focalLength: "Focal length",
+    eyepieceFl: "Eyepiece focal length",
     eyepieceAfov: "Eyepiece AFOV (°):",
   },
 
   foucault: {
     formulaMoving: "LA = -K × h² / 2R",
     formulaFixed: "LA = -K × h² / R",
-    mirrorDiameter: "Mirror diameter (mm):",
+    mirrorDiameter: "Mirror diameter",
     paraxialRoc: "Paraxial ROC (mm):",
     conicConstant: "Conic constant (K):",
     sourceConfig: "Source configuration:",
@@ -198,8 +201,8 @@ export default {
     startZone: "Start zone",
     endZone: "End zone",
     numZones: "Number of zones:",
-    radiusMm: "Radius (mm)",
-    laMm: "LA (mm)",
+    radius: "Radius",
+    la: "LA",
     relativeLa: "Relative LA",
     summary: "Summary:",
     totalLa: "Total LA (center to edge):",
@@ -221,20 +224,20 @@ export default {
     exportHelp:
       "Export your hardware data to backup or share with other devices. Import will merge with existing data.",
     spherometers: "Spherometers",
-    feetRadiusMm: "Feet radius (mm)",
-    ballDiameterMm: "Ball diameter (mm)",
-    feetRMm: "Feet R (mm)",
-    ballDMm: "Ball D (mm)",
+    feetRadius: "Feet radius",
+    ballDiameter: "Ball diameter",
+    feetR: "Feet R",
+    ballD: "Ball D",
     noSpherometers: "No spherometers added yet.",
     opticalPieces: "Optical Pieces",
-    radiusMm: "Radius (mm)",
-    rocMm: "ROC (mm)",
-    rMm: "R (mm)",
-    rocMmShort: "RoC (mm)",
+    radius: "Radius",
+    roc: "ROC",
+    r: "R",
+    rocShort: "RoC",
     noOpticalPieces: "No optical pieces added yet.",
     polishers: "Polishers",
-    diameterMm: "Diameter (mm)",
-    weightG: "Weight (g)",
+    diameter: "Diameter",
+    weight: "Weight",
     noPolishers: "No polishers added yet.",
     confirmDeleteSpherometer:
       "Are you sure you want to delete this spherometer?",
@@ -310,7 +313,7 @@ export default {
     cleanMirror: "Clean the mirror",
     cleaningInstructions:
       "Use chalk precipitate in distilled/demin water on small cotton balls. Change often and start with thick sauce, thinning it progressively. The center will clean fast but the edge and chamfer need a LOT of time.<br /><br />Rough guideline : (diameter_in_mm/15)^1.4 = time.<br />Yes, that is an advice of 1h40 for a 400mm mirror.<br /><br />Rinse with demin water and if possible, high pressure.",
-    mirrorDiameter: "Mirror diameter in mm:",
+    mirrorDiameter: "Mirror diameter",
     cleaningTime: "Cleaning time :",
     sprayMirror: "Spray the mirror",
     sprayingInstructions:

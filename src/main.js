@@ -2,6 +2,7 @@ import { ViteSSG } from "vite-ssg";
 import App from "./App.vue";
 import "./style.css";
 import { i18n } from "./useI18n.js";
+import { units } from "./useUnits.js";
 
 import BallSpherometer from "./BallSpherometer.vue";
 import ReverseBallSpherometer from "./ReverseBallSpherometer.vue";
@@ -108,6 +109,7 @@ export const routes = [
 export const createApp = ViteSSG(App, { routes }, ({ app, isClient }) => {
   app.config.globalProperties.$t = i18n.t;
   app.config.globalProperties.$i18n = i18n;
+  app.config.globalProperties.$units = units;
 
   if (isClient) {
     document.documentElement.setAttribute("data-theme", "light");

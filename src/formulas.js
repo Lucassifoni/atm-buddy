@@ -1,4 +1,9 @@
-export const ballSpherometerROC = ({ feetRadius, sagitta, ballDiameter, curve }) => {
+export const ballSpherometerROC = ({
+  feetRadius,
+  sagitta,
+  ballDiameter,
+  curve,
+}) => {
   const r = feetRadius;
   const s = sagitta;
   const b = curve === "concave" ? ballDiameter : -ballDiameter;
@@ -138,7 +143,9 @@ export const sagittaFringes = {
     if (contactDiameter === 0 || concaveROC === 0) return NaN;
 
     const halfDiameter = contactDiameter / 2;
-    const sqrtTerm = Math.sqrt(concaveROC * concaveROC - halfDiameter * halfDiameter);
+    const sqrtTerm = Math.sqrt(
+      concaveROC * concaveROC - halfDiameter * halfDiameter,
+    );
 
     if (isNaN(sqrtTerm)) return NaN;
 
@@ -146,7 +153,9 @@ export const sagittaFringes = {
     const term2 = (relativeShape * fringeCount * wavelengthNm) / 2_000_000;
     const numerator = term1 - term2;
 
-    return numerator / 2 + (contactDiameter * contactDiameter) / (8 * numerator);
+    return (
+      numerator / 2 + (contactDiameter * contactDiameter) / (8 * numerator)
+    );
   },
 };
 
@@ -158,18 +167,23 @@ export const foucault = {
     sourceConfig,
   }) => {
     if (radiusOfCurvature === 0) return 0;
-    const divisor = sourceConfig === "moving" ? 2 * radiusOfCurvature : radiusOfCurvature;
+    const divisor =
+      sourceConfig === "moving" ? 2 * radiusOfCurvature : radiusOfCurvature;
     return (-conicConstant * zoneRadius * zoneRadius) / divisor;
   },
 
   equalAreaZoneRadius: ({ startRadius, endRadius, zoneIndex, totalZones }) => {
     const startSq = startRadius * startRadius;
     const endSq = endRadius * endRadius;
-    return Math.sqrt(startSq + (zoneIndex * (endSq - startSq)) / (totalZones - 1));
+    return Math.sqrt(
+      startSq + (zoneIndex * (endSq - startSq)) / (totalZones - 1),
+    );
   },
 
   linearZoneRadius: ({ startRadius, endRadius, zoneIndex, totalZones }) => {
-    return startRadius + (zoneIndex * (endRadius - startRadius)) / (totalZones - 1);
+    return (
+      startRadius + (zoneIndex * (endRadius - startRadius)) / (totalZones - 1)
+    );
   },
 
   generateZones: ({

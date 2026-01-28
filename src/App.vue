@@ -1,6 +1,6 @@
 <template>
   <div id="app" class="min-h-screen bg-gray-100">
-    <div class="text-center pt-2">
+    <div class="text-center pt-2 flex justify-center gap-2">
       <select
         v-model="currentLang"
         @change="changeLanguage"
@@ -8,6 +8,14 @@
       >
         <option value="en">English</option>
         <option value="fr">Français</option>
+      </select>
+      <select
+        v-model="currentUnit"
+        @change="changeUnit"
+        class="select select-bordered select-xs"
+      >
+        <option value="metric">mm / g</option>
+        <option value="imperial">in / lb</option>
       </select>
     </div>
     <div class="container mx-auto px-2 py-3">
@@ -86,6 +94,7 @@ export default {
       isMenuOpen: false,
       analyticsOptedOut: false,
       currentLang: this.$i18n.currentLanguage,
+      currentUnit: this.$units.current,
     };
   },
   computed: {
@@ -118,6 +127,10 @@ export default {
     },
     changeLanguage() {
       this.$i18n.setLanguage(this.currentLang);
+      this.$forceUpdate();
+    },
+    changeUnit() {
+      this.$units.setUnit(this.currentUnit);
       this.$forceUpdate();
     },
     toggleMenu() {

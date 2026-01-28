@@ -269,7 +269,10 @@ describe("pressure calculations", () => {
 describe("comaFree calculations", () => {
   describe("linearRadius", () => {
     it("calculates coma-free linear radius", () => {
-      const result = comaFree.linearRadius({ focalLength: 1200, diameter: 300 });
+      const result = comaFree.linearRadius({
+        focalLength: 1200,
+        diameter: 300,
+      });
       expect(result).toBeCloseTo(1.408, 2);
     });
 
@@ -282,7 +285,10 @@ describe("comaFree calculations", () => {
 
   describe("apparentField", () => {
     it("calculates apparent coma-free field", () => {
-      const result = comaFree.apparentField({ focalLength: 1200, diameter: 300 });
+      const result = comaFree.apparentField({
+        focalLength: 1200,
+        diameter: 300,
+      });
       expect(result).toBeCloseTo(0.0672, 3);
     });
   });
@@ -324,13 +330,19 @@ describe("comaFree calculations", () => {
 describe("annularRing calculations", () => {
   describe("surfaceArea", () => {
     it("calculates annular ring area", () => {
-      const result = annularRing.surfaceArea({ outerRadius: 100, innerRadius: 80 });
+      const result = annularRing.surfaceArea({
+        outerRadius: 100,
+        innerRadius: 80,
+      });
       const expected = Math.PI * (100 * 100 - 80 * 80);
       expect(result).toBeCloseTo(expected, 5);
     });
 
     it("returns 0 when radii are equal", () => {
-      const result = annularRing.surfaceArea({ outerRadius: 100, innerRadius: 100 });
+      const result = annularRing.surfaceArea({
+        outerRadius: 100,
+        innerRadius: 100,
+      });
       expect(result).toBe(0);
     });
   });

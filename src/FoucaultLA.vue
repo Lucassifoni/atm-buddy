@@ -7,81 +7,99 @@
     </div>
     <OpticalPieceSelector @optical-piece-selected="onOpticalPieceSelected" />
     <div class="field-horizontal">
-      <label class="label text-xs font-medium">{{ $t('foucault.mirrorDiameter') }}</label>
+      <label class="label text-xs font-medium"
+        >{{ $t("foucault.mirrorDiameter") }} ({{ lengthUnit }}):</label
+      >
       <input
         class="input input-bordered input-sm w-full"
-        :value="mirrorDiameter"
+        :value="displayMirrorDiameter"
         inputmode="decimal"
         pattern="[0-9]*[.,]?[0-9]*"
-        @input="set('mirrorDiameter', $event.target.value)"
+        @input="setMirrorDiameter($event.target.value)"
       />
     </div>
     <div class="field-horizontal">
-      <label class="label text-xs font-medium">{{ $t('foucault.paraxialRoc') }}</label>
+      <label class="label text-xs font-medium"
+        >{{ $t("foucault.paraxialRoc") }} ({{ lengthUnit }}):</label
+      >
       <input
         class="input input-bordered input-sm w-full"
-        :value="roc"
+        :value="displayRoc"
         inputmode="decimal"
         pattern="[0-9]*[.,]?[0-9]*"
-        @input="set('roc', $event.target.value)"
+        @input="setRoc($event.target.value)"
       />
     </div>
     <div class="field-horizontal">
-      <label class="label text-xs font-medium">{{ $t('foucault.conicConstant') }}</label>
+      <label class="label text-xs font-medium">{{
+        $t("foucault.conicConstant")
+      }}</label>
       <input
         class="input input-bordered input-sm w-full"
         :value="conic"
         inputmode="decimal"
         pattern="-?[0-9]*[.,]?[0-9]*"
-        @input="set('conic', $event.target.value)"
+        @input="setConic($event.target.value)"
       />
     </div>
     <div class="field-horizontal">
-      <label class="label text-xs font-medium">{{ $t('foucault.sourceConfig') }}</label>
+      <label class="label text-xs font-medium">{{
+        $t("foucault.sourceConfig")
+      }}</label>
       <div class="flex gap-3">
         <label class="cursor-pointer flex items-center gap-1">
           <div>
             <input
               type="radio"
               value="fixed"
-              v-model="sourceConfig"
-              @change="set('sourceConfig', 'fixed')"
+              :checked="sourceConfig === 'fixed'"
+              @change="setSourceConfig('fixed')"
               class="radio radio-primary radio-sm"
             />
           </div>
-          <span class="text-xs">{{ $t('foucault.fixedSource') }}</span>
+          <span class="text-xs">{{ $t("foucault.fixedSource") }}</span>
         </label>
         <label class="cursor-pointer flex items-center gap-1">
           <div>
             <input
               type="radio"
               value="moving"
-              v-model="sourceConfig"
-              @change="set('sourceConfig', 'moving')"
+              :checked="sourceConfig === 'moving'"
+              @change="setSourceConfig('moving')"
               class="radio radio-primary radio-sm"
             />
           </div>
-          <span class="text-xs">{{ $t('foucault.movingSource') }}</span>
+          <span class="text-xs">{{ $t("foucault.movingSource") }}</span>
         </label>
       </div>
     </div>
 
     <div class="card bg-base-200 p-3 mt-3">
-      <h4 class="text-sm font-semibold mb-2">{{ $t('foucault.standardZones') }}</h4>
+      <h4 class="text-sm font-semibold mb-2">
+        {{ $t("foucault.standardZones") }}
+      </h4>
       <div class="overflow-x-auto">
         <table class="table table-xs w-full">
           <thead>
             <tr>
-              <th class="text-xs">{{ $t('common.zone') }}</th>
-              <th class="text-xs">{{ $t('foucault.radiusMm') }}</th>
-              <th class="text-xs">{{ $t('foucault.laMm') }}</th>
+              <th class="text-xs">{{ $t("common.zone") }}</th>
+              <th class="text-xs">
+                {{ $t("foucault.radius") }} ({{ lengthUnit }})
+              </th>
+              <th class="text-xs">
+                {{ $t("foucault.la") }} ({{ lengthUnit }})
+              </th>
             </tr>
           </thead>
           <tbody>
             <tr v-for="zone in standardZones" :key="zone.normalized">
               <td class="text-xs">{{ zone.normalized }}</td>
-              <td class="text-xs">{{ zone.radiusMm.toFixed(1) }}</td>
-              <td class="text-xs">{{ zone.la.toFixed(3) }}</td>
+              <td class="text-xs">
+                {{ $units.convert.formatLength(zone.radiusMm) }}
+              </td>
+              <td class="text-xs">
+                {{ $units.convert.formatLength(zone.la) }}
+              </td>
             </tr>
           </tbody>
         </table>
@@ -89,114 +107,134 @@
     </div>
 
     <div class="card bg-base-200 p-3 mt-3">
-      <h4 class="text-sm font-semibold mb-2">{{ $t('foucault.customZones') }}</h4>
+      <h4 class="text-sm font-semibold mb-2">
+        {{ $t("foucault.customZones") }}
+      </h4>
       <div class="field-horizontal">
-        <label class="label text-xs font-medium">{{ $t('foucault.dividingMode') }}</label>
+        <label class="label text-xs font-medium">{{
+          $t("foucault.dividingMode")
+        }}</label>
         <div class="flex gap-3">
           <label class="cursor-pointer flex items-center gap-1">
             <div>
               <input
                 type="radio"
                 value="linear"
-                v-model="dividingMode"
-                @change="set('dividingMode', 'linear')"
+                :checked="dividingMode === 'linear'"
+                @change="setDividingMode('linear')"
                 class="radio radio-primary radio-sm"
               />
             </div>
-            <span class="text-xs">{{ $t('foucault.linear') }}</span>
+            <span class="text-xs">{{ $t("foucault.linear") }}</span>
           </label>
           <label class="cursor-pointer flex items-center gap-1">
             <div>
               <input
                 type="radio"
                 value="equal_area"
-                v-model="dividingMode"
-                @change="set('dividingMode', 'equal_area')"
+                :checked="dividingMode === 'equal_area'"
+                @change="setDividingMode('equal_area')"
                 class="radio radio-primary radio-sm"
               />
             </div>
-            <span class="text-xs">{{ $t('foucault.equalArea') }}</span>
+            <span class="text-xs">{{ $t("foucault.equalArea") }}</span>
           </label>
         </div>
       </div>
       <div class="field-horizontal">
-        <label class="label text-xs font-medium">{{ $t('foucault.inputMode') }}</label>
+        <label class="label text-xs font-medium">{{
+          $t("foucault.inputMode")
+        }}</label>
         <div class="flex gap-3">
           <label class="cursor-pointer flex items-center gap-1">
             <div>
               <input
                 type="radio"
                 value="normalized"
-                v-model="inputMode"
-                @change="set('inputMode', 'normalized')"
+                :checked="inputMode === 'normalized'"
+                @change="setInputMode('normalized')"
                 class="radio radio-primary radio-sm"
               />
             </div>
-            <span class="text-xs">{{ $t('foucault.normalized') }}</span>
+            <span class="text-xs">{{ $t("foucault.normalized") }}</span>
           </label>
           <label class="cursor-pointer flex items-center gap-1">
             <div>
               <input
                 type="radio"
                 value="mm"
-                v-model="inputMode"
-                @change="set('inputMode', 'mm')"
+                :checked="inputMode === 'mm'"
+                @change="setInputMode('mm')"
                 class="radio radio-primary radio-sm"
               />
             </div>
-            <span class="text-xs">{{ $t('foucault.millimeters') }}</span>
+            <span class="text-xs">{{ $t("foucault.millimeters") }}</span>
           </label>
         </div>
       </div>
       <div class="field-horizontal">
         <label class="label text-xs font-medium">
-          {{ $t('foucault.startZone') }} ({{ inputMode === "normalized" ? $t('foucault.normalized') : $t('common.mm') }}):
+          {{ $t("foucault.startZone") }} ({{
+            inputMode === "normalized" ? $t("foucault.normalized") : lengthUnit
+          }}):
         </label>
         <input
           class="input input-bordered input-sm w-full"
-          :value="startZone"
+          :value="displayStartZone"
           inputmode="decimal"
           pattern="[0-9]*[.,]?[0-9]*"
-          @input="set('startZone', $event.target.value)"
+          @input="setStartZone($event.target.value)"
         />
       </div>
       <div class="field-horizontal">
         <label class="label text-xs font-medium">
-          {{ $t('foucault.endZone') }} ({{ inputMode === "normalized" ? $t('foucault.normalized') : $t('common.mm') }}):
+          {{ $t("foucault.endZone") }} ({{
+            inputMode === "normalized" ? $t("foucault.normalized") : lengthUnit
+          }}):
         </label>
         <input
           class="input input-bordered input-sm w-full"
-          :value="endZone"
+          :value="displayEndZone"
           inputmode="decimal"
           pattern="[0-9]*[.,]?[0-9]*"
-          @input="set('endZone', $event.target.value)"
+          @input="setEndZone($event.target.value)"
         />
       </div>
       <div class="field-horizontal">
-        <label class="label text-xs font-medium">{{ $t('foucault.numZones') }}</label>
+        <label class="label text-xs font-medium">{{
+          $t("foucault.numZones")
+        }}</label>
         <input
           class="input input-bordered input-sm w-full"
           :value="numZones"
           inputmode="numeric"
           pattern="[0-9]*"
-          @input="set('numZones', $event.target.value)"
+          @input="setNumZones($event.target.value)"
         />
       </div>
       <div class="overflow-x-auto mt-2">
         <table class="table table-xs w-full">
           <thead>
             <tr>
-              <th class="text-xs">{{ $t('common.zone') }}</th>
-              <th class="text-xs">{{ $t('foucault.radiusMm') }}</th>
-              <th class="text-xs">{{ $t('foucault.laMm') }}</th>
-              <th class="text-xs">{{ $t('foucault.relativeLa') }}</th>
+              <th class="text-xs">{{ $t("common.zone") }}</th>
+              <th class="text-xs">
+                {{ $t("foucault.radius") }} ({{ lengthUnit }})
+              </th>
+              <th class="text-xs">
+                {{ $t("foucault.la") }} ({{ lengthUnit }})
+              </th>
+              <th class="text-xs">{{ $t("foucault.relativeLa") }}</th>
             </tr>
           </thead>
           <tbody>
             <tr v-for="zone in customZones" :key="zone.index">
               <td class="text-xs">{{ zone.normalized.toFixed(3) }}</td>
-              <td class="text-xs">{{ zone.radiusMm.toFixed(1) }}</td>
-              <td class="text-xs">{{ zone.la.toFixed(3) }}</td>
+              <td class="text-xs">
+                {{ $units.convert.formatLength(zone.radiusMm) }}
+              </td>
+              <td class="text-xs">
+                {{ $units.convert.formatLength(zone.la) }}
+              </td>
               <td class="text-xs">{{ zone.relativeLa.toFixed(3) }}</td>
             </tr>
           </tbody>
@@ -205,12 +243,13 @@
     </div>
 
     <div class="card bg-base-200 p-3 mt-3">
-      <h4 class="text-sm font-semibold mb-2">{{ $t('foucault.summary') }}</h4>
+      <h4 class="text-sm font-semibold mb-2">{{ $t("foucault.summary") }}</h4>
       <p class="text-xs">
-        {{ $t('foucault.totalLa') }} <strong>{{ totalLA.toFixed(3) }} {{ $t('common.mm') }}</strong>
+        {{ $t("foucault.totalLa") }}
+        <strong>{{ totalLADisplay }} {{ lengthUnit }}</strong>
       </p>
       <p class="text-xs">
-        {{ $t('foucault.conic') }} <strong>{{ conicDescription }}</strong>
+        {{ $t("foucault.conic") }} <strong>{{ conicDescription }}</strong>
       </p>
       <p class="text-xs text-gray-500 mt-1">{{ sourceConfigDescription }}</p>
     </div>
@@ -218,11 +257,9 @@
 </template>
 
 <script>
-import { get, set, normalize } from "./utils";
+import { normalize } from "./utils";
 import { foucault } from "./formulas";
 import OpticalPieceSelector from "./OpticalPieceSelector.vue";
-
-const toN = (a) => Number(normalize(a));
 
 export default {
   name: "FoucaultLA",
@@ -231,64 +268,113 @@ export default {
   },
   data() {
     return {
-      mirrorDiameter: get("__foucault_la", "mirrorDiameter", "200"),
-      roc: get("__foucault_la", "roc", "1600"),
-      conic: get("__foucault_la", "conic", "-1"),
-      startZone: get("__foucault_la", "startZone", "0"),
-      endZone: get("__foucault_la", "endZone", "1"),
-      numZones: get("__foucault_la", "numZones", "10"),
-      inputMode: get("__foucault_la", "inputMode", "normalized"),
-      sourceConfig: get("__foucault_la", "sourceConfig", "moving"),
-      dividingMode: get("__foucault_la", "dividingMode", "equal_area"),
+      mirrorDiameterMm: 200,
+      rocMm: 1600,
+      conic: -1,
+      startZoneNorm: 0,
+      endZoneNorm: 1,
+      numZones: 10,
+      inputMode: "normalized",
+      sourceConfig: "moving",
+      dividingMode: "equal_area",
     };
   },
   methods: {
-    set(key, value) {
-      set(
-        this,
-        "__foucault_la",
-        {
-          mirrorDiameter: this.mirrorDiameter,
-          roc: this.roc,
-          conic: this.conic,
-          startZone: this.startZone,
-          endZone: this.endZone,
-          numZones: this.numZones,
-          inputMode: this.inputMode,
-          sourceConfig: this.sourceConfig,
-          dividingMode: this.dividingMode,
-        },
-        key,
-        value,
+    normalize,
+    setMirrorDiameter(value) {
+      this.mirrorDiameterMm = this.$units.convert.lengthFromDisplay(
+        parseFloat(value) || 0,
       );
     },
-    normalize,
+    setRoc(value) {
+      this.rocMm = this.$units.convert.lengthFromDisplay(
+        parseFloat(value) || 0,
+      );
+    },
+    setConic(value) {
+      this.conic = parseFloat(value) || 0;
+    },
+    setStartZone(value) {
+      const parsed = parseFloat(value) || 0;
+      if (this.inputMode === "normalized") {
+        this.startZoneNorm = parsed;
+      } else {
+        this.startZoneNorm =
+          this.$units.convert.lengthFromDisplay(parsed) / this.mirrorRadius;
+      }
+    },
+    setEndZone(value) {
+      const parsed = parseFloat(value) || 0;
+      if (this.inputMode === "normalized") {
+        this.endZoneNorm = parsed;
+      } else {
+        this.endZoneNorm =
+          this.$units.convert.lengthFromDisplay(parsed) / this.mirrorRadius;
+      }
+    },
+    setNumZones(value) {
+      this.numZones = parseInt(value) || 1;
+    },
+    setInputMode(value) {
+      this.inputMode = value;
+    },
+    setSourceConfig(value) {
+      this.sourceConfig = value;
+    },
+    setDividingMode(value) {
+      this.dividingMode = value;
+    },
     onOpticalPieceSelected(piece) {
-      this.set("mirrorDiameter", (piece.radius * 2).toString());
-      this.set("roc", piece.radiusOfCurvature.toString());
+      this.mirrorDiameterMm = piece.radius * 2;
+      this.rocMm = piece.radiusOfCurvature;
     },
     calculateLA(radiusMm) {
       return foucault.longitudinalAberration({
         zoneRadius: radiusMm,
-        radiusOfCurvature: toN(this.roc),
-        conicConstant: toN(this.conic),
+        radiusOfCurvature: this.rocMm,
+        conicConstant: this.conic,
         sourceConfig: this.sourceConfig,
       });
     },
   },
   computed: {
+    displayMirrorDiameter() {
+      return this.$units.convert.lengthToDisplay(this.mirrorDiameterMm);
+    },
+    displayRoc() {
+      return this.$units.convert.lengthToDisplay(this.rocMm);
+    },
+    displayStartZone() {
+      if (this.inputMode === "normalized") {
+        return this.startZoneNorm;
+      }
+      return this.$units.convert.lengthToDisplay(
+        this.startZoneNorm * this.mirrorRadius,
+      );
+    },
+    displayEndZone() {
+      if (this.inputMode === "normalized") {
+        return this.endZoneNorm;
+      }
+      return this.$units.convert.lengthToDisplay(
+        this.endZoneNorm * this.mirrorRadius,
+      );
+    },
+    lengthUnit() {
+      return this.$units.convert.lengthUnit();
+    },
     mirrorRadius() {
-      return toN(this.mirrorDiameter) / 2;
+      return this.mirrorDiameterMm / 2;
     },
     formulaDisplay() {
       return this.sourceConfig === "moving"
-        ? this.$t('foucault.formulaMoving')
-        : this.$t('foucault.formulaFixed');
+        ? this.$t("foucault.formulaMoving")
+        : this.$t("foucault.formulaFixed");
     },
     sourceConfigDescription() {
       return this.sourceConfig === "moving"
-        ? this.$t('foucault.movingDesc')
-        : this.$t('foucault.fixedDesc');
+        ? this.$t("foucault.movingDesc")
+        : this.$t("foucault.fixedDesc");
     },
     standardZones() {
       const normalizedValues = [0.25, 0.5, 0.75, 1];
@@ -302,39 +388,36 @@ export default {
       });
     },
     startZoneMm() {
-      if (this.inputMode === "normalized") {
-        return this.mirrorRadius * toN(this.startZone);
-      }
-      return toN(this.startZone);
+      return this.mirrorRadius * this.startZoneNorm;
     },
     endZoneMm() {
-      if (this.inputMode === "normalized") {
-        return this.mirrorRadius * toN(this.endZone);
-      }
-      return toN(this.endZone);
+      return this.mirrorRadius * this.endZoneNorm;
     },
     customZones() {
       return foucault.generateZones({
         mirrorRadius: this.mirrorRadius,
-        radiusOfCurvature: toN(this.roc),
-        conicConstant: toN(this.conic),
+        radiusOfCurvature: this.rocMm,
+        conicConstant: this.conic,
         sourceConfig: this.sourceConfig,
         startRadius: this.startZoneMm,
         endRadius: this.endZoneMm,
-        numZones: toN(this.numZones),
+        numZones: this.numZones,
         dividingMode: this.dividingMode,
       });
     },
     totalLA() {
       return this.calculateLA(this.mirrorRadius);
     },
+    totalLADisplay() {
+      return this.$units.convert.formatLength(this.totalLA);
+    },
     conicDescription() {
-      const k = toN(this.conic);
-      if (k === 0) return this.$t('foucault.sphere');
-      if (k === -1) return this.$t('foucault.parabola');
-      if (k > 0) return this.$t('foucault.oblateEllipsoid');
-      if (k > -1) return this.$t('foucault.prolateEllipsoid');
-      return this.$t('foucault.hyperbola');
+      const k = this.conic;
+      if (k === 0) return this.$t("foucault.sphere");
+      if (k === -1) return this.$t("foucault.parabola");
+      if (k > 0) return this.$t("foucault.oblateEllipsoid");
+      if (k > -1) return this.$t("foucault.prolateEllipsoid");
+      return this.$t("foucault.hyperbola");
     },
   },
 };
