@@ -4,11 +4,6 @@
     :width="size"
     :height="size"
     :viewBox="viewBox"
-    fill="none"
-    stroke="currentColor"
-    stroke-width="2"
-    stroke-linecap="round"
-    stroke-linejoin="round"
     v-html="spriteContent"
   />
 </template>
@@ -30,7 +25,7 @@ export default {
     },
     size: {
       type: [String, Number],
-      default: 24,
+      default: 48,
     },
     className: {
       type: String,

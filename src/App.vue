@@ -50,7 +50,7 @@
         class="btn btn-circle btn-primary shadow-lg"
         @click="toggleMenu"
       >
-        <Icon name="menu" class="w-6 h-6" />
+        Menu
       </div>
 
       <div

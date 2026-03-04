@@ -1,7 +1,7 @@
 export default {
   home: [1, 1],
-  sphero: [2, 1],
-  reverse_sphero: [3, 1],
+  sphero: [3, 1],
+  reverse_sphero: [2, 1],
   sagitta: [4, 1],
   sine_table: [1, 2],
   mpcc_hyperbolic: [2, 2],
