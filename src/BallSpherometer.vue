@@ -1,16 +1,21 @@
 <template>
   <div>
     <div class="card-title justify-center mb-3">
-      <div class="badge badge-outline badge-sm">{{ $t('spherometer.formula') }}</div>
+      <div class="badge badge-outline badge-sm">
+        {{ $t("spherometer.formula") }}
+      </div>
     </div>
     <SpherometerSelector @spherometer-selected="onSpherometerSelected" />
     <div class="alert alert-success mt-4 py-2">
       <span class="text-sm font-semibold"
-        >{{ $t('spherometer.rocLabel') }} <strong>{{ roc.toFixed(2) }}</strong> {{ $t('common.mm') }}</span
+        >{{ $t("spherometer.rocLabel") }} <strong>{{ roc.toFixed(2) }}</strong>
+        {{ $t("common.mm") }}</span
       >
     </div>
     <div class="field-horizontal">
-      <label class="label text-xs font-medium">{{ $t('spherometer.feetRadius') }}</label>
+      <label class="label text-xs font-medium">{{
+        $t("spherometer.feetRadius")
+      }}</label>
       <input
         class="input input-bordered input-sm w-full"
         :value="r"
@@ -20,7 +25,9 @@
       />
     </div>
     <div class="field-horizontal">
-      <label class="label text-xs font-medium">{{ $t('spherometer.sagitta') }}</label>
+      <label class="label text-xs font-medium">{{
+        $t("spherometer.sagitta")
+      }}</label>
       <input
         class="input input-bordered input-sm w-full"
         inputmode="decimal"
@@ -30,7 +37,9 @@
       />
     </div>
     <div class="field-horizontal">
-      <label class="label text-xs font-medium">{{ $t('spherometer.ballDiameter') }}</label>
+      <label class="label text-xs font-medium">{{
+        $t("spherometer.ballDiameter")
+      }}</label>
       <input
         class="input input-bordered input-sm w-full"
         :value="b"
@@ -40,7 +49,9 @@
       />
     </div>
     <div class="field-horizontal">
-      <label class="label text-xs font-medium">{{ $t('spherometer.curveLabel') }}</label>
+      <label class="label text-xs font-medium">{{
+        $t("spherometer.curveLabel")
+      }}</label>
       <div class="flex gap-3">
         <label class="cursor-pointer flex items-center gap-1">
           <div>
@@ -51,7 +62,7 @@
               class="radio radio-primary radio-sm"
             />
           </div>
-          <span class="text-xs">{{ $t('common.concave') }}</span>
+          <span class="text-xs">{{ $t("common.concave") }}</span>
         </label>
         <label class="cursor-pointer flex items-center gap-1">
           <div>
@@ -62,7 +73,7 @@
               class="radio radio-primary radio-sm"
             />
           </div>
-          <span class="text-xs">{{ $t('common.convex') }}</span>
+          <span class="text-xs">{{ $t("common.convex") }}</span>
         </label>
       </div>
     </div>

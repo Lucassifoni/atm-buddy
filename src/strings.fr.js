@@ -56,6 +56,7 @@ export default {
     comaFree: "Rayon sans coma",
     foucaultLA: "Foucault LA",
     hardware: "Matériel",
+    colorSplitter: "Séparation couleurs",
   },
 
   spherometer: {
@@ -337,5 +338,20 @@ export default {
     bomSprayers: "Deux pulvérisateurs",
     bomContainers: "Récipients",
     bomMasks: "Masques FFP2",
+  },
+
+  colorSplitter: {
+    description:
+      "Séparez les canaux RVB d'images de tests DPAC (Ronchi ou Foucault) de réfracteurs pour analyser le comportement chromatique par canal.",
+    dropOrClick: "Glissez une image ici ou cliquez pour sélectionner",
+    original: "Original",
+    red: "Rouge",
+    green: "Vert",
+    blue: "Bleu",
+    downloadComposite: "Télécharger le composite 4 panneaux",
+    downloadOriginal: "Télécharger l'original",
+    downloadRed: "Télécharger le rouge",
+    downloadGreen: "Télécharger le vert",
+    downloadBlue: "Télécharger le bleu",
   },
 };

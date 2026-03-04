@@ -1,7 +1,9 @@
 <template>
   <div>
     <div class="card-title justify-center mb-3">
-      <div class="badge badge-outline badge-sm">{{ $t('sineTable.formula') }}</div>
+      <div class="badge badge-outline badge-sm">
+        {{ $t("sineTable.formula") }}
+      </div>
     </div>
     <div class="alert mb-3 py-2">
       <div>
@@ -11,11 +13,14 @@
     <OpticalPieceSelector @optical-piece-selected="onOpticalPieceSelected" />
     <div class="alert alert-success mt-4 py-2">
       <span class="text-sm font-semibold"
-        >{{ $t('sineTable.angleLabel') }} <strong>{{ x.toFixed(2) }}{{ $t('common.degrees') }}</strong></span
+        >{{ $t("sineTable.angleLabel") }}
+        <strong>{{ x.toFixed(2) }}{{ $t("common.degrees") }}</strong></span
       >
     </div>
     <div class="field-horizontal">
-      <label class="label text-xs font-medium">{{ $t('sineTable.cupRadius') }}</label>
+      <label class="label text-xs font-medium">{{
+        $t("sineTable.cupRadius")
+      }}</label>
       <input
         class="input input-bordered input-sm w-full"
         :value="r"
@@ -25,7 +30,9 @@
       />
     </div>
     <div class="field-horizontal">
-      <label class="label text-xs font-medium">{{ $t('sineTable.desiredRoc') }}</label>
+      <label class="label text-xs font-medium">{{
+        $t("sineTable.desiredRoc")
+      }}</label>
       <input
         class="input input-bordered input-sm w-full"
         :value="R"

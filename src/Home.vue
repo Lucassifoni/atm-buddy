@@ -2,7 +2,7 @@
   <div>
     <div class="text-center mb-6">
       <p class="text-base text-gray-600">
-        {{ $t('home.subtitle') }}
+        {{ $t("home.subtitle") }}
       </p>
     </div>
 
@@ -13,15 +13,15 @@
         :to="route.path"
         class="tool-card"
       >
-<Icon :name="route.meta.icon" class="tool-icon" />
+        <Icon :name="route.meta.icon" class="tool-icon" />
         <span class="tool-name">{{ getRouteTitle(route) }}</span>
       </router-link>
     </div>
 
     <div class="card bg-base-200 p-4 mt-6">
-      <h2 class="text-base font-semibold mb-2">{{ $t('home.aboutTitle') }}</h2>
+      <h2 class="text-base font-semibold mb-2">{{ $t("home.aboutTitle") }}</h2>
       <p class="text-sm text-gray-600">
-        {{ $t('home.aboutText') }}
+        {{ $t("home.aboutText") }}
       </p>
     </div>
   </div>

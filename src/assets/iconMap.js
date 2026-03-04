@@ -13,5 +13,6 @@ export default {
   coma_free: [4, 3],
   foucault_la: [1, 4],
   hardware: [2, 4],
+  color_splitter: [4, 4],
   menu: [3, 4],
 };

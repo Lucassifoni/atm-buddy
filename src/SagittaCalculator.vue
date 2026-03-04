@@ -1,16 +1,21 @@
 <template>
   <div>
     <div class="card-title justify-center mb-3">
-      <div class="badge badge-outline badge-sm">{{ $t('sagittaCalc.formula') }}</div>
+      <div class="badge badge-outline badge-sm">
+        {{ $t("sagittaCalc.formula") }}
+      </div>
     </div>
     <OpticalPieceSelector @optical-piece-selected="onOpticalPieceSelected" />
     <div class="alert alert-success mt-4 py-2">
       <span class="text-sm font-semibold"
-        >{{ $t('sagittaCalc.sagittaLabel') }} <strong>{{ sagitta.toFixed(3) }}</strong> {{ $t('common.mm') }}</span
+        >{{ $t("sagittaCalc.sagittaLabel") }}
+        <strong>{{ sagitta.toFixed(3) }}</strong> {{ $t("common.mm") }}</span
       >
     </div>
     <div class="field-horizontal">
-      <label class="label text-xs font-medium">{{ $t('sagittaCalc.mirrorRadius') }}</label>
+      <label class="label text-xs font-medium">{{
+        $t("sagittaCalc.mirrorRadius")
+      }}</label>
       <input
         class="input input-bordered input-sm w-full"
         :value="r"
@@ -20,7 +25,9 @@
       />
     </div>
     <div class="field-horizontal">
-      <label class="label text-xs font-medium">{{ $t('sagittaCalc.rocLabel') }}</label>
+      <label class="label text-xs font-medium">{{
+        $t("sagittaCalc.rocLabel")
+      }}</label>
       <input
         class="input input-bordered input-sm w-full"
         inputmode="decimal"

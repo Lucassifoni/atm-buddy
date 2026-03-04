@@ -8,7 +8,9 @@ const AVAILABLE_LANGUAGES = { en, fr };
 const isBrowser = typeof window !== "undefined";
 
 const currentLanguage = ref(
-  isBrowser ? localStorage.getItem(STORAGE_KEY) || DEFAULT_LANGUAGE : DEFAULT_LANGUAGE
+  isBrowser
+    ? localStorage.getItem(STORAGE_KEY) || DEFAULT_LANGUAGE
+    : DEFAULT_LANGUAGE,
 );
 
 function setLanguage(lang) {
@@ -25,7 +27,9 @@ function getNestedValue(obj, path) {
 }
 
 function t(key, params = {}) {
-  const strings = AVAILABLE_LANGUAGES[currentLanguage.value] || AVAILABLE_LANGUAGES[DEFAULT_LANGUAGE];
+  const strings =
+    AVAILABLE_LANGUAGES[currentLanguage.value] ||
+    AVAILABLE_LANGUAGES[DEFAULT_LANGUAGE];
   let value = getNestedValue(strings, key);
 
   if (value === undefined) {

@@ -55,6 +55,7 @@ export default {
     comaFree: "Coma-free Radius",
     foucaultLA: "Foucault LA",
     hardware: "Hardware",
+    colorSplitter: "Color Splitter",
   },
 
   spherometer: {
@@ -334,5 +335,20 @@ export default {
     bomSprayers: "Two sprayers",
     bomContainers: "Containers",
     bomMasks: "FFP2 masks",
+  },
+
+  colorSplitter: {
+    description:
+      "Separate RGB channels from DPAC test images (Ronchi or Foucault) of refractors to analyze chromatic behavior per channel.",
+    dropOrClick: "Drop an image here or click to select",
+    original: "Original",
+    red: "Red",
+    green: "Green",
+    blue: "Blue",
+    downloadComposite: "Download 4-panel composite",
+    downloadOriginal: "Download original",
+    downloadRed: "Download red",
+    downloadGreen: "Download green",
+    downloadBlue: "Download blue",
   },
 };

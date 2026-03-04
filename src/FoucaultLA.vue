@@ -7,7 +7,9 @@
     </div>
     <OpticalPieceSelector @optical-piece-selected="onOpticalPieceSelected" />
     <div class="field-horizontal">
-      <label class="label text-xs font-medium">{{ $t('foucault.mirrorDiameter') }}</label>
+      <label class="label text-xs font-medium">{{
+        $t("foucault.mirrorDiameter")
+      }}</label>
       <input
         class="input input-bordered input-sm w-full"
         :value="mirrorDiameter"
@@ -17,7 +19,9 @@
       />
     </div>
     <div class="field-horizontal">
-      <label class="label text-xs font-medium">{{ $t('foucault.paraxialRoc') }}</label>
+      <label class="label text-xs font-medium">{{
+        $t("foucault.paraxialRoc")
+      }}</label>
       <input
         class="input input-bordered input-sm w-full"
         :value="roc"
@@ -27,7 +31,9 @@
       />
     </div>
     <div class="field-horizontal">
-      <label class="label text-xs font-medium">{{ $t('foucault.conicConstant') }}</label>
+      <label class="label text-xs font-medium">{{
+        $t("foucault.conicConstant")
+      }}</label>
       <input
         class="input input-bordered input-sm w-full"
         :value="conic"
@@ -37,7 +43,9 @@
       />
     </div>
     <div class="field-horizontal">
-      <label class="label text-xs font-medium">{{ $t('foucault.sourceConfig') }}</label>
+      <label class="label text-xs font-medium">{{
+        $t("foucault.sourceConfig")
+      }}</label>
       <div class="flex gap-3">
         <label class="cursor-pointer flex items-center gap-1">
           <div>
@@ -49,7 +57,7 @@
               class="radio radio-primary radio-sm"
             />
           </div>
-          <span class="text-xs">{{ $t('foucault.fixedSource') }}</span>
+          <span class="text-xs">{{ $t("foucault.fixedSource") }}</span>
         </label>
         <label class="cursor-pointer flex items-center gap-1">
           <div>
@@ -61,20 +69,22 @@
               class="radio radio-primary radio-sm"
             />
           </div>
-          <span class="text-xs">{{ $t('foucault.movingSource') }}</span>
+          <span class="text-xs">{{ $t("foucault.movingSource") }}</span>
         </label>
       </div>
     </div>
 
     <div class="card bg-base-200 p-3 mt-3">
-      <h4 class="text-sm font-semibold mb-2">{{ $t('foucault.standardZones') }}</h4>
+      <h4 class="text-sm font-semibold mb-2">
+        {{ $t("foucault.standardZones") }}
+      </h4>
       <div class="overflow-x-auto">
         <table class="table table-xs w-full">
           <thead>
             <tr>
-              <th class="text-xs">{{ $t('common.zone') }}</th>
-              <th class="text-xs">{{ $t('foucault.radiusMm') }}</th>
-              <th class="text-xs">{{ $t('foucault.laMm') }}</th>
+              <th class="text-xs">{{ $t("common.zone") }}</th>
+              <th class="text-xs">{{ $t("foucault.radiusMm") }}</th>
+              <th class="text-xs">{{ $t("foucault.laMm") }}</th>
             </tr>
           </thead>
           <tbody>
@@ -89,9 +99,13 @@
     </div>
 
     <div class="card bg-base-200 p-3 mt-3">
-      <h4 class="text-sm font-semibold mb-2">{{ $t('foucault.customZones') }}</h4>
+      <h4 class="text-sm font-semibold mb-2">
+        {{ $t("foucault.customZones") }}
+      </h4>
       <div class="field-horizontal">
-        <label class="label text-xs font-medium">{{ $t('foucault.dividingMode') }}</label>
+        <label class="label text-xs font-medium">{{
+          $t("foucault.dividingMode")
+        }}</label>
         <div class="flex gap-3">
           <label class="cursor-pointer flex items-center gap-1">
             <div>
@@ -103,7 +117,7 @@
                 class="radio radio-primary radio-sm"
               />
             </div>
-            <span class="text-xs">{{ $t('foucault.linear') }}</span>
+            <span class="text-xs">{{ $t("foucault.linear") }}</span>
           </label>
           <label class="cursor-pointer flex items-center gap-1">
             <div>
@@ -115,12 +129,14 @@
                 class="radio radio-primary radio-sm"
               />
             </div>
-            <span class="text-xs">{{ $t('foucault.equalArea') }}</span>
+            <span class="text-xs">{{ $t("foucault.equalArea") }}</span>
           </label>
         </div>
       </div>
       <div class="field-horizontal">
-        <label class="label text-xs font-medium">{{ $t('foucault.inputMode') }}</label>
+        <label class="label text-xs font-medium">{{
+          $t("foucault.inputMode")
+        }}</label>
         <div class="flex gap-3">
           <label class="cursor-pointer flex items-center gap-1">
             <div>
@@ -132,7 +148,7 @@
                 class="radio radio-primary radio-sm"
               />
             </div>
-            <span class="text-xs">{{ $t('foucault.normalized') }}</span>
+            <span class="text-xs">{{ $t("foucault.normalized") }}</span>
           </label>
           <label class="cursor-pointer flex items-center gap-1">
             <div>
@@ -144,13 +160,17 @@
                 class="radio radio-primary radio-sm"
               />
             </div>
-            <span class="text-xs">{{ $t('foucault.millimeters') }}</span>
+            <span class="text-xs">{{ $t("foucault.millimeters") }}</span>
           </label>
         </div>
       </div>
       <div class="field-horizontal">
         <label class="label text-xs font-medium">
-          {{ $t('foucault.startZone') }} ({{ inputMode === "normalized" ? $t('foucault.normalized') : $t('common.mm') }}):
+          {{ $t("foucault.startZone") }} ({{
+            inputMode === "normalized"
+              ? $t("foucault.normalized")
+              : $t("common.mm")
+          }}):
         </label>
         <input
           class="input input-bordered input-sm w-full"
@@ -162,7 +182,11 @@
       </div>
       <div class="field-horizontal">
         <label class="label text-xs font-medium">
-          {{ $t('foucault.endZone') }} ({{ inputMode === "normalized" ? $t('foucault.normalized') : $t('common.mm') }}):
+          {{ $t("foucault.endZone") }} ({{
+            inputMode === "normalized"
+              ? $t("foucault.normalized")
+              : $t("common.mm")
+          }}):
         </label>
         <input
           class="input input-bordered input-sm w-full"
@@ -173,7 +197,9 @@
         />
       </div>
       <div class="field-horizontal">
-        <label class="label text-xs font-medium">{{ $t('foucault.numZones') }}</label>
+        <label class="label text-xs font-medium">{{
+          $t("foucault.numZones")
+        }}</label>
         <input
           class="input input-bordered input-sm w-full"
           :value="numZones"
@@ -186,10 +212,10 @@
         <table class="table table-xs w-full">
           <thead>
             <tr>
-              <th class="text-xs">{{ $t('common.zone') }}</th>
-              <th class="text-xs">{{ $t('foucault.radiusMm') }}</th>
-              <th class="text-xs">{{ $t('foucault.laMm') }}</th>
-              <th class="text-xs">{{ $t('foucault.relativeLa') }}</th>
+              <th class="text-xs">{{ $t("common.zone") }}</th>
+              <th class="text-xs">{{ $t("foucault.radiusMm") }}</th>
+              <th class="text-xs">{{ $t("foucault.laMm") }}</th>
+              <th class="text-xs">{{ $t("foucault.relativeLa") }}</th>
             </tr>
           </thead>
           <tbody>
@@ -205,12 +231,13 @@
     </div>
 
     <div class="card bg-base-200 p-3 mt-3">
-      <h4 class="text-sm font-semibold mb-2">{{ $t('foucault.summary') }}</h4>
+      <h4 class="text-sm font-semibold mb-2">{{ $t("foucault.summary") }}</h4>
       <p class="text-xs">
-        {{ $t('foucault.totalLa') }} <strong>{{ totalLA.toFixed(3) }} {{ $t('common.mm') }}</strong>
+        {{ $t("foucault.totalLa") }}
+        <strong>{{ totalLA.toFixed(3) }} {{ $t("common.mm") }}</strong>
       </p>
       <p class="text-xs">
-        {{ $t('foucault.conic') }} <strong>{{ conicDescription }}</strong>
+        {{ $t("foucault.conic") }} <strong>{{ conicDescription }}</strong>
       </p>
       <p class="text-xs text-gray-500 mt-1">{{ sourceConfigDescription }}</p>
     </div>
@@ -282,13 +309,13 @@ export default {
     },
     formulaDisplay() {
       return this.sourceConfig === "moving"
-        ? this.$t('foucault.formulaMoving')
-        : this.$t('foucault.formulaFixed');
+        ? this.$t("foucault.formulaMoving")
+        : this.$t("foucault.formulaFixed");
     },
     sourceConfigDescription() {
       return this.sourceConfig === "moving"
-        ? this.$t('foucault.movingDesc')
-        : this.$t('foucault.fixedDesc');
+        ? this.$t("foucault.movingDesc")
+        : this.$t("foucault.fixedDesc");
     },
     standardZones() {
       const normalizedValues = [0.25, 0.5, 0.75, 1];
@@ -330,11 +357,11 @@ export default {
     },
     conicDescription() {
       const k = toN(this.conic);
-      if (k === 0) return this.$t('foucault.sphere');
-      if (k === -1) return this.$t('foucault.parabola');
-      if (k > 0) return this.$t('foucault.oblateEllipsoid');
-      if (k > -1) return this.$t('foucault.prolateEllipsoid');
-      return this.$t('foucault.hyperbola');
+      if (k === 0) return this.$t("foucault.sphere");
+      if (k === -1) return this.$t("foucault.parabola");
+      if (k > 0) return this.$t("foucault.oblateEllipsoid");
+      if (k > -1) return this.$t("foucault.prolateEllipsoid");
+      return this.$t("foucault.hyperbola");
     },
   },
 };

@@ -2,34 +2,40 @@
   <div>
     <div class="card-title justify-center mb-3">
       <div class="badge badge-outline badge-sm">
-        {{ $t('comaFree.title') }}
+        {{ $t("comaFree.title") }}
       </div>
     </div>
     <div class="alert alert mb-3 py-1">
       <div class="text-xs">
-        <p>{{ $t('comaFree.formula') }}</p>
+        <p>{{ $t("comaFree.formula") }}</p>
       </div>
     </div>
     <OpticalPieceSelector @optical-piece-selected="onOpticalPieceSelected" />
     <div class="alert alert-success mt-4 py-2">
       <div class="text-xs">
-        <p><strong>{{ $t('comaFree.focalRatio') }}</strong> {{ $t('comaFree.fPrefix') }}{{ ratio.toFixed(2) }}</p>
         <p>
-          <strong>{{ $t('comaFree.comaFreeLinear') }}</strong>
-          {{ comaFreeLinear.toFixed(3) }} {{ $t('common.mm') }}
+          <strong>{{ $t("comaFree.focalRatio") }}</strong>
+          {{ $t("comaFree.fPrefix") }}{{ ratio.toFixed(2) }}
         </p>
         <p>
-          <strong>{{ $t('comaFree.comaFreeApparent') }}</strong>
-          {{ comaFreeApparent.toFixed(4) }}{{ $t('common.degrees') }}
+          <strong>{{ $t("comaFree.comaFreeLinear") }}</strong>
+          {{ comaFreeLinear.toFixed(3) }} {{ $t("common.mm") }}
         </p>
         <p>
-          <strong>{{ $t('comaFree.comaFreeEyepiece') }}</strong>
-          {{ comaFreeInEyepiece.toFixed(1) }}{{ $t('comaFree.ofAfov') }} {{ afov }}{{ $t('common.degrees') }} {{ $t('comaFree.afov') }}
+          <strong>{{ $t("comaFree.comaFreeApparent") }}</strong>
+          {{ comaFreeApparent.toFixed(4) }}{{ $t("common.degrees") }}
+        </p>
+        <p>
+          <strong>{{ $t("comaFree.comaFreeEyepiece") }}</strong>
+          {{ comaFreeInEyepiece.toFixed(1) }}{{ $t("comaFree.ofAfov") }}
+          {{ afov }}{{ $t("common.degrees") }} {{ $t("comaFree.afov") }}
         </p>
       </div>
     </div>
     <div class="field-horizontal">
-      <label class="label text-xs font-medium">{{ $t('comaFree.diameter') }}</label>
+      <label class="label text-xs font-medium">{{
+        $t("comaFree.diameter")
+      }}</label>
       <input
         class="input input-bordered input-sm w-full"
         :value="d"
@@ -39,7 +45,9 @@
       />
     </div>
     <div class="field-horizontal">
-      <label class="label text-xs font-medium">{{ $t('comaFree.focalLength') }}</label>
+      <label class="label text-xs font-medium">{{
+        $t("comaFree.focalLength")
+      }}</label>
       <input
         class="input input-bordered input-sm w-full"
         :value="f"
@@ -49,7 +57,9 @@
       />
     </div>
     <div class="field-horizontal">
-      <label class="label text-xs font-medium">{{ $t('comaFree.eyepieceFl') }}</label>
+      <label class="label text-xs font-medium">{{
+        $t("comaFree.eyepieceFl")
+      }}</label>
       <input
         class="input input-bordered input-sm w-full"
         :value="eyepieceFl"
@@ -59,7 +69,9 @@
       />
     </div>
     <div class="field-horizontal">
-      <label class="label text-xs font-medium">{{ $t('comaFree.eyepieceAfov') }}</label>
+      <label class="label text-xs font-medium">{{
+        $t("comaFree.eyepieceAfov")
+      }}</label>
       <input
         class="input input-bordered input-sm w-full"
         :value="afov"

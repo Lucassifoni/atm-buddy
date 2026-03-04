@@ -2,17 +2,21 @@
   <div class="space-y-6">
     <div class="text-sm">
       <div class="card-title justify-center mb-3">
-        <div class="badge badge-outline badge-sm">{{ $t('hardware.title') }}</div>
+        <div class="badge badge-outline badge-sm">
+          {{ $t("hardware.title") }}
+        </div>
       </div>
 
       <div class="card bg-base-200 p-3 mb-3">
-        <h2 class="text-sm font-semibold mb-2">{{ $t('hardware.importExport') }}</h2>
+        <h2 class="text-sm font-semibold mb-2">
+          {{ $t("hardware.importExport") }}
+        </h2>
         <div class="flex gap-1 flex-wrap">
           <button class="btn btn-info btn-xs" @click="exportData">
-            {{ $t('hardware.exportBtn') }}
+            {{ $t("hardware.exportBtn") }}
           </button>
           <label class="btn btn-success btn-xs">
-            {{ $t('hardware.importBtn') }}
+            {{ $t("hardware.importBtn") }}
             <input
               type="file"
               accept=".json"
@@ -23,12 +27,14 @@
           </label>
         </div>
         <p class="text-gray-500 text-xs mt-1">
-          {{ $t('hardware.exportHelp') }}
+          {{ $t("hardware.exportHelp") }}
         </p>
       </div>
 
       <div class="card bg-base-200 p-3 mb-3">
-        <h2 class="text-sm font-semibold mb-2">{{ $t('hardware.spherometers') }}</h2>
+        <h2 class="text-sm font-semibold mb-2">
+          {{ $t("hardware.spherometers") }}
+        </h2>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-1 mb-2">
           <input
@@ -57,7 +63,11 @@
               @click="addSpherometer"
               :disabled="!isSpherometerValid"
             >
-              {{ editingSpherometerIndex !== null ? $t('common.update') : $t('common.add') }}
+              {{
+                editingSpherometerIndex !== null
+                  ? $t("common.update")
+                  : $t("common.add")
+              }}
             </button>
             <button
               v-if="editingSpherometerIndex !== null"
@@ -73,10 +83,10 @@
           <table class="table table-xs w-full">
             <thead>
               <tr>
-                <th class="text-xs">{{ $t('common.name') }}</th>
-                <th class="text-xs">{{ $t('hardware.feetRMm') }}</th>
-                <th class="text-xs">{{ $t('hardware.ballDMm') }}</th>
-                <th class="text-xs">{{ $t('common.actions') }}</th>
+                <th class="text-xs">{{ $t("common.name") }}</th>
+                <th class="text-xs">{{ $t("hardware.feetRMm") }}</th>
+                <th class="text-xs">{{ $t("hardware.ballDMm") }}</th>
+                <th class="text-xs">{{ $t("common.actions") }}</th>
               </tr>
             </thead>
             <tbody>
@@ -93,7 +103,7 @@
                     class="btn btn-info btn-xs mr-1"
                     @click="editSpherometer(index)"
                   >
-                    {{ $t('common.edit') }}
+                    {{ $t("common.edit") }}
                   </button>
                   <button
                     class="btn btn-error btn-xs"
@@ -106,11 +116,15 @@
             </tbody>
           </table>
         </div>
-        <p v-else class="text-gray-500 text-xs">{{ $t('hardware.noSpherometers') }}</p>
+        <p v-else class="text-gray-500 text-xs">
+          {{ $t("hardware.noSpherometers") }}
+        </p>
       </div>
 
       <div class="card bg-base-200 p-3 mb-3">
-        <h2 class="text-sm font-semibold mb-2">{{ $t('hardware.opticalPieces') }}</h2>
+        <h2 class="text-sm font-semibold mb-2">
+          {{ $t("hardware.opticalPieces") }}
+        </h2>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-1 mb-2">
           <input
@@ -139,7 +153,11 @@
               @click="addOpticalPiece"
               :disabled="!isOpticalPieceValid"
             >
-              {{ editingOpticalPieceIndex !== null ? $t('common.update') : $t('common.add') }}
+              {{
+                editingOpticalPieceIndex !== null
+                  ? $t("common.update")
+                  : $t("common.add")
+              }}
             </button>
             <button
               v-if="editingOpticalPieceIndex !== null"
@@ -155,10 +173,10 @@
           <table class="table table-xs w-full">
             <thead>
               <tr>
-                <th class="text-xs">{{ $t('common.name') }}</th>
-                <th class="text-xs">{{ $t('hardware.rMm') }}</th>
-                <th class="text-xs">{{ $t('hardware.rocMmShort') }}</th>
-                <th class="text-xs">{{ $t('common.actions') }}</th>
+                <th class="text-xs">{{ $t("common.name") }}</th>
+                <th class="text-xs">{{ $t("hardware.rMm") }}</th>
+                <th class="text-xs">{{ $t("hardware.rocMmShort") }}</th>
+                <th class="text-xs">{{ $t("common.actions") }}</th>
               </tr>
             </thead>
             <tbody>
@@ -173,7 +191,7 @@
                     class="btn btn-info btn-xs mr-1"
                     @click="editOpticalPiece(index)"
                   >
-                    {{ $t('common.edit') }}
+                    {{ $t("common.edit") }}
                   </button>
                   <button
                     class="btn btn-error btn-xs"
@@ -186,11 +204,15 @@
             </tbody>
           </table>
         </div>
-        <p v-else class="text-gray-500 text-xs">{{ $t('hardware.noOpticalPieces') }}</p>
+        <p v-else class="text-gray-500 text-xs">
+          {{ $t("hardware.noOpticalPieces") }}
+        </p>
       </div>
 
       <div class="card bg-base-200 p-3">
-        <h2 class="text-sm font-semibold mb-2">{{ $t('hardware.polishers') }}</h2>
+        <h2 class="text-sm font-semibold mb-2">
+          {{ $t("hardware.polishers") }}
+        </h2>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-1 mb-2">
           <input
@@ -219,7 +241,11 @@
               @click="addPolisher"
               :disabled="!isPolisherValid"
             >
-              {{ editingPolisherIndex !== null ? $t('common.update') : $t('common.add') }}
+              {{
+                editingPolisherIndex !== null
+                  ? $t("common.update")
+                  : $t("common.add")
+              }}
             </button>
             <button
               v-if="editingPolisherIndex !== null"
@@ -235,10 +261,10 @@
           <table class="table table-xs w-full">
             <thead>
               <tr>
-                <th class="text-xs">{{ $t('common.name') }}</th>
-                <th class="text-xs">{{ $t('hardware.diameterMm') }}</th>
-                <th class="text-xs">{{ $t('hardware.weightG') }}</th>
-                <th class="text-xs">{{ $t('common.actions') }}</th>
+                <th class="text-xs">{{ $t("common.name") }}</th>
+                <th class="text-xs">{{ $t("hardware.diameterMm") }}</th>
+                <th class="text-xs">{{ $t("hardware.weightG") }}</th>
+                <th class="text-xs">{{ $t("common.actions") }}</th>
               </tr>
             </thead>
             <tbody>
@@ -255,7 +281,7 @@
                     class="btn btn-info btn-xs mr-1"
                     @click="editPolisher(index)"
                   >
-                    {{ $t('common.edit') }}
+                    {{ $t("common.edit") }}
                   </button>
                   <button
                     class="btn btn-error btn-xs"
@@ -268,7 +294,9 @@
             </tbody>
           </table>
         </div>
-        <p v-else class="text-gray-500 text-xs">{{ $t('hardware.noPolishers') }}</p>
+        <p v-else class="text-gray-500 text-xs">
+          {{ $t("hardware.noPolishers") }}
+        </p>
       </div>
     </div>
   </div>
@@ -370,7 +398,7 @@ export default {
       this.editingSpherometerIndex = index;
     },
     deleteSpherometer(index) {
-      if (confirm(this.$t('hardware.confirmDeleteSpherometer'))) {
+      if (confirm(this.$t("hardware.confirmDeleteSpherometer"))) {
         this.spherometers.splice(index, 1);
         this.saveData();
       }
@@ -411,7 +439,7 @@ export default {
       this.editingOpticalPieceIndex = index;
     },
     deleteOpticalPiece(index) {
-      if (confirm(this.$t('hardware.confirmDeleteOpticalPiece'))) {
+      if (confirm(this.$t("hardware.confirmDeleteOpticalPiece"))) {
         this.opticalPieces.splice(index, 1);
         this.saveData();
       }
@@ -452,7 +480,7 @@ export default {
       this.editingPolisherIndex = index;
     },
     deletePolisher(index) {
-      if (confirm(this.$t('hardware.confirmDeletePolisher'))) {
+      if (confirm(this.$t("hardware.confirmDeletePolisher"))) {
         this.polishers.splice(index, 1);
         this.saveData();
       }
@@ -499,7 +527,7 @@ export default {
           const data = JSON.parse(e.target.result);
 
           if (!this.validateImportData(data)) {
-            alert(this.$t('hardware.invalidFile'));
+            alert(this.$t("hardware.invalidFile"));
             return;
           }
 
@@ -514,7 +542,7 @@ export default {
             if (existing) {
               if (
                 confirm(
-                  `${this.$t('hardware.spherometerWord')} "${imported.name}" ${this.$t('hardware.confirmReplace')}`,
+                  `${this.$t("hardware.spherometerWord")} "${imported.name}" ${this.$t("hardware.confirmReplace")}`,
                 )
               ) {
                 const index = this.spherometers.indexOf(existing);
@@ -532,7 +560,7 @@ export default {
             if (existing) {
               if (
                 confirm(
-                  `${this.$t('hardware.opticalPieceWord')} "${imported.name}" ${this.$t('hardware.confirmReplace')}`,
+                  `${this.$t("hardware.opticalPieceWord")} "${imported.name}" ${this.$t("hardware.confirmReplace")}`,
                 )
               ) {
                 const index = this.opticalPieces.indexOf(existing);
@@ -550,7 +578,7 @@ export default {
             if (existing) {
               if (
                 confirm(
-                  `${this.$t('hardware.polisherWord')} "${imported.name}" ${this.$t('hardware.confirmReplace')}`,
+                  `${this.$t("hardware.polisherWord")} "${imported.name}" ${this.$t("hardware.confirmReplace")}`,
                 )
               ) {
                 const index = this.polishers.indexOf(existing);
@@ -563,14 +591,14 @@ export default {
 
           this.saveData();
           alert(
-            this.$t('hardware.importSuccess', {
+            this.$t("hardware.importSuccess", {
               spherometers: importedSpherometers.length,
               opticalPieces: importedOpticalPieces.length,
-              polishers: importedPolishers.length
+              polishers: importedPolishers.length,
             }),
           );
         } catch (error) {
-          alert(this.$t('hardware.importError'));
+          alert(this.$t("hardware.importError"));
         }
 
         this.$refs.fileInput.value = "";

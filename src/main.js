@@ -16,6 +16,7 @@ import PressureCalculator from "./PressureCalculator.vue";
 import ComaFreeRadius from "./ComaFreeRadius.vue";
 import FoucaultLA from "./FoucaultLA.vue";
 import Hardware from "./Hardware.vue";
+import ColorChannelSplitter from "./ColorChannelSplitter.vue";
 import Home from "./Home.vue";
 
 export const routes = [
@@ -102,6 +103,12 @@ export const routes = [
     name: "hardware",
     component: Hardware,
     meta: { icon: "hardware", titleKey: "routes.hardware" },
+  },
+  {
+    path: "/color_splitter",
+    name: "colorSplitter",
+    component: ColorChannelSplitter,
+    meta: { icon: "color_splitter", titleKey: "routes.colorSplitter" },
   },
 ];
 
