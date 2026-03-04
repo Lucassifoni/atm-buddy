@@ -353,5 +353,10 @@ export default {
     downloadRed: "Télécharger le rouge",
     downloadGreen: "Télécharger le vert",
     downloadBlue: "Télécharger le bleu",
+    normalize: "Normaliser",
+    grayscale: "Niveaux de gris",
+    showLine: "Ligne de repère",
+    linePosition: "Position",
+    lineAngle: "Angle",
   },
 };

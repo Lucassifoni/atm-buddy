@@ -350,5 +350,10 @@ export default {
     downloadRed: "Download red",
     downloadGreen: "Download green",
     downloadBlue: "Download blue",
+    normalize: "Normalize",
+    grayscale: "Grayscale",
+    showLine: "Overlay line",
+    linePosition: "Position",
+    lineAngle: "Angle",
   },
 };
