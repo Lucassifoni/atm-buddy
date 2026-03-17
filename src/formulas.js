@@ -243,6 +243,31 @@ export const foucault = {
   },
 };
 
+export const glassSlabSphericalAberration = ({
+  thickness,
+  refractiveIndex,
+  fNumber,
+}) => {
+  const n = refractiveIndex;
+  const term1 = thickness * (n * n - 1);
+  const term2 = Math.pow(fNumber, 4) * 128 * n * n * n;
+  return -1 * (term1 / term2);
+};
+
+export const bathAstigmatism = ({
+  mirrorDiameter,
+  beamSeparation,
+  radiusOfCurvature,
+  wavelengthNm,
+}) => {
+  const roc = radiusOfCurvature;
+  if (roc === 0 || wavelengthNm === 0) return 0;
+  const valMm =
+    (mirrorDiameter * mirrorDiameter * beamSeparation * beamSeparation) /
+    (32 * roc * roc * roc);
+  return (valMm * 1e6) / wavelengthNm;
+};
+
 export const spraySilvering = {
   cleaningTimeMinutes: (diameter) => {
     return Math.pow(diameter / 15, 1.4);

@@ -57,6 +57,9 @@ export default {
     foucaultLA: "Foucault LA",
     hardware: "Matériel",
     colorSplitter: "Séparation couleurs",
+    littleCalculators: "Petits calculateurs",
+    glassSlab: "Aberration lame de verre",
+    bathAstigmatism: "Astigmatisme Bath",
   },
 
   spherometer: {
@@ -338,6 +341,29 @@ export default {
     bomSprayers: "Deux pulvérisateurs",
     bomContainers: "Récipients",
     bomMasks: "Masques FFP2",
+  },
+
+  littleCalculators: {
+    backToHome: "Retour à l'accueil",
+    backToList: "Retour à la liste",
+  },
+
+  glassSlab: {
+    formula: "AS = -t(n²-1) / (128·N⁴·n³)",
+    resultLabel: "Aberration sphérique :",
+    thickness: "Épaisseur du verre (mm) :",
+    refractiveIndex: "Indice de réfraction :",
+    fNumber: "f/ du faisceau de test :",
+  },
+
+  bathAstigmatism: {
+    formula: "Astig = D²·s²·10⁶ / (32·R³·λ)",
+    resultLabel: "Astigmatisme :",
+    waves: "ondes",
+    mirrorDiameter: "Diamètre du miroir (mm) :",
+    beamSeparation: "Séparation des faisceaux (mm) :",
+    roc: "Rayon de courbure (mm) :",
+    wavelength: "Longueur d'onde (nm) :",
   },
 
   colorSplitter: {

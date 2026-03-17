@@ -15,4 +15,6 @@ export default {
   hardware: [2, 4],
   color_splitter: [4, 4],
   menu: [3, 4],
+  glass_slab: [1, 5],
+  bath_astigmatism: [2, 5],
 };

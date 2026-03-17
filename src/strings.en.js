@@ -56,6 +56,9 @@ export default {
     foucaultLA: "Foucault LA",
     hardware: "Hardware",
     colorSplitter: "Color Splitter",
+    littleCalculators: "Little Calculators",
+    glassSlab: "Glass Slab Aberration",
+    bathAstigmatism: "Bath Astigmatism",
   },
 
   spherometer: {
@@ -335,6 +338,29 @@ export default {
     bomSprayers: "Two sprayers",
     bomContainers: "Containers",
     bomMasks: "FFP2 masks",
+  },
+
+  littleCalculators: {
+    backToHome: "Back to home",
+    backToList: "Back to list",
+  },
+
+  glassSlab: {
+    formula: "SA = -t(n²-1) / (128·N⁴·n³)",
+    resultLabel: "Spherical aberration:",
+    thickness: "Glass thickness (mm):",
+    refractiveIndex: "Refractive index:",
+    fNumber: "Test beam f-number:",
+  },
+
+  bathAstigmatism: {
+    formula: "Astig = D²·s²·10⁶ / (32·R³·λ)",
+    resultLabel: "Astigmatism:",
+    waves: "waves",
+    mirrorDiameter: "Mirror diameter (mm):",
+    beamSeparation: "Beam separation (mm):",
+    roc: "Radius of curvature (mm):",
+    wavelength: "Wavelength (nm):",
   },
 
   colorSplitter: {

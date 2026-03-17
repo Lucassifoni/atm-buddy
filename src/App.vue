@@ -90,7 +90,7 @@ export default {
   },
   computed: {
     routes() {
-      return this.$router.getRoutes();
+      return this.$router.getRoutes().filter((r) => r.meta && r.meta.isHome);
     },
   },
   mounted() {

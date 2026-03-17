@@ -53,7 +53,10 @@
         </label>
       </div>
 
-      <div v-if="lineEnabled" class="flex flex-wrap items-center gap-x-4 gap-y-2 mb-3 text-sm">
+      <div
+        v-if="lineEnabled"
+        class="flex flex-wrap items-center gap-x-4 gap-y-2 mb-3 text-sm"
+      >
         <label class="flex items-center gap-2">
           {{ $t("colorSplitter.linePosition") }}
           <input
@@ -206,11 +209,18 @@ export default {
       const gData = new ImageData(w, h);
       const bData = new ImageData(w, h);
 
-      let rMin = 255, rMax = 0, gMin = 255, gMax = 0, bMin = 255, bMax = 0;
+      let rMin = 255,
+        rMax = 0,
+        gMin = 255,
+        gMax = 0,
+        bMin = 255,
+        bMax = 0;
 
       if (this.normalize) {
         for (let i = 0; i < pixels.length; i += 4) {
-          const rv = pixels[i], gv = pixels[i + 1], bv = pixels[i + 2];
+          const rv = pixels[i],
+            gv = pixels[i + 1],
+            bv = pixels[i + 2];
           if (rv < rMin) rMin = rv;
           if (rv > rMax) rMax = rv;
           if (gv < gMin) gMin = gv;
@@ -225,7 +235,9 @@ export default {
       const bRange = bMax - bMin || 1;
 
       for (let i = 0; i < pixels.length; i += 4) {
-        let rv = pixels[i], gv = pixels[i + 1], bv = pixels[i + 2];
+        let rv = pixels[i],
+          gv = pixels[i + 1],
+          bv = pixels[i + 2];
 
         if (this.normalize) {
           rv = ((rv - rMin) / rRange) * 255;

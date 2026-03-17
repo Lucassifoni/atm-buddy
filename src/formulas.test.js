@@ -15,6 +15,8 @@ import {
   sagittaFringes,
   foucault,
   spraySilvering,
+  glassSlabSphericalAberration,
+  bathAstigmatism,
 } from "./formulas.js";
 
 describe("ballSpherometerROC", () => {
@@ -612,6 +614,109 @@ describe("foucault calculations", () => {
       });
       expect(zones[0].relativeLa).toBe(0);
     });
+  });
+});
+
+describe("glassSlabSphericalAberration", () => {
+  it("calculates spherical aberration for known values", () => {
+    const result = glassSlabSphericalAberration({
+      thickness: 7,
+      refractiveIndex: 1.51,
+      fNumber: 7.8,
+    });
+    expect(result).toBeCloseTo(-5.493165898557691e-6, 10);
+  });
+
+  it("returns 0 for zero thickness", () => {
+    const result = glassSlabSphericalAberration({
+      thickness: 0,
+      refractiveIndex: 1.51,
+      fNumber: 7.8,
+    });
+    expect(result).toBeCloseTo(0, 10);
+  });
+
+  it("is always negative (overcorrection)", () => {
+    const result = glassSlabSphericalAberration({
+      thickness: 10,
+      refractiveIndex: 1.5,
+      fNumber: 5,
+    });
+    expect(result).toBeLessThan(0);
+  });
+
+  it("scales linearly with thickness", () => {
+    const single = glassSlabSphericalAberration({
+      thickness: 5,
+      refractiveIndex: 1.5,
+      fNumber: 6,
+    });
+    const double = glassSlabSphericalAberration({
+      thickness: 10,
+      refractiveIndex: 1.5,
+      fNumber: 6,
+    });
+    expect(double / single).toBeCloseTo(2, 10);
+  });
+});
+
+describe("bathAstigmatism", () => {
+  it("matches DFTFringe reference implementation", () => {
+    const result = bathAstigmatism({
+      mirrorDiameter: 300,
+      beamSeparation: 5,
+      radiusOfCurvature: 3000,
+      wavelengthNm: 550,
+    });
+    const valMm = (300 * 300 * 5 * 5) / (32 * 3000 * 3000 * 3000);
+    const expected = (valMm * 1e6) / 550;
+    expect(result).toBeCloseTo(expected, 10);
+  });
+
+  it("returns 0 for zero ROC", () => {
+    const result = bathAstigmatism({
+      mirrorDiameter: 300,
+      beamSeparation: 20,
+      radiusOfCurvature: 0,
+      wavelengthNm: 550,
+    });
+    expect(result).toBe(0);
+  });
+
+  it("returns 0 for zero beam separation", () => {
+    const result = bathAstigmatism({
+      mirrorDiameter: 300,
+      beamSeparation: 0,
+      radiusOfCurvature: 3000,
+      wavelengthNm: 550,
+    });
+    expect(result).toBe(0);
+  });
+
+  it("scales with square of beam separation", () => {
+    const single = bathAstigmatism({
+      mirrorDiameter: 300,
+      beamSeparation: 10,
+      radiusOfCurvature: 3000,
+      wavelengthNm: 550,
+    });
+    const double = bathAstigmatism({
+      mirrorDiameter: 300,
+      beamSeparation: 20,
+      radiusOfCurvature: 3000,
+      wavelengthNm: 550,
+    });
+    expect(double / single).toBeCloseTo(4, 10);
+  });
+
+  it("returns 0 for zero wavelength", () => {
+    const result = bathAstigmatism({
+      mirrorDiameter: 300,
+      beamSeparation: 20,
+      radiusOfCurvature: 3000,
+      wavelengthNm: 0,
+    });
+    expect(result).toBe(0);
   });
 });
 

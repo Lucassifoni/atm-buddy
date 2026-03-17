@@ -38,7 +38,9 @@ export default {
       return this.$router.getRoutes();
     },
     toolRoutes() {
-      return this.routes.filter((r) => r.path !== "/");
+      return this.routes.filter(
+        (r) => r.path !== "/" && r.meta && r.meta.isHome,
+      );
     },
   },
   methods: {
