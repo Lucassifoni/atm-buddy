@@ -559,60 +559,126 @@ describe("foucault calculations", () => {
   });
 
   describe("generateZones", () => {
-    it("generates correct number of zones", () => {
-      const zones = foucault.generateZones({
-        mirrorRadius: 100,
-        radiusOfCurvature: 1600,
-        conicConstant: -1,
-        sourceConfig: "moving",
-        startRadius: 0,
-        endRadius: 100,
-        numZones: 10,
-        dividingMode: "equal_area",
-      });
-      expect(zones).toHaveLength(10);
+    const defaultParams = {
+      mirrorRadius: 100,
+      radiusOfCurvature: 1600,
+      conicConstant: -1,
+      sourceConfig: "moving",
+      numZones: 10,
+      dividingMode: "equal_area",
+    };
+
+    it("numZones means intervals, so n zones produces n+1 boundary points", () => {
+      const zones = foucault.generateZones(defaultParams);
+      expect(zones).toHaveLength(11);
     });
 
-    it("caps zones at 50", () => {
-      const zones = foucault.generateZones({
-        mirrorRadius: 100,
-        radiusOfCurvature: 1600,
-        conicConstant: -1,
-        sourceConfig: "moving",
-        startRadius: 0,
-        endRadius: 100,
-        numZones: 100,
-        dividingMode: "equal_area",
-      });
-      expect(zones).toHaveLength(50);
+    it("caps at 50 zones (51 boundary points)", () => {
+      const zones = foucault.generateZones({ ...defaultParams, numZones: 100 });
+      expect(zones).toHaveLength(51);
     });
 
-    it("requires minimum 2 zones", () => {
-      const zones = foucault.generateZones({
-        mirrorRadius: 100,
-        radiusOfCurvature: 1600,
-        conicConstant: -1,
-        sourceConfig: "moving",
-        startRadius: 0,
-        endRadius: 100,
-        numZones: 1,
-        dividingMode: "equal_area",
-      });
+    it("requires minimum 1 zone (2 boundary points)", () => {
+      const zones = foucault.generateZones({ ...defaultParams, numZones: 1 });
       expect(zones).toHaveLength(2);
     });
 
     it("first zone has relativeLa of 0", () => {
-      const zones = foucault.generateZones({
-        mirrorRadius: 100,
-        radiusOfCurvature: 1600,
-        conicConstant: -1,
-        sourceConfig: "moving",
-        startRadius: 25,
-        endRadius: 100,
-        numZones: 10,
-        dividingMode: "equal_area",
-      });
+      const zones = foucault.generateZones(defaultParams);
       expect(zones[0].relativeLa).toBe(0);
+    });
+
+    it("relativeLa is the difference between consecutive zones", () => {
+      const zones = foucault.generateZones(defaultParams);
+      for (let i = 1; i < zones.length; i++) {
+        expect(zones[i].relativeLa).toBeCloseTo(zones[i].la - zones[i - 1].la);
+      }
+    });
+
+    it("zones span from 0 to mirrorRadius", () => {
+      const zones = foucault.generateZones(defaultParams);
+      expect(zones[0].radiusMm).toBe(0);
+      expect(zones[zones.length - 1].radiusMm).toBe(100);
+    });
+
+    it("hm is the midpoint between consecutive zone radii", () => {
+      const zones = foucault.generateZones(defaultParams);
+      expect(zones[0].hm).toBe(zones[0].radiusMm / 2);
+      for (let i = 1; i < zones.length; i++) {
+        expect(zones[i].hm).toBeCloseTo(
+          (zones[i - 1].radiusMm + zones[i].radiusMm) / 2,
+        );
+      }
+    });
+
+    it("computes hmSqOverR and hmOverTwoR from hm and ROC", () => {
+      const zones = foucault.generateZones(defaultParams);
+      const R = defaultParams.radiusOfCurvature;
+      for (const zone of zones) {
+        expect(zone.hmSqOverR).toBeCloseTo((zone.hm * zone.hm) / R);
+        expect(zone.hmOverTwoR).toBeCloseTo(zone.hm / (2 * R));
+      }
+    });
+  });
+
+  describe("generateMaskSvg", () => {
+    const zones = foucault.generateZones({
+      mirrorRadius: 100,
+      radiusOfCurvature: 1600,
+      conicConstant: -1,
+      sourceConfig: "moving",
+      numZones: 5,
+      dividingMode: "equal_area",
+    });
+
+    it("returns valid SVG wrapper", () => {
+      const svg = foucault.generateMaskSvg({ mirrorDiameter: 200, zones });
+      expect(svg).toMatch(/^<svg xmlns/);
+      expect(svg).toMatch(/<\/svg>$/);
+      expect(svg).toContain('width="');
+      expect(svg).toContain('mm"');
+    });
+
+    it("contains mirror outline circle at correct radius", () => {
+      const svg = foucault.generateMaskSvg({ mirrorDiameter: 200, zones });
+      expect(svg).toContain('r="100"');
+    });
+
+    it("contains three cut lines with inward red guides on top/bottom only", () => {
+      const svg = foucault.generateMaskSvg({ mirrorDiameter: 200, zones });
+      const allLines = svg.match(/<line /g);
+      expect(allLines).toHaveLength(6);
+      const redLines = svg.match(/<line [^>]*stroke="red"/g);
+      expect(redLines).toHaveLength(2);
+    });
+
+    it("draws central zone as polygon with dotted circle and red guides", () => {
+      const svg = foucault.generateMaskSvg({ mirrorDiameter: 200, zones });
+      const redPaths = svg.match(/<path [^>]*stroke="red"/g);
+      expect(redPaths).toHaveLength(1);
+      const nonZeroZones = zones.filter((z) => z.radiusMm > 0);
+      const dottedCircles = svg.match(
+        /stroke="#000"[^/]*stroke-dasharray="[^"]*"\/>/g,
+      );
+      expect(dottedCircles.length).toBe(nonZeroZones.length);
+    });
+
+    it("central zone has outward red circle, other zones have both red circles", () => {
+      const svg = foucault.generateMaskSvg({ mirrorDiameter: 200, zones });
+      const nonZeroZones = zones.filter((z) => z.radiusMm > 0);
+      const redCircles = svg.match(/<circle [^>]*stroke="red"/g);
+      expect(redCircles.length).toBe(1 + (nonZeroZones.length - 1) * 2);
+    });
+
+    it("offset lines are tangent to first zone hm circle", () => {
+      const svg = foucault.generateMaskSvg({ mirrorDiameter: 200, zones });
+      const firstHm = zones.find((z) => z.hm > 0).hm;
+      const margin = 200 * 0.08;
+      const cy = (200 + margin * 2) / 2;
+      const expectedY1 = cy - firstHm;
+      const expectedY2 = cy + firstHm;
+      expect(svg).toContain(`y1="${expectedY1}"`);
+      expect(svg).toContain(`y1="${expectedY2}"`);
     });
   });
 });

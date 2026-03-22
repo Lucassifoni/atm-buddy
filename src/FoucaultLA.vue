@@ -76,30 +76,6 @@
 
     <div class="card bg-base-200 p-3 mt-3">
       <h4 class="text-sm font-semibold mb-2">
-        {{ $t("foucault.standardZones") }}
-      </h4>
-      <div class="overflow-x-auto">
-        <table class="table table-xs w-full">
-          <thead>
-            <tr>
-              <th class="text-xs">{{ $t("common.zone") }}</th>
-              <th class="text-xs">{{ $t("foucault.radiusMm") }}</th>
-              <th class="text-xs">{{ $t("foucault.laMm") }}</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="zone in standardZones" :key="zone.normalized">
-              <td class="text-xs">{{ zone.normalized }}</td>
-              <td class="text-xs">{{ zone.radiusMm.toFixed(1) }}</td>
-              <td class="text-xs">{{ zone.la.toFixed(3) }}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-
-    <div class="card bg-base-200 p-3 mt-3">
-      <h4 class="text-sm font-semibold mb-2">
         {{ $t("foucault.customZones") }}
       </h4>
       <div class="field-horizontal">
@@ -135,69 +111,6 @@
       </div>
       <div class="field-horizontal">
         <label class="label text-xs font-medium">{{
-          $t("foucault.inputMode")
-        }}</label>
-        <div class="flex gap-3">
-          <label class="cursor-pointer flex items-center gap-1">
-            <div>
-              <input
-                type="radio"
-                value="normalized"
-                v-model="inputMode"
-                @change="set('inputMode', 'normalized')"
-                class="radio radio-primary radio-sm"
-              />
-            </div>
-            <span class="text-xs">{{ $t("foucault.normalized") }}</span>
-          </label>
-          <label class="cursor-pointer flex items-center gap-1">
-            <div>
-              <input
-                type="radio"
-                value="mm"
-                v-model="inputMode"
-                @change="set('inputMode', 'mm')"
-                class="radio radio-primary radio-sm"
-              />
-            </div>
-            <span class="text-xs">{{ $t("foucault.millimeters") }}</span>
-          </label>
-        </div>
-      </div>
-      <div class="field-horizontal">
-        <label class="label text-xs font-medium">
-          {{ $t("foucault.startZone") }} ({{
-            inputMode === "normalized"
-              ? $t("foucault.normalized")
-              : $t("common.mm")
-          }}):
-        </label>
-        <input
-          class="input input-bordered input-sm w-full"
-          :value="startZone"
-          inputmode="decimal"
-          pattern="[0-9]*[.,]?[0-9]*"
-          @input="set('startZone', $event.target.value)"
-        />
-      </div>
-      <div class="field-horizontal">
-        <label class="label text-xs font-medium">
-          {{ $t("foucault.endZone") }} ({{
-            inputMode === "normalized"
-              ? $t("foucault.normalized")
-              : $t("common.mm")
-          }}):
-        </label>
-        <input
-          class="input input-bordered input-sm w-full"
-          :value="endZone"
-          inputmode="decimal"
-          pattern="[0-9]*[.,]?[0-9]*"
-          @input="set('endZone', $event.target.value)"
-        />
-      </div>
-      <div class="field-horizontal">
-        <label class="label text-xs font-medium">{{
           $t("foucault.numZones")
         }}</label>
         <input
@@ -214,6 +127,9 @@
             <tr>
               <th class="text-xs">{{ $t("common.zone") }}</th>
               <th class="text-xs">{{ $t("foucault.radiusMm") }}</th>
+              <th class="text-xs">{{ $t("foucault.hmMm") }}</th>
+              <th class="text-xs">Hm²/R</th>
+              <th class="text-xs">Hm/2R</th>
               <th class="text-xs">{{ $t("foucault.laMm") }}</th>
               <th class="text-xs">{{ $t("foucault.relativeLa") }}</th>
             </tr>
@@ -222,12 +138,31 @@
             <tr v-for="zone in customZones" :key="zone.index">
               <td class="text-xs">{{ zone.normalized.toFixed(3) }}</td>
               <td class="text-xs">{{ zone.radiusMm.toFixed(1) }}</td>
+              <td class="text-xs">{{ zone.hm.toFixed(1) }}</td>
+              <td class="text-xs">{{ zone.hmSqOverR.toFixed(3) }}</td>
+              <td class="text-xs">{{ zone.hmOverTwoR.toFixed(5) }}</td>
               <td class="text-xs">{{ zone.la.toFixed(3) }}</td>
               <td class="text-xs">{{ zone.relativeLa.toFixed(3) }}</td>
             </tr>
           </tbody>
         </table>
       </div>
+    </div>
+
+    <div class="card bg-base-200 p-3 mt-3">
+      <h4 class="text-sm font-semibold mb-2">
+        {{ $t("foucault.couderMask") }}
+      </h4>
+      <div
+        class="flex justify-center p-2 bg-white rounded"
+        v-html="maskSvgPreview"
+      ></div>
+      <button
+        class="btn btn-sm btn-outline mt-2 w-full"
+        @click="downloadMaskSvg"
+      >
+        {{ $t("foucault.exportSvg") }}
+      </button>
     </div>
 
     <div class="card bg-base-200 p-3 mt-3">
@@ -261,10 +196,7 @@ export default {
       mirrorDiameter: get("__foucault_la", "mirrorDiameter", "200"),
       roc: get("__foucault_la", "roc", "1600"),
       conic: get("__foucault_la", "conic", "-1"),
-      startZone: get("__foucault_la", "startZone", "0"),
-      endZone: get("__foucault_la", "endZone", "1"),
       numZones: get("__foucault_la", "numZones", "10"),
-      inputMode: get("__foucault_la", "inputMode", "normalized"),
       sourceConfig: get("__foucault_la", "sourceConfig", "moving"),
       dividingMode: get("__foucault_la", "dividingMode", "equal_area"),
     };
@@ -278,10 +210,7 @@ export default {
           mirrorDiameter: this.mirrorDiameter,
           roc: this.roc,
           conic: this.conic,
-          startZone: this.startZone,
-          endZone: this.endZone,
           numZones: this.numZones,
-          inputMode: this.inputMode,
           sourceConfig: this.sourceConfig,
           dividingMode: this.dividingMode,
         },
@@ -293,6 +222,16 @@ export default {
     onOpticalPieceSelected(piece) {
       this.set("mirrorDiameter", (piece.radius * 2).toString());
       this.set("roc", piece.radiusOfCurvature.toString());
+    },
+    downloadMaskSvg() {
+      const svg = this.maskSvg;
+      const blob = new Blob([svg], { type: "image/svg+xml" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `couder-mask-${toN(this.mirrorDiameter)}mm.svg`;
+      a.click();
+      URL.revokeObjectURL(url);
     },
     calculateLA(radiusMm) {
       return foucault.longitudinalAberration({
@@ -317,43 +256,29 @@ export default {
         ? this.$t("foucault.movingDesc")
         : this.$t("foucault.fixedDesc");
     },
-    standardZones() {
-      const normalizedValues = [0.25, 0.5, 0.75, 1];
-      return normalizedValues.map((n) => {
-        const radiusMm = this.mirrorRadius * n;
-        return {
-          normalized: n,
-          radiusMm,
-          la: this.calculateLA(radiusMm),
-        };
-      });
-    },
-    startZoneMm() {
-      if (this.inputMode === "normalized") {
-        return this.mirrorRadius * toN(this.startZone);
-      }
-      return toN(this.startZone);
-    },
-    endZoneMm() {
-      if (this.inputMode === "normalized") {
-        return this.mirrorRadius * toN(this.endZone);
-      }
-      return toN(this.endZone);
-    },
     customZones() {
       return foucault.generateZones({
         mirrorRadius: this.mirrorRadius,
         radiusOfCurvature: toN(this.roc),
         conicConstant: toN(this.conic),
         sourceConfig: this.sourceConfig,
-        startRadius: this.startZoneMm,
-        endRadius: this.endZoneMm,
         numZones: toN(this.numZones),
         dividingMode: this.dividingMode,
       });
     },
     totalLA() {
       return this.calculateLA(this.mirrorRadius);
+    },
+    maskSvg() {
+      return foucault.generateMaskSvg({
+        mirrorDiameter: toN(this.mirrorDiameter),
+        zones: this.customZones,
+      });
+    },
+    maskSvgPreview() {
+      return this.maskSvg
+        .replace(/width="[^"]*"/, 'width="100%"')
+        .replace(/height="[^"]*"/, 'height="auto"');
     },
     conicDescription() {
       const k = toN(this.conic);
