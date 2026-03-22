@@ -149,21 +149,7 @@
       </div>
     </div>
 
-    <div class="card bg-base-200 p-3 mt-3">
-      <h4 class="text-sm font-semibold mb-2">
-        {{ $t("foucault.couderMask") }}
-      </h4>
-      <div
-        class="flex justify-center p-2 bg-white rounded"
-        v-html="maskSvgPreview"
-      ></div>
-      <button
-        class="btn btn-sm btn-outline mt-2 w-full"
-        @click="downloadMaskSvg"
-      >
-        {{ $t("foucault.exportSvg") }}
-      </button>
-    </div>
+    <!-- Couder mask section hidden (WIP) -->
 
     <div class="card bg-base-200 p-3 mt-3">
       <h4 class="text-sm font-semibold mb-2">{{ $t("foucault.summary") }}</h4>
