@@ -17,6 +17,7 @@ import {
   spraySilvering,
   glassSlabSphericalAberration,
   bathAstigmatism,
+  sphericalAberration,
 } from "./formulas.js";
 
 describe("ballSpherometerROC", () => {
@@ -192,6 +193,129 @@ describe("MPCC calculations", () => {
       const result = mpccTargetConic({ diameter: 300, focalLength: 1200 });
       expect(result).toBeLessThan(-1);
     });
+  });
+});
+
+describe("sphericalAberration", () => {
+  it("has no residual aberration for a perfect parabola", () => {
+    const result = sphericalAberration({
+      diameter: 300,
+      focalLength: 1200,
+      conic: -1,
+    });
+    expect(result.relativeToParabola).toBe(0);
+  });
+
+  it("reports the full sphere-to-parabola correction regardless of conic", () => {
+    const total = sphericalAberration({
+      diameter: 300,
+      focalLength: 1200,
+      conic: -1,
+      wavelengthNm: 550,
+    }).totalCorrection;
+    expect(total).toBeCloseTo(4.16, 1);
+  });
+
+  it("matches the total correction at the current conic for a parabola", () => {
+    const result = sphericalAberration({
+      diameter: 300,
+      focalLength: 1200,
+      conic: -1,
+    });
+    expect(result.toCurrentConic).toBeCloseTo(result.totalCorrection, 6);
+  });
+
+  it("has no correction from a sphere when the conic is a sphere", () => {
+    const result = sphericalAberration({
+      diameter: 300,
+      focalLength: 1200,
+      conic: 0,
+    });
+    expect(result.toCurrentConic).toBe(0);
+  });
+
+  it("scales the current-conic correction with |conic|", () => {
+    const hyper = sphericalAberration({
+      diameter: 300,
+      focalLength: 1200,
+      conic: -2,
+    });
+    const para = sphericalAberration({
+      diameter: 300,
+      focalLength: 1200,
+      conic: -1,
+    });
+    expect(hyper.toCurrentConic).toBeCloseTo(2 * para.toCurrentConic, 6);
+  });
+
+  it("matches the total correction for a sphere's residual at 550nm", () => {
+    const sphere = sphericalAberration({
+      diameter: 300,
+      focalLength: 1200,
+      conic: 0,
+      wavelengthNm: 550,
+    });
+    expect(sphere.relativeToParabola).toBeCloseTo(sphere.totalCorrection, 6);
+    expect(sphere.relativeToParabola).toBeCloseTo(4.16, 1);
+  });
+
+  it("decreases for longer wavelengths", () => {
+    const green = sphericalAberration({
+      diameter: 300,
+      focalLength: 1200,
+      conic: 0,
+      wavelengthNm: 550,
+    });
+    const red = sphericalAberration({
+      diameter: 300,
+      focalLength: 1200,
+      conic: 0,
+      wavelengthNm: 650,
+    });
+    expect(red.relativeToParabola).toBeCloseTo(
+      green.relativeToParabola * (550 / 650),
+      4,
+    );
+    expect(red.totalCorrection).toBeCloseTo(
+      green.totalCorrection * (550 / 650),
+      4,
+    );
+    expect(red.relativeToParabola).toBeLessThan(green.relativeToParabola);
+  });
+
+  it("uses the magnitude of the deviation from a parabola", () => {
+    const under = sphericalAberration({
+      diameter: 300,
+      focalLength: 1200,
+      conic: 0,
+    });
+    const over = sphericalAberration({
+      diameter: 300,
+      focalLength: 1200,
+      conic: -2,
+    });
+    expect(over.relativeToParabola).toBeCloseTo(under.relativeToParabola, 6);
+  });
+
+  it("defaults conic to -1 and wavelength to 550", () => {
+    const result = sphericalAberration({ diameter: 300, focalLength: 1200 });
+    expect(result.relativeToParabola).toBe(0);
+    expect(result.totalCorrection).toBeCloseTo(4.16, 1);
+    expect(result.toCurrentConic).toBeCloseTo(4.16, 1);
+  });
+
+  it("returns zeroes for degenerate inputs", () => {
+    expect(
+      sphericalAberration({ diameter: 0, focalLength: 1200, conic: 0 }),
+    ).toEqual({ relativeToParabola: 0, totalCorrection: 0, toCurrentConic: 0 });
+    expect(
+      sphericalAberration({
+        diameter: 300,
+        focalLength: 1200,
+        conic: 0,
+        wavelengthNm: 0,
+      }),
+    ).toEqual({ relativeToParabola: 0, totalCorrection: 0, toCurrentConic: 0 });
   });
 });
 

@@ -55,6 +55,25 @@ export const mpccTargetConic = ({ diameter, focalLength }) => {
   return -1 - undercorrection / correction;
 };
 
+export const sphericalAberration = ({
+  diameter,
+  focalLength,
+  conic = -1,
+  wavelengthNm = 550,
+}) => {
+  const ratio = focalRatio({ focalLength, diameter });
+  if (ratio === 0 || wavelengthNm === 0) {
+    return { relativeToParabola: 0, totalCorrection: 0, toCurrentConic: 0 };
+  }
+  const fullCorrection550 = diameter / (1.1264 * ratio * ratio * ratio);
+  const scale = 550 / wavelengthNm;
+  return {
+    relativeToParabola: fullCorrection550 * Math.abs(conic + 1) * scale,
+    totalCorrection: fullCorrection550 * scale,
+    toCurrentConic: fullCorrection550 * Math.abs(conic) * scale,
+  };
+};
+
 export const circleArea = (radius) => Math.PI * radius * radius;
 
 export const pressure = {

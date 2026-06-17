@@ -59,6 +59,7 @@ export default {
     littleCalculators: "Little Calculators",
     glassSlab: "Glass Slab Aberration",
     bathAstigmatism: "Bath Astigmatism",
+    sphericalAberration: "Spherical Aberration",
   },
 
   spherometer: {
@@ -363,6 +364,18 @@ export default {
     mirrorDiameter: "Mirror diameter (mm):",
     beamSeparation: "Beam separation (mm):",
     roc: "Radius of curvature (mm):",
+    wavelength: "Wavelength (nm):",
+  },
+
+  sphericalAberration: {
+    formula: "SA = D·|K+1| / (1.1264·N³) · (550/λ)",
+    resultLabel: "Aberration vs parabola:",
+    totalCorrectionLabel: "Total correction (sphere → parabola):",
+    toCurrentConicLabel: "Correction to this conic (sphere → K):",
+    waves: "waves",
+    diameter: "Mirror diameter (mm):",
+    focalLength: "Focal length (mm):",
+    conic: "Conic constant:",
     wavelength: "Wavelength (nm):",
   },
 

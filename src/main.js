@@ -20,6 +20,7 @@ import ColorChannelSplitter from "./ColorChannelSplitter.vue";
 import LittleCalculators from "./LittleCalculators.vue";
 import GlassSlabAberration from "./GlassSlabAberration.vue";
 import BathAstigmatism from "./BathAstigmatism.vue";
+import SphericalAberration from "./SphericalAberration.vue";
 import Home from "./Home.vue";
 
 export const routes = [
@@ -102,6 +103,15 @@ export const routes = [
         name: "bathAstigmatism",
         component: BathAstigmatism,
         meta: { icon: "bath_astigmatism", titleKey: "routes.bathAstigmatism" },
+      },
+      {
+        path: "spherical_aberration",
+        name: "sphericalAberration",
+        component: SphericalAberration,
+        meta: {
+          icon: "mpcc_hyperbolic",
+          titleKey: "routes.sphericalAberration",
+        },
       },
     ],
   },
