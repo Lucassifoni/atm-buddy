@@ -109,7 +109,7 @@ export const routes = [
         name: "sphericalAberration",
         component: SphericalAberration,
         meta: {
-          icon: "mpcc_hyperbolic",
+          icon: "spherical_aberration",
           titleKey: "routes.sphericalAberration",
         },
       },

@@ -17,4 +17,5 @@ export default {
   menu: [3, 4],
   glass_slab: [1, 5],
   bath_astigmatism: [2, 5],
+  spherical_aberration: [3, 5],
 };

@@ -5,6 +5,7 @@
         {{ $t("sphericalAberration.formula") }}
       </div>
     </div>
+    <OpticalPieceSelector @optical-piece-selected="onOpticalPieceSelected" />
     <div class="alert alert-success mt-4 py-2">
       <div class="text-sm">
         <p class="font-semibold">
@@ -78,11 +79,15 @@
 <script>
 import { get, set, normalize } from "./utils";
 import { sphericalAberration as sphericalAberrationFormula } from "./formulas";
+import OpticalPieceSelector from "./OpticalPieceSelector.vue";
 
 const toN = (a) => Number(normalize(a));
 
 export default {
   name: "SphericalAberration",
+  components: {
+    OpticalPieceSelector,
+  },
   data() {
     return {
       diameter: get("__spherical_aberration", "diameter", "300"),
@@ -92,6 +97,10 @@ export default {
     };
   },
   methods: {
+    onOpticalPieceSelected(piece) {
+      this.set("diameter", (piece.radius * 2).toString());
+      this.set("focalLength", (piece.radiusOfCurvature / 2).toString());
+    },
     set(key, value) {
       set(
         this,
