@@ -20,6 +20,7 @@ import {
   sphericalAberration,
   sphericalCapVolume,
   mirrorBlank,
+  fieldConverter,
 } from "./formulas.js";
 
 describe("ballSpherometerROC", () => {
@@ -1169,6 +1170,67 @@ describe("mirrorBlank", () => {
       });
       expect(grams).toBeGreaterThan(3500);
       expect(grams).toBeLessThan(5000);
+    });
+  });
+});
+
+describe("fieldConverter", () => {
+  describe("tfovFromHeight", () => {
+    it("converts a field height to a true field of view angle", () => {
+      const result = fieldConverter.tfovFromHeight({
+        fieldHeightMm: 27,
+        focalLength: 1200,
+      });
+      expect(result).toBeCloseTo(1.2887, 3);
+    });
+
+    it("matches the small-angle approximation (height / F in radians)", () => {
+      const focalLength = 2000;
+      const fieldHeightMm = 5;
+      const exact = fieldConverter.tfovFromHeight({
+        fieldHeightMm,
+        focalLength,
+      });
+      const approx = (fieldHeightMm / focalLength) * (180 / Math.PI);
+      expect(exact).toBeCloseTo(approx, 3);
+    });
+
+    it("returns 0 for a non-positive focal length", () => {
+      expect(
+        fieldConverter.tfovFromHeight({ fieldHeightMm: 27, focalLength: 0 }),
+      ).toBe(0);
+    });
+  });
+
+  describe("heightFromTfov", () => {
+    it("converts a true field of view angle to a field height", () => {
+      const result = fieldConverter.heightFromTfov({
+        tfovDegrees: 1.288732,
+        focalLength: 1200,
+      });
+      expect(result).toBeCloseTo(27, 1);
+    });
+
+    it("returns 0 for a non-positive focal length", () => {
+      expect(
+        fieldConverter.heightFromTfov({ tfovDegrees: 1.5, focalLength: 0 }),
+      ).toBe(0);
+    });
+  });
+
+  describe("round-trip", () => {
+    it("is its own inverse across the two directions", () => {
+      const focalLength = 1500;
+      const fieldHeightMm = 22;
+      const tfov = fieldConverter.tfovFromHeight({
+        fieldHeightMm,
+        focalLength,
+      });
+      const back = fieldConverter.heightFromTfov({
+        tfovDegrees: tfov,
+        focalLength,
+      });
+      expect(back).toBeCloseTo(fieldHeightMm, 6);
     });
   });
 });

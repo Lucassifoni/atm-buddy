@@ -22,6 +22,7 @@ import GlassSlabAberration from "./GlassSlabAberration.vue";
 import BathAstigmatism from "./BathAstigmatism.vue";
 import SphericalAberration from "./SphericalAberration.vue";
 import MirrorWeight from "./MirrorWeight.vue";
+import FieldConverter from "./FieldConverter.vue";
 import Home from "./Home.vue";
 
 export const routes = [
@@ -114,6 +115,18 @@ export const routes = [
           titleKey: "routes.sphericalAberration",
         },
       },
+      {
+        path: "mirror_weight",
+        name: "mirrorWeight",
+        component: MirrorWeight,
+        meta: { icon: "glass_slab", titleKey: "routes.mirrorWeight" },
+      },
+      {
+        path: "field_converter",
+        name: "fieldConverter",
+        component: FieldConverter,
+        meta: { icon: "coma_free", titleKey: "routes.fieldConverter" },
+      },
     ],
   },
   {
@@ -161,16 +174,6 @@ export const routes = [
     meta: {
       icon: "color_splitter",
       titleKey: "routes.colorSplitter",
-      isHome: true,
-    },
-  },
-  {
-    path: "/mirror_weight",
-    name: "mirrorWeight",
-    component: MirrorWeight,
-    meta: {
-      icon: "glass_slab",
-      titleKey: "routes.mirrorWeight",
       isHome: true,
     },
   },

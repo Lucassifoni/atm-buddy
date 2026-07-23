@@ -470,6 +470,19 @@ export const mirrorBlank = {
   },
 };
 
+export const fieldConverter = {
+  tfovFromHeight: ({ fieldHeightMm, focalLength }) => {
+    if (focalLength <= 0) return 0;
+    return 2 * Math.atan(fieldHeightMm / (2 * focalLength)) * (180 / Math.PI);
+  },
+
+  heightFromTfov: ({ tfovDegrees, focalLength }) => {
+    if (focalLength <= 0) return 0;
+    const rad = tfovDegrees * (Math.PI / 180);
+    return 2 * focalLength * Math.tan(rad / 2);
+  },
+};
+
 export const spraySilvering = {
   cleaningTimeMinutes: (diameter) => {
     return Math.pow(diameter / 15, 1.4);

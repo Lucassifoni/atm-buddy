@@ -61,6 +61,7 @@ export default {
     bathAstigmatism: "Bath Astigmatism",
     sphericalAberration: "Spherical Aberration",
     mirrorWeight: "Mirror Weight",
+    fieldConverter: "Field ↔ TFOV",
   },
 
   spherometer: {
@@ -166,6 +167,14 @@ export default {
     totalMass: "Total mass needed:",
     exceedsPressure: "Polisher alone exceeds target pressure",
     pressureUnit: "g/cm²",
+  },
+
+  fieldConverter: {
+    title: "Field height ↔ TFOV converter",
+    formula: "TFOV = 2 × atan(h / 2F) — h = 2F × tan(TFOV / 2)",
+    focalLength: "Focal length (mm):",
+    fieldHeight: "Field height (mm):",
+    tfov: "True field of view (°):",
   },
 
   comaFree: {

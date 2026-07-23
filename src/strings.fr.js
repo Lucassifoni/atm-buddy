@@ -62,6 +62,7 @@ export default {
     bathAstigmatism: "Astigmatisme Bath",
     sphericalAberration: "Aberration sphérique",
     mirrorWeight: "Poids du miroir",
+    fieldConverter: "Champ ↔ TFOV",
   },
 
   spherometer: {
@@ -167,6 +168,14 @@ export default {
     totalMass: "Masse totale nécessaire :",
     exceedsPressure: "Le polissoir seul dépasse la pression cible",
     pressureUnit: "g/cm²",
+  },
+
+  fieldConverter: {
+    title: "Convertisseur hauteur de champ ↔ TFOV",
+    formula: "TFOV = 2 × atan(h / 2F) — h = 2F × tan(TFOV / 2)",
+    focalLength: "Longueur focale (mm) :",
+    fieldHeight: "Hauteur de champ (mm) :",
+    tfov: "Champ réel (°) :",
   },
 
   comaFree: {
