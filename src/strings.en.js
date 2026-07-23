@@ -60,6 +60,7 @@ export default {
     glassSlab: "Glass Slab Aberration",
     bathAstigmatism: "Bath Astigmatism",
     sphericalAberration: "Spherical Aberration",
+    mirrorWeight: "Mirror Weight",
   },
 
   spherometer: {
@@ -377,6 +378,40 @@ export default {
     focalLength: "Focal length (mm):",
     conic: "Conic constant:",
     wavelength: "Wavelength (nm):",
+  },
+
+  mirrorWeight: {
+    title: "Mirror blank weight estimator",
+    volumeLabel: "Volume:",
+    weightLabel: "Weight:",
+    centerThicknessLabel: "Center thickness:",
+    cm3: "cm³",
+    kg: "kg",
+    gPerCm3: "g/cm³",
+    diameter: "Diameter (mm):",
+    thickness: "Edge thickness (mm):",
+    focalLength: "Front focal length (mm):",
+    focalLengthHint:
+      "Positive for a concave front (dished in), negative for a convex front. 0 for a flat front.",
+    backRadius: "Back radius of curvature (mm):",
+    backRadiusHint:
+      "Positive = convex back (bulges out), negative = concave back (dished in). 0 for a flat back.",
+    material: "Material:",
+    sideCut: "Side-cut cross-section",
+    warnFocalTooShort:
+      "Front radius of curvature is shorter than the mirror radius — check the focal length.",
+    warnBackTooTight:
+      "Back radius of curvature is shorter than the mirror radius — check the back radius.",
+    warnNoCenter:
+      "The surfaces meet before the center — the blank has no thickness at its center.",
+    materials: {
+      borosilicate: "Borosilicate (Pyrex / Duran)",
+      sodalime: "Soda-lime (plate / float)",
+      fusedSilica: "Fused silica / Quartz",
+      bk7: "BK7",
+      zerodur: "Zerodur",
+      sitall: "Sitall (Astro-Sitall)",
+    },
   },
 
   colorSplitter: {

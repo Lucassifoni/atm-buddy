@@ -61,6 +61,7 @@ export default {
     glassSlab: "Aberration lame de verre",
     bathAstigmatism: "Astigmatisme Bath",
     sphericalAberration: "Aberration sphérique",
+    mirrorWeight: "Poids du miroir",
   },
 
   spherometer: {
@@ -380,6 +381,40 @@ export default {
     focalLength: "Distance focale (mm) :",
     conic: "Constante conique :",
     wavelength: "Longueur d'onde (nm) :",
+  },
+
+  mirrorWeight: {
+    title: "Estimateur de poids d'ébauche de miroir",
+    volumeLabel: "Volume :",
+    weightLabel: "Poids :",
+    centerThicknessLabel: "Épaisseur au centre :",
+    cm3: "cm³",
+    kg: "kg",
+    gPerCm3: "g/cm³",
+    diameter: "Diamètre (mm) :",
+    thickness: "Épaisseur au bord (mm) :",
+    focalLength: "Distance focale avant (mm) :",
+    focalLengthHint:
+      "Positive pour une face avant concave (creusée), négative pour une face avant convexe. 0 pour une face avant plane.",
+    backRadius: "Rayon de courbure arrière (mm) :",
+    backRadiusHint:
+      "Positif = arrière convexe (bombé), négatif = arrière concave (creusé). 0 pour un arrière plan.",
+    material: "Matériau :",
+    sideCut: "Coupe transversale",
+    warnFocalTooShort:
+      "Le rayon de courbure avant est inférieur au rayon du miroir — vérifiez la distance focale.",
+    warnBackTooTight:
+      "Le rayon de courbure arrière est inférieur au rayon du miroir — vérifiez le rayon arrière.",
+    warnNoCenter:
+      "Les surfaces se rejoignent avant le centre — l'ébauche n'a pas d'épaisseur en son centre.",
+    materials: {
+      borosilicate: "Borosilicate (Pyrex / Duran)",
+      sodalime: "Sodocalcique (glace / float)",
+      fusedSilica: "Silice fondue / Quartz",
+      bk7: "BK7",
+      zerodur: "Zerodur",
+      sitall: "Sitall (Astro-Sitall)",
+    },
   },
 
   colorSplitter: {

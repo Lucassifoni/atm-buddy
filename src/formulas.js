@@ -405,6 +405,71 @@ export const bathAstigmatism = ({
   return (valMm * 1e6) / wavelengthNm;
 };
 
+export const sphericalCapVolume = ({ baseRadius, sagitta }) => {
+  const a = baseRadius;
+  const h = sagitta;
+  return (Math.PI * h * (3 * a * a + h * h)) / 6;
+};
+
+export const mirrorBlank = {
+  exactSagitta: ({ diameter, radiusOfCurvature }) => {
+    const r = diameter / 2;
+    const R = Math.abs(radiusOfCurvature);
+    if (R === 0) return 0;
+    if (R < r) return NaN;
+    return R - Math.sqrt(R * R - r * r);
+  },
+
+  frontRadiusOfCurvature: ({ focalLength }) => 2 * Math.abs(focalLength),
+
+  surfaceSign: (signedValue) =>
+    signedValue > 0 ? 1 : signedValue < 0 ? -1 : 0,
+
+  frontSagitta: ({ diameter, focalLength }) => {
+    return mirrorBlank.exactSagitta({
+      diameter,
+      radiusOfCurvature: mirrorBlank.frontRadiusOfCurvature({ focalLength }),
+    });
+  },
+
+  backSagitta: ({ diameter, backRadius }) => {
+    return mirrorBlank.exactSagitta({ diameter, radiusOfCurvature: backRadius });
+  },
+
+  centerThickness: ({ diameter, edgeThickness, focalLength, backRadius }) => {
+    const sf = mirrorBlank.frontSagitta({ diameter, focalLength });
+    const sb = mirrorBlank.backSagitta({ diameter, backRadius });
+    const frontDir = focalLength > 0 ? -1 : focalLength < 0 ? 1 : 0;
+    const backDir = mirrorBlank.surfaceSign(backRadius);
+    return edgeThickness + frontDir * sf + backDir * sb;
+  },
+
+  volume: ({ diameter, edgeThickness, focalLength, backRadius }) => {
+    const r = diameter / 2;
+    const cylinder = Math.PI * r * r * edgeThickness;
+
+    const sf = mirrorBlank.frontSagitta({ diameter, focalLength });
+    const capFront = sphericalCapVolume({ baseRadius: r, sagitta: sf });
+    const frontSign = focalLength > 0 ? -1 : focalLength < 0 ? 1 : 0;
+
+    const sb = mirrorBlank.backSagitta({ diameter, backRadius });
+    const capBack = sphericalCapVolume({ baseRadius: r, sagitta: sb });
+    const backSign = mirrorBlank.surfaceSign(backRadius);
+
+    return cylinder + frontSign * capFront + backSign * capBack;
+  },
+
+  weight: ({ diameter, edgeThickness, focalLength, backRadius, density }) => {
+    const volumeMm3 = mirrorBlank.volume({
+      diameter,
+      edgeThickness,
+      focalLength,
+      backRadius,
+    });
+    return (volumeMm3 / 1000) * density;
+  },
+};
+
 export const spraySilvering = {
   cleaningTimeMinutes: (diameter) => {
     return Math.pow(diameter / 15, 1.4);

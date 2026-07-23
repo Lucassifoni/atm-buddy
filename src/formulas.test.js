@@ -18,6 +18,8 @@ import {
   glassSlabSphericalAberration,
   bathAstigmatism,
   sphericalAberration,
+  sphericalCapVolume,
+  mirrorBlank,
 } from "./formulas.js";
 
 describe("ballSpherometerROC", () => {
@@ -948,6 +950,225 @@ describe("spraySilvering calculations", () => {
     it("firstQuantity scales correctly", () => {
       expect(spraySilvering.firstQuantity(150)).toBeCloseTo(100, 5);
       expect(spraySilvering.firstQuantity(300)).toBeCloseTo(200, 5);
+    });
+  });
+});
+
+describe("sphericalCapVolume", () => {
+  it("is zero for a flat surface (no sagitta)", () => {
+    expect(sphericalCapVolume({ baseRadius: 100, sagitta: 0 })).toBe(0);
+  });
+
+  it("matches the closed form for a hemisphere", () => {
+    const R = 50;
+    const hemisphere = (2 / 3) * Math.PI * R * R * R;
+    expect(sphericalCapVolume({ baseRadius: R, sagitta: R })).toBeCloseTo(
+      hemisphere,
+      6,
+    );
+  });
+
+  it("approaches half the enclosing cylinder for a shallow cap", () => {
+    const a = 150;
+    const R = 3000;
+    const h = R - Math.sqrt(R * R - a * a);
+    const cap = sphericalCapVolume({ baseRadius: a, sagitta: h });
+    const cylinder = Math.PI * a * a * h;
+    expect(cap / cylinder).toBeCloseTo(0.5, 1);
+  });
+});
+
+describe("mirrorBlank", () => {
+  describe("exactSagitta", () => {
+    it("returns 0 for a flat surface", () => {
+      expect(
+        mirrorBlank.exactSagitta({ diameter: 200, radiusOfCurvature: 0 }),
+      ).toBe(0);
+    });
+
+    it("computes the sagitta of a spherical surface", () => {
+      const R = 2400;
+      const r = 150;
+      const expected = R - Math.sqrt(R * R - r * r);
+      expect(
+        mirrorBlank.exactSagitta({ diameter: 300, radiusOfCurvature: R }),
+      ).toBeCloseTo(expected, 9);
+    });
+
+    it("is sign-agnostic on the radius of curvature", () => {
+      const positive = mirrorBlank.exactSagitta({
+        diameter: 300,
+        radiusOfCurvature: 2400,
+      });
+      const negative = mirrorBlank.exactSagitta({
+        diameter: 300,
+        radiusOfCurvature: -2400,
+      });
+      expect(positive).toBeCloseTo(negative, 12);
+    });
+
+    it("returns NaN when the radius is smaller than the mirror radius", () => {
+      expect(
+        mirrorBlank.exactSagitta({ diameter: 300, radiusOfCurvature: 100 }),
+      ).toBeNaN();
+    });
+  });
+
+  describe("frontRadiusOfCurvature", () => {
+    it("is twice the focal length regardless of sign", () => {
+      expect(mirrorBlank.frontRadiusOfCurvature({ focalLength: 1200 })).toBe(
+        2400,
+      );
+      expect(mirrorBlank.frontRadiusOfCurvature({ focalLength: -300 })).toBe(
+        600,
+      );
+    });
+  });
+
+  describe("volume", () => {
+    it("is a plain cylinder when both faces are flat", () => {
+      const r = 100;
+      const t = 25;
+      expect(
+        mirrorBlank.volume({
+          diameter: 200,
+          edgeThickness: 25,
+          focalLength: 0,
+          backRadius: 0,
+        }),
+      ).toBeCloseTo(Math.PI * r * r * t, 6);
+    });
+
+    it("removes glass for a concave front (positive focal length)", () => {
+      const flat = mirrorBlank.volume({
+        diameter: 300,
+        edgeThickness: 30,
+        focalLength: 0,
+        backRadius: 0,
+      });
+      const concave = mirrorBlank.volume({
+        diameter: 300,
+        edgeThickness: 30,
+        focalLength: 1200,
+        backRadius: 0,
+      });
+      expect(concave).toBeLessThan(flat);
+    });
+
+    it("adds glass for a convex front (negative focal length)", () => {
+      const flat = mirrorBlank.volume({
+        diameter: 300,
+        edgeThickness: 30,
+        focalLength: 0,
+        backRadius: 0,
+      });
+      const convex = mirrorBlank.volume({
+        diameter: 300,
+        edgeThickness: 30,
+        focalLength: -1200,
+        backRadius: 0,
+      });
+      expect(convex).toBeGreaterThan(flat);
+    });
+
+    it("removes exactly the dished cap volume for a concave front", () => {
+      const r = 150;
+      const t = 30;
+      const R = 2400;
+      const sf = R - Math.sqrt(R * R - r * r);
+      const cap = sphericalCapVolume({ baseRadius: r, sagitta: sf });
+      const cylinder = Math.PI * r * r * t;
+      expect(
+        mirrorBlank.volume({
+          diameter: 300,
+          edgeThickness: 30,
+          focalLength: 1200,
+          backRadius: 0,
+        }),
+      ).toBeCloseTo(cylinder - cap, 6);
+    });
+
+    it("treats a convex back (positive radius) as added glass", () => {
+      const flat = mirrorBlank.volume({
+        diameter: 300,
+        edgeThickness: 30,
+        focalLength: 0,
+        backRadius: 0,
+      });
+      const convexBack = mirrorBlank.volume({
+        diameter: 300,
+        edgeThickness: 30,
+        focalLength: 0,
+        backRadius: 3000,
+      });
+      const concaveBack = mirrorBlank.volume({
+        diameter: 300,
+        edgeThickness: 30,
+        focalLength: 0,
+        backRadius: -3000,
+      });
+      expect(convexBack).toBeGreaterThan(flat);
+      expect(concaveBack).toBeLessThan(flat);
+    });
+  });
+
+  describe("centerThickness", () => {
+    it("equals edge thickness for a flat blank", () => {
+      expect(
+        mirrorBlank.centerThickness({
+          diameter: 300,
+          edgeThickness: 30,
+          focalLength: 0,
+          backRadius: 0,
+        }),
+      ).toBeCloseTo(30, 9);
+    });
+
+    it("thins the center for a concave front", () => {
+      const r = 150;
+      const R = 2400;
+      const sf = R - Math.sqrt(R * R - r * r);
+      expect(
+        mirrorBlank.centerThickness({
+          diameter: 300,
+          edgeThickness: 30,
+          focalLength: 1200,
+          backRadius: 0,
+        }),
+      ).toBeCloseTo(30 - sf, 9);
+    });
+  });
+
+  describe("weight", () => {
+    it("computes grams from volume and density", () => {
+      const density = 2.23;
+      const volumeMm3 = mirrorBlank.volume({
+        diameter: 300,
+        edgeThickness: 30,
+        focalLength: 1200,
+        backRadius: 0,
+      });
+      expect(
+        mirrorBlank.weight({
+          diameter: 300,
+          edgeThickness: 30,
+          focalLength: 1200,
+          backRadius: 0,
+          density,
+        }),
+      ).toBeCloseTo((volumeMm3 / 1000) * density, 6);
+    });
+
+    it("gives a sensible mass for a classic 300mm f/4 Pyrex blank", () => {
+      const grams = mirrorBlank.weight({
+        diameter: 300,
+        edgeThickness: 30,
+        focalLength: 1200,
+        backRadius: 0,
+        density: 2.23,
+      });
+      expect(grams).toBeGreaterThan(3500);
+      expect(grams).toBeLessThan(5000);
     });
   });
 });
