@@ -22,6 +22,7 @@ export default {
 
   app: {
     title: "ATM Buddy",
+    subtitle: "tools for Amateur Telescope Makers",
     contributeOn: "Contribute on",
     github: "github",
     analyticsNote: "Note : I use reasonably private analytics powered by",
@@ -33,11 +34,17 @@ export default {
   },
 
   home: {
-    subtitle:
-      "Mobile-friendly collection of tools for Amateur Telescope Makers",
-    aboutTitle: "About",
     aboutText:
       "This application provides specialized calculators and reference tools for Amateur Telescope Makers (ATMs). All calculations are performed client-side and work offline after initial load.",
+  },
+
+  categories: {
+    measuring: "Measuring the curve",
+    testing: "Testing & figuring",
+    grinding: "Grinding & polishing",
+    design: "Optical design",
+    blanks: "Blanks & coating",
+    gear: "Your gear",
   },
 
   routes: {
@@ -56,7 +63,6 @@ export default {
     foucaultLA: "Foucault LA",
     hardware: "Hardware",
     colorSplitter: "Color Splitter",
-    littleCalculators: "Little Calculators",
     glassSlab: "Glass Slab Aberration",
     bathAstigmatism: "Bath Astigmatism",
     sphericalAberration: "Spherical Aberration",
@@ -373,11 +379,6 @@ export default {
     bomSprayers: "Two sprayers",
     bomContainers: "Containers",
     bomMasks: "FFP2 masks",
-  },
-
-  littleCalculators: {
-    backToHome: "Back to home",
-    backToList: "Back to list",
   },
 
   glassSlab: {

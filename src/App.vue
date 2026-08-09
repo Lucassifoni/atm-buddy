@@ -1,39 +1,36 @@
 <template>
   <div id="app" class="min-h-screen bg-gray-100">
-    <div class="text-center pt-2">
-      <select
-        v-model="currentLang"
-        @change="changeLanguage"
-        class="select select-bordered select-xs"
-      >
-        <option value="en">English</option>
-        <option value="fr">Français</option>
-      </select>
-    </div>
     <div class="container mx-auto px-2 py-3">
-      <p class="text-center mx-auto mb-2">
-        Real meaningful icons are coming soon !
-      </p>
+      <div class="max-w-2xl mx-auto flex items-baseline gap-3 mb-2">
+        <h1 class="text-sm leading-tight grow">
+          <router-link to="/" class="font-medium text-gray-700">{{
+            $t("app.title")
+          }}</router-link>
+          <span class="text-gray-500 ml-1.5">{{ $t("app.subtitle") }}</span>
+        </h1>
+        <select
+          v-model="currentLang"
+          @change="changeLanguage"
+          class="select select-bordered select-xs shrink-0"
+        >
+          <option value="en">English</option>
+          <option value="fr">Français</option>
+        </select>
+      </div>
       <div class="card bg-white shadow-lg max-w-2xl mx-auto">
         <div class="card-body p-4 pb-24">
-          <div class="text-center mb-4">
-            <router-link to="/"
-              ><h1 class="text-xl font-light text-gray-500 tracking-wide">
-                {{ $t("app.title") }}
-              </h1></router-link
-            >
-          </div>
           <router-view></router-view>
         </div>
       </div>
-      <p class="text-center text-xs max-w-[45ch] mx-auto my-2">
-        <span v-html="$t(`app.credits`)" /><br />{{ $t("app.contributeOn") }}
+      <p class="text-center text-xs mt-2">
+        <span v-html="$t(`app.credits`)" /><br />
+        {{ $t("app.contributeOn") }}
         <a class="underline" href="https://github.com/lucassifoni/atm-buddy">{{
           $t("app.github")
         }}</a
         >.
       </p>
-      <p class="text-xs text-center max-w-[45ch] mx-auto my-2">
+      <p class="text-xs text-center mt-1">
         {{ $t("app.analyticsNote") }}
         <a href="https://plausible.io">Plausible.io</a>
         {{ $t("app.analyticsExplain") }}
@@ -56,30 +53,28 @@
       <div
         v-show="isMenuOpen"
         ref="dropdown"
-        class="menu-grid bg-white rounded-box shadow-xl p-3 mb-2 absolute bottom-full left-0"
+        class="menu-panel bg-white rounded-box shadow-xl p-3 mb-2 absolute bottom-full left-0"
       >
-        <router-link
-          v-for="route in routes"
-          :key="route.path"
-          :to="route.path"
-          :class="{ 'menu-item-active': route.path === $route.path }"
-          class="menu-item"
-          @click="closeMenu"
-        >
-          <Icon :name="route.meta.icon" class="menu-icon" />
-          <span class="menu-label">{{ getRouteTitle(route) }}</span>
-        </router-link>
+        <ToolList
+          :sections="sections"
+          :active-path="$route.path"
+          dense
+          @navigate="closeMenu"
+        />
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import Icon from "./components/Icon.vue";
+import ToolList from "./components/ToolList.vue";
+import { CATEGORIES } from "./categories.js";
+import { routes } from "./routes.js";
+import { groupRoutesByCategory } from "./utils.js";
 
 export default {
   components: {
-    Icon,
+    ToolList,
   },
   data() {
     return {
@@ -89,8 +84,8 @@ export default {
     };
   },
   computed: {
-    routes() {
-      return this.$router.getRoutes().filter((r) => r.meta && r.meta.isHome);
+    sections() {
+      return groupRoutesByCategory(routes, CATEGORIES, this.$t);
     },
   },
   mounted() {
@@ -110,12 +105,6 @@ export default {
     document.removeEventListener("click", this.handleClickOutside);
   },
   methods: {
-    getRouteTitle(route) {
-      if (route.meta && route.meta.titleKey) {
-        return this.$t(route.meta.titleKey);
-      }
-      return route.name;
-    },
     changeLanguage() {
       this.$i18n.setLanguage(this.currentLang);
       this.$forceUpdate();
@@ -182,48 +171,10 @@ export default {
 </script>
 
 <style scoped>
-.menu-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 0.5rem;
-  width: 250px;
-}
-
-.menu-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  aspect-ratio: 1;
-  padding: 0.5rem;
-  border-radius: 0.5rem;
-  background-color: #f3f4f6;
-  text-decoration: none;
-  transition: background-color 0.15s;
-}
-
-.menu-item:hover {
-  background-color: #e5e7eb;
-}
-
-.menu-item-active {
-  background-color: rgba(59, 130, 246, 0.15);
-}
-
-.menu-icon {
-  width: 1.5rem;
-  height: 1.5rem;
-  margin-bottom: 0.25rem;
-}
-
-.menu-label {
-  font-size: 0.55rem;
-  text-align: center;
-  color: #374151;
-  line-height: 1.1;
-  overflow: hidden;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
+.menu-panel {
+  width: 15rem;
+  max-height: 70vh;
+  overflow-y: auto;
+  overscroll-behavior: contain;
 }
 </style>

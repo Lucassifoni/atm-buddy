@@ -10,8 +10,16 @@ globalThis.localStorage = {
   clear: () => store.clear(),
 };
 
-const { get, set, normalize, parseFloat, getHardware, getSpherometers } =
-  await import("./utils.js");
+const {
+  get,
+  set,
+  normalize,
+  parseFloat,
+  getHardware,
+  getSpherometers,
+  routeTitle,
+  groupRoutesByCategory,
+} = await import("./utils.js");
 
 const stored = (storageKey) => JSON.parse(localStorage.getItem(storageKey));
 
@@ -128,5 +136,86 @@ describe("getHardware", () => {
       opticalPieces: [],
       polishers: [],
     });
+  });
+});
+
+describe("routeTitle", () => {
+  const t = (key) => `translated:${key}`;
+
+  it("translates the titleKey when the route has one", () => {
+    expect(
+      routeTitle({ name: "sagitta", meta: { titleKey: "routes.sagitta" } }, t),
+    ).toBe("translated:routes.sagitta");
+  });
+
+  it("falls back to the route name without a titleKey", () => {
+    expect(routeTitle({ name: "sagitta", meta: {} }, t)).toBe("sagitta");
+    expect(routeTitle({ name: "sagitta" }, t)).toBe("sagitta");
+  });
+
+  it("returns an empty string for a missing route", () => {
+    expect(routeTitle(undefined, t)).toBe("");
+  });
+});
+
+describe("groupRoutesByCategory", () => {
+  const t = (key) => key;
+  const categories = [
+    { id: "measuring", titleKey: "categories.measuring" },
+    { id: "testing", titleKey: "categories.testing" },
+    { id: "gear", titleKey: "categories.gear" },
+  ];
+  const routes = [
+    {
+      path: "/foucault",
+      name: "foucault",
+      meta: { titleKey: "routes.foucault", category: "testing" },
+    },
+    {
+      path: "/sphero",
+      name: "sphero",
+      meta: { titleKey: "routes.sphero", category: "measuring" },
+    },
+    {
+      path: "/sagitta",
+      name: "sagitta",
+      meta: { titleKey: "routes.sagitta", category: "measuring" },
+    },
+    { path: "/", name: "home", meta: { titleKey: "routes.home" } },
+  ];
+
+  it("orders sections by category and items by route order", () => {
+    expect(groupRoutesByCategory(routes, categories, t)).toEqual([
+      {
+        id: "measuring",
+        title: "categories.measuring",
+        items: [
+          { path: "/sphero", title: "routes.sphero" },
+          { path: "/sagitta", title: "routes.sagitta" },
+        ],
+      },
+      {
+        id: "testing",
+        title: "categories.testing",
+        items: [{ path: "/foucault", title: "routes.foucault" }],
+      },
+    ]);
+  });
+
+  it("drops empty categories", () => {
+    const ids = groupRoutesByCategory(routes, categories, t).map((s) => s.id);
+    expect(ids).not.toContain("gear");
+  });
+
+  it("leaves out routes without a category", () => {
+    const paths = groupRoutesByCategory(routes, categories, t).flatMap((s) =>
+      s.items.map((i) => i.path),
+    );
+    expect(paths).not.toContain("/");
+  });
+
+  it("returns nothing when there are no routes or no categories", () => {
+    expect(groupRoutesByCategory([], categories, t)).toEqual([]);
+    expect(groupRoutesByCategory(routes, [], t)).toEqual([]);
   });
 });

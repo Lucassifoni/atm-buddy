@@ -3,7 +3,7 @@ export default {
     mm: "mm",
     degrees: "°",
     grams: "g",
-    peRdCent: "%",
+    percent: "%",
     concave: "Concave",
     convex: "Convexe",
     edit: "Modifier",
@@ -22,6 +22,7 @@ export default {
 
   app: {
     title: "ATM Buddy",
+    subtitle: "outils pour opticiens amateurs",
     contributeOn: "Contribuer sur",
     github: "github",
     analyticsNote:
@@ -34,11 +35,17 @@ export default {
   },
 
   home: {
-    subtitle:
-      "Collection d'outils adaptés aux smartphones pour les opticiens amateurs",
-    aboutTitle: "À propos",
     aboutText:
       "Cette application fournit des calculateurs spécialisés et des outils de référence pour les fabricants de télescopes amateurs (ATM). Tous les calculs sont effectués côté client et fonctionnent hors ligne après le premier chargement.",
+  },
+
+  categories: {
+    measuring: "Mesure de la courbe",
+    testing: "Contrôle & retouche",
+    grinding: "Taille & polissage",
+    design: "Conception optique",
+    blanks: "Disques & argenture",
+    gear: "Votre matériel",
   },
 
   routes: {
@@ -55,13 +62,12 @@ export default {
     pressure: "Calculateur de pression",
     comaFree: "Rayon sans coma",
     foucaultLA: "Foucault LA",
-    hardware: "Matériel",
+    hardware: "Gérer votre matériel",
     colorSplitter: "Séparation couleurs",
-    littleCalculators: "Petits calculateurs",
     glassSlab: "Aberration lame de verre",
     bathAstigmatism: "Astigmatisme Bath",
     sphericalAberration: "Aberration sphérique",
-    mirrorWeight: "Poids du miroir",
+    mirrorWeight: "Poids d'une pièce optique",
     fieldConverter: "Champ ↔ TFOV",
     spherometerFeetRadius: "Rayon des pieds",
   },
@@ -126,7 +132,7 @@ export default {
       "En ondes @550nm :<br />Correction d'une parabole : D (mm) / (1.1264 * (F/D)^3)<br />Sous-correction A.S. MPCC : (4 / (F/D))^4 * 0.81",
     focalRatio: "Rapport focal :",
     parabolaCorrection: "Correction parabole :",
-    mpccUndeRdCorrection: "Sous-correction MPCC :",
+    mpccUndercorrection: "Sous-correction MPCC :",
     targetConic: "Conique cible :",
     diameter: "Diamètre (mm) :",
     focalLength: "Longueur focale (mm) :",
@@ -376,11 +382,6 @@ export default {
     bomSprayers: "Deux pulvérisateurs",
     bomContainers: "Récipients",
     bomMasks: "Masques FFP2",
-  },
-
-  littleCalculators: {
-    backToHome: "Retour à l'accueil",
-    backToList: "Retour à la liste",
   },
 
   glassSlab: {
