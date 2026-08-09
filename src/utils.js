@@ -13,7 +13,7 @@ export const set = (component, storage_key, obj, key, value) => {
   try {
     component[key] = value;
     if (isBrowser) {
-      const n_obj = { ...obj, key: value };
+      const n_obj = { ...obj, [key]: value };
       localStorage.setItem(storage_key, JSON.stringify(n_obj));
     }
     return value;

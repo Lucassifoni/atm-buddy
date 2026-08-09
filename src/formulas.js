@@ -23,6 +23,54 @@ export const reverseBallSpherometerSagitta = ({
   return aR - Math.sqrt(aR * aR - r * r);
 };
 
+export const spherometerTriangle = {
+  footCenterDistances: ({ outsideA, outsideB, outsideC, ballDiameter }) => ({
+    a: outsideA - ballDiameter,
+    b: outsideB - ballDiameter,
+    c: outsideC - ballDiameter,
+  }),
+
+  area: ({ a, b, c }) => {
+    const [x, y, z] = [a, b, c].sort((p, q) => q - p);
+    if (!(z > 0)) return NaN;
+    const product =
+      (x + (y + z)) * (z - (x - y)) * (z + (x - y)) * (x + (y - z));
+    if (!(product > 0)) return NaN;
+    return Math.sqrt(product) / 4;
+  },
+
+  circumradius: ({ a, b, c }) => {
+    const area = spherometerTriangle.area({ a, b, c });
+    if (isNaN(area) || area === 0) return NaN;
+    return (a * b * c) / (4 * area);
+  },
+
+  feetRadius: ({ outsideA, outsideB, outsideC, ballDiameter }) => {
+    return spherometerTriangle.circumradius(
+      spherometerTriangle.footCenterDistances({
+        outsideA,
+        outsideB,
+        outsideC,
+        ballDiameter,
+      }),
+    );
+  },
+
+  sensitivity: ({ outsideA, outsideB, outsideC, ballDiameter, delta }) => {
+    const base = { outsideA, outsideB, outsideC, ballDiameter };
+    const reference = spherometerTriangle.feetRadius(base);
+    if (isNaN(reference)) return NaN;
+    const deviations = Object.keys(base).map((key) => {
+      const perturbed = spherometerTriangle.feetRadius({
+        ...base,
+        [key]: base[key] + delta,
+      });
+      return isNaN(perturbed) ? NaN : Math.abs(perturbed - reference);
+    });
+    return Math.max(...deviations);
+  },
+};
+
 export const sagitta = ({ mirrorRadius, radiusOfCurvature }) => {
   if (radiusOfCurvature === 0) return 0;
   return (mirrorRadius * mirrorRadius) / (2 * radiusOfCurvature);
@@ -433,7 +481,10 @@ export const mirrorBlank = {
   },
 
   backSagitta: ({ diameter, backRadius }) => {
-    return mirrorBlank.exactSagitta({ diameter, radiusOfCurvature: backRadius });
+    return mirrorBlank.exactSagitta({
+      diameter,
+      radiusOfCurvature: backRadius,
+    });
   },
 
   centerThickness: ({ diameter, edgeThickness, focalLength, backRadius }) => {

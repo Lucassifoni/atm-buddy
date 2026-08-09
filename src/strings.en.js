@@ -62,6 +62,7 @@ export default {
     sphericalAberration: "Spherical Aberration",
     mirrorWeight: "Mirror Weight",
     fieldConverter: "Field ↔ TFOV",
+    spherometerFeetRadius: "Feet radius",
   },
 
   spherometer: {
@@ -71,6 +72,26 @@ export default {
     sagitta: "Sagitta (mm):",
     ballDiameter: "Ball diameter (mm):",
     curveLabel: "Curve:",
+  },
+
+  spherometerFeetRadius: {
+    title: "Spherometer feet radius",
+    formula:
+      "r = (a × b × c) / (4 × Area) — a, b, c = distances between ball centers",
+    feetRadiusLabel: "Radius of feet:",
+    sensitivityLabel: "Deviation for a 0.001 mm measurement error: ±",
+    precisionHint:
+      "Measure to 0.001 mm, ball diameter included: that precision is what drives the resulting radius.",
+    invalidTriangle:
+      "Inconsistent measurements: the three feet are aligned, or the distances do not form a triangle.",
+    outsideA: "Measurement A, outside to outside (mm):",
+    outsideB: "Measurement B, outside to outside (mm):",
+    outsideC: "Measurement C, outside to outside (mm):",
+    ballDiameter: "Ball diameter (mm):",
+    measurementHint:
+      "Measure from the outer edge of one ball to the outer edge of the next: one ball diameter is subtracted to get the center-to-center distance.",
+    hardwareHint:
+      "This radius can be saved as a spherometer's feet radius in the",
   },
 
   reverseSpherometer: {

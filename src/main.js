@@ -23,6 +23,7 @@ import BathAstigmatism from "./BathAstigmatism.vue";
 import SphericalAberration from "./SphericalAberration.vue";
 import MirrorWeight from "./MirrorWeight.vue";
 import FieldConverter from "./FieldConverter.vue";
+import SpherometerFeetRadius from "./SpherometerFeetRadius.vue";
 import Home from "./Home.vue";
 
 export const routes = [
@@ -126,6 +127,15 @@ export const routes = [
         name: "fieldConverter",
         component: FieldConverter,
         meta: { icon: "coma_free", titleKey: "routes.fieldConverter" },
+      },
+      {
+        path: "spherometer_feet_radius",
+        name: "spherometerFeetRadius",
+        component: SpherometerFeetRadius,
+        meta: {
+          icon: "sphero",
+          titleKey: "routes.spherometerFeetRadius",
+        },
       },
     ],
   },

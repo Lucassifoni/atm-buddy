@@ -63,6 +63,7 @@ export default {
     sphericalAberration: "Aberration sphérique",
     mirrorWeight: "Poids du miroir",
     fieldConverter: "Champ ↔ TFOV",
+    spherometerFeetRadius: "Rayon des pieds",
   },
 
   spherometer: {
@@ -72,6 +73,26 @@ export default {
     sagitta: "Flèche (mm) :",
     ballDiameter: "Diamètre de la bille (mm) :",
     curveLabel: "Courbure :",
+  },
+
+  spherometerFeetRadius: {
+    title: "Rayon des pieds d'un sphéromètre",
+    formula:
+      "r = (a × b × c) / (4 × Aire) — a, b, c = distances entre centres des billes",
+    feetRadiusLabel: "Rayon des pieds :",
+    sensitivityLabel: "Écart pour 0,001 mm d'erreur sur une mesure : ±",
+    precisionHint:
+      "Mesurer au 0,001 mm près, diamètre de la bille compris : c'est cette précision qui conditionne le rayon obtenu.",
+    invalidTriangle:
+      "Mesures incohérentes : les trois pieds sont alignés ou les distances ne forment pas un triangle.",
+    outsideA: "Mesure A, extérieur à extérieur (mm) :",
+    outsideB: "Mesure B, extérieur à extérieur (mm) :",
+    outsideC: "Mesure C, extérieur à extérieur (mm) :",
+    ballDiameter: "Diamètre de la bille (mm) :",
+    measurementHint:
+      "Mesurer d'un bord extérieur de bille à l'autre : le diamètre d'une bille est soustrait pour obtenir la distance entre centres.",
+    hardwareHint:
+      "Ce rayon peut être enregistré comme rayon des pieds d'un sphéromètre dans l'onglet",
   },
 
   reverseSpherometer: {

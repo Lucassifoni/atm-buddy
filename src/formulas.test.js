@@ -21,6 +21,7 @@ import {
   sphericalCapVolume,
   mirrorBlank,
   fieldConverter,
+  spherometerTriangle,
 } from "./formulas.js";
 
 describe("ballSpherometerROC", () => {
@@ -1170,6 +1171,146 @@ describe("mirrorBlank", () => {
       });
       expect(grams).toBeGreaterThan(3500);
       expect(grams).toBeLessThan(5000);
+    });
+  });
+});
+
+describe("spherometerTriangle", () => {
+  const measured = {
+    outsideA: 170.995,
+    outsideB: 63.975,
+    outsideC: 171.035,
+    ballDiameter: 4,
+  };
+
+  describe("footCenterDistances", () => {
+    it("removes one ball diameter from each outside-to-outside measurement", () => {
+      expect(spherometerTriangle.footCenterDistances(measured)).toEqual({
+        a: 166.995,
+        b: 59.975,
+        c: 167.035,
+      });
+    });
+  });
+
+  describe("area", () => {
+    it("computes the triangle area from the foot center distances", () => {
+      const result = spherometerTriangle.area({
+        a: 166.995,
+        b: 59.975,
+        c: 167.035,
+      });
+      expect(result).toBeCloseTo(4926.97, 2);
+    });
+
+    it("matches the closed form for an equilateral triangle", () => {
+      const side = 100;
+      const result = spherometerTriangle.area({ a: side, b: side, c: side });
+      expect(result).toBeCloseTo((Math.sqrt(3) / 4) * side * side, 9);
+    });
+
+    it("returns NaN for a degenerate triangle", () => {
+      expect(spherometerTriangle.area({ a: 100, b: 50, c: 50 })).toBeNaN();
+    });
+
+    it("returns NaN when a distance is not positive", () => {
+      expect(spherometerTriangle.area({ a: 100, b: 60, c: 0 })).toBeNaN();
+    });
+  });
+
+  describe("circumradius", () => {
+    it("returns half the hypotenuse for a right triangle", () => {
+      expect(
+        spherometerTriangle.circumradius({ a: 3, b: 4, c: 5 }),
+      ).toBeCloseTo(2.5, 12);
+    });
+
+    it("returns side / sqrt(3) for an equilateral triangle", () => {
+      const side = 138.564;
+      expect(
+        spherometerTriangle.circumradius({ a: side, b: side, c: side }),
+      ).toBeCloseTo(side / Math.sqrt(3), 9);
+    });
+  });
+
+  describe("feetRadius", () => {
+    it("reproduces the reference spreadsheet result", () => {
+      expect(spherometerTriangle.feetRadius(measured)).toBeCloseTo(84.88703, 5);
+    });
+
+    it("is insensitive to the ordering of the three measurements", () => {
+      const reference = spherometerTriangle.feetRadius(measured);
+      const permuted = spherometerTriangle.feetRadius({
+        outsideA: measured.outsideC,
+        outsideB: measured.outsideA,
+        outsideC: measured.outsideB,
+        ballDiameter: measured.ballDiameter,
+      });
+      expect(permuted).toBeCloseTo(reference, 12);
+    });
+
+    it("agrees with the equilateral case used by the spherometer calculators", () => {
+      const feetRadius = 80;
+      const side = feetRadius * Math.sqrt(3);
+      const ballDiameter = 4;
+      const result = spherometerTriangle.feetRadius({
+        outsideA: side + ballDiameter,
+        outsideB: side + ballDiameter,
+        outsideC: side + ballDiameter,
+        ballDiameter,
+      });
+      expect(result).toBeCloseTo(feetRadius, 9);
+    });
+
+    it("returns NaN when the three feet are aligned", () => {
+      expect(
+        spherometerTriangle.feetRadius({
+          outsideA: 104,
+          outsideB: 54,
+          outsideC: 54,
+          ballDiameter: 4,
+        }),
+      ).toBeNaN();
+    });
+  });
+
+  describe("sensitivity", () => {
+    it("reports the worst-case radius deviation for a measurement error", () => {
+      const result = spherometerTriangle.sensitivity({
+        ...measured,
+        delta: 0.001,
+      });
+      expect(result).toBeCloseTo(0.000538, 6);
+    });
+
+    it("grows as the triangle flattens", () => {
+      const flat = spherometerTriangle.sensitivity({
+        outsideA: 103,
+        outsideB: 54,
+        outsideC: 54,
+        ballDiameter: 4,
+        delta: 0.001,
+      });
+      const balanced = spherometerTriangle.sensitivity({
+        outsideA: 104,
+        outsideB: 104,
+        outsideC: 104,
+        ballDiameter: 4,
+        delta: 0.001,
+      });
+      expect(flat).toBeGreaterThan(balanced);
+    });
+
+    it("returns NaN for a degenerate triangle", () => {
+      expect(
+        spherometerTriangle.sensitivity({
+          outsideA: 104,
+          outsideB: 54,
+          outsideC: 54,
+          ballDiameter: 4,
+          delta: 0.001,
+        }),
+      ).toBeNaN();
     });
   });
 });
