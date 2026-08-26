@@ -151,6 +151,21 @@ export const comaFree = {
     return 2 * Math.atan(linear / (2 * focalLength)) * (180 / Math.PI);
   },
 
+  apparentFieldArcsec: ({ focalLength, diameter }) => {
+    return comaFree.apparentField({ focalLength, diameter }) * 3600;
+  },
+
+  /**
+   * How many diameters of an object of `objectArcsec` apparent size fit across
+   * the coma-free field. Below 1, the object is larger than the sweet spot.
+   */
+  fitsAcross: ({ focalLength, diameter, objectArcsec }) => {
+    if (!(objectArcsec > 0)) return NaN;
+    return (
+      comaFree.apparentFieldArcsec({ focalLength, diameter }) / objectArcsec
+    );
+  },
+
   magnification: ({ focalLength, eyepieceFocalLength }) => {
     return focalLength / eyepieceFocalLength;
   },

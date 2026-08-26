@@ -19,6 +19,7 @@ const {
   getSpherometers,
   routeTitle,
   groupRoutesByCategory,
+  formatArcSize,
 } = await import("./utils.js");
 
 const stored = (storageKey) => JSON.parse(localStorage.getItem(storageKey));
@@ -217,5 +218,20 @@ describe("groupRoutesByCategory", () => {
   it("returns nothing when there are no routes or no categories", () => {
     expect(groupRoutesByCategory([], categories, t)).toEqual([]);
     expect(groupRoutesByCategory(routes, [], t)).toEqual([]);
+  });
+});
+
+describe("formatArcSize", () => {
+  it("keeps small sizes in arcseconds", () => {
+    expect(formatArcSize(39.4)).toBe("39.4″");
+  });
+
+  it("switches to arcminutes at two arcminutes", () => {
+    expect(formatArcSize(120)).toBe("2.0′");
+    expect(formatArcSize(1866)).toBe("31.1′");
+  });
+
+  it("renders non-finite sizes as a dash", () => {
+    expect(formatArcSize(NaN)).toBe("-");
   });
 });

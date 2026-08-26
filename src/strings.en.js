@@ -216,10 +216,25 @@ export default {
     ofFieldArea: "% of the eyepiece field area",
     ofAfov: "° of",
     afov: "AFOV",
+    fitsTitle: "In the coma-free field",
+    fitsHint: "Apparent diameter along the largest axis.",
+    fitsObject: "Object",
+    fitsSize: "Apparent size",
+    fitsAcross: "Across",
+    fitsVerdict: "Fits",
+    fitsYes: "yes",
+    fitsNo: "no",
     diameter: "Diameter (mm):",
     focalLength: "Focal length (mm):",
     eyepieceFl: "Eyepiece focal length (mm):",
     eyepieceAfov: "Eyepiece AFOV (°):",
+  },
+
+  celestialBodies: {
+    jupiter: "Jupiter",
+    m27: "M27 (Dumbbell)",
+    m13: "M13 (Hercules cluster)",
+    moon: "Moon",
   },
 
   foucault: {

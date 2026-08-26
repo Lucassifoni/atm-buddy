@@ -423,6 +423,47 @@ describe("comaFree calculations", () => {
     });
   });
 
+  describe("apparentFieldArcsec", () => {
+    it("expresses the apparent coma-free field in arcseconds", () => {
+      const result = comaFree.apparentFieldArcsec({
+        focalLength: 1200,
+        diameter: 300,
+      });
+      expect(result).toBeCloseTo(242.02, 1);
+    });
+  });
+
+  describe("fitsAcross", () => {
+    it("counts how many object diameters fit across the field", () => {
+      const result = comaFree.fitsAcross({
+        focalLength: 1200,
+        diameter: 300,
+        objectArcsec: 39.4,
+      });
+      expect(result).toBeCloseTo(6.14, 2);
+    });
+
+    it("returns less than 1 for an object larger than the field", () => {
+      const result = comaFree.fitsAcross({
+        focalLength: 1200,
+        diameter: 300,
+        objectArcsec: 1866,
+      });
+      expect(result).toBeCloseTo(0.13, 2);
+      expect(result).toBeLessThan(1);
+    });
+
+    it("returns NaN for a degenerate object size", () => {
+      expect(
+        comaFree.fitsAcross({
+          focalLength: 1200,
+          diameter: 300,
+          objectArcsec: 0,
+        }),
+      ).toBeNaN();
+    });
+  });
+
   describe("magnification", () => {
     it("calculates magnification", () => {
       const result = comaFree.magnification({

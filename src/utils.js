@@ -86,3 +86,13 @@ export const getOpticalPieces = () => {
 export const getPolishers = () => {
   return getHardware().polishers;
 };
+
+/**
+ * Renders an apparent size given in arcseconds, switching to arcminutes above
+ * two arcminutes so that deep-sky targets stay readable.
+ */
+export const formatArcSize = (arcsec) => {
+  if (!isFinite(arcsec)) return "-";
+  if (arcsec >= 120) return `${(arcsec / 60).toFixed(1)}\u2032`;
+  return `${arcsec.toFixed(1)}\u2033`;
+};

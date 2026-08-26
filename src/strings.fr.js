@@ -217,10 +217,25 @@ export default {
     ofFieldArea: " % de la surface du champ de l'oculaire",
     ofAfov: "° sur",
     afov: "AFOV",
+    fitsTitle: "Dans le champ sans coma",
+    fitsHint: "Diamètre apparent sur le grand axe.",
+    fitsObject: "Objet",
+    fitsSize: "Taille apparente",
+    fitsAcross: "Dans le champ",
+    fitsVerdict: "Rentre",
+    fitsYes: "oui",
+    fitsNo: "non",
     diameter: "Diamètre (mm) :",
     focalLength: "Longueur focale (mm) :",
     eyepieceFl: "Focale de l'oculaire (mm) :",
     eyepieceAfov: "AFOV de l'oculaire (°) :",
+  },
+
+  celestialBodies: {
+    jupiter: "Jupiter",
+    m27: "M27 (Dumbbell)",
+    m13: "M13 (amas d'Hercule)",
+    moon: "Lune",
   },
 
   foucault: {

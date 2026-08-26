@@ -36,6 +36,43 @@
         </p>
       </div>
     </div>
+    <div class="card bg-base-200 p-3 mt-3 mb-3">
+      <h4 class="text-sm font-semibold mb-1">{{ $t("comaFree.fitsTitle") }}</h4>
+      <p class="text-xs opacity-70 mb-2">{{ $t("comaFree.fitsHint") }}</p>
+      <div class="overflow-x-auto">
+        <table class="table table-xs w-full">
+          <thead>
+            <tr>
+              <th class="text-xs">{{ $t("comaFree.fitsObject") }}</th>
+              <th class="text-xs">{{ $t("comaFree.fitsSize") }}</th>
+              <th class="text-xs">{{ $t("comaFree.fitsAcross") }}</th>
+              <th class="text-xs">{{ $t("comaFree.fitsVerdict") }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="body in bodyFits" :key="body.key">
+              <td class="text-xs">
+                {{ $t("celestialBodies." + body.key) }}
+              </td>
+              <td class="text-xs" :title="body.range">
+                {{ body.size }}
+              </td>
+              <td class="text-xs">{{ body.across.toFixed(2) }}&#215;</td>
+              <td class="text-xs">
+                <span
+                  class="badge badge-xs"
+                  :class="body.fits ? 'badge-success' : 'badge-error'"
+                >
+                  {{
+                    body.fits ? $t("comaFree.fitsYes") : $t("comaFree.fitsNo")
+                  }}
+                </span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
     <div class="field-horizontal">
       <label class="label text-xs font-medium">{{
         $t("comaFree.diameter")
@@ -88,8 +125,9 @@
 </template>
 
 <script>
-import { normalize, parseFloat } from "./utils";
+import { normalize, parseFloat, formatArcSize } from "./utils";
 import { focalRatio, comaFree } from "./formulas";
+import { CELESTIAL_BODIES } from "./celestialBodies";
 import OpticalPieceSelector from "./OpticalPieceSelector.vue";
 
 export default {
@@ -150,6 +188,26 @@ export default {
         diameter: parseFloat(this.d),
         eyepieceFocalLength: parseFloat(this.eyepieceFl),
         apparentFOV: parseFloat(this.afov),
+      });
+    },
+    bodyFits() {
+      return CELESTIAL_BODIES.map((body) => {
+        const across = comaFree.fitsAcross({
+          focalLength: parseFloat(this.f),
+          diameter: parseFloat(this.d),
+          objectArcsec: body.arcsec,
+        });
+        const range =
+          body.minArcsec === undefined
+            ? null
+            : `${formatArcSize(body.minArcsec)} - ${formatArcSize(body.maxArcsec)}`;
+        return {
+          ...body,
+          across,
+          range,
+          size: formatArcSize(body.arcsec),
+          fits: across >= 1,
+        };
       });
     },
     comaFreeSurface() {
