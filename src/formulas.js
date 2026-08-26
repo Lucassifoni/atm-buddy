@@ -169,6 +169,23 @@ export const comaFree = {
     });
     return (comaFreeApparent / trueFov) * apparentFOV;
   },
+
+  surfacePercentage: ({
+    focalLength,
+    diameter,
+    eyepieceFocalLength,
+    apparentFOV,
+  }) => {
+    const comaFreeApparent = comaFree.apparentField({ focalLength, diameter });
+    const trueFov = comaFree.trueFieldOfView({
+      focalLength,
+      eyepieceFocalLength,
+      apparentFOV,
+    });
+    if (!(trueFov > 0)) return NaN;
+    const diameterRatio = comaFreeApparent / trueFov;
+    return Math.min(1, diameterRatio * diameterRatio) * 100;
+  },
 };
 
 export const annularRing = {

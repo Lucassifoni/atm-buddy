@@ -30,6 +30,10 @@
           {{ comaFreeInEyepiece.toFixed(1) }}{{ $t("comaFree.ofAfov") }}
           {{ afov }}{{ $t("common.degrees") }} {{ $t("comaFree.afov") }}
         </p>
+        <p>
+          <strong>{{ $t("comaFree.comaFreeSurface") }}</strong>
+          {{ comaFreeSurface.toFixed(2) }}{{ $t("comaFree.ofFieldArea") }}
+        </p>
       </div>
     </div>
     <div class="field-horizontal">
@@ -142,6 +146,14 @@ export default {
     },
     comaFreeInEyepiece() {
       return comaFree.inEyepiece({
+        focalLength: parseFloat(this.f),
+        diameter: parseFloat(this.d),
+        eyepieceFocalLength: parseFloat(this.eyepieceFl),
+        apparentFOV: parseFloat(this.afov),
+      });
+    },
+    comaFreeSurface() {
+      return comaFree.surfacePercentage({
         focalLength: parseFloat(this.f),
         diameter: parseFloat(this.d),
         eyepieceFocalLength: parseFloat(this.eyepieceFl),

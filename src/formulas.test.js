@@ -455,6 +455,52 @@ describe("comaFree calculations", () => {
       expect(result).toBeCloseTo(8.07, 1);
     });
   });
+
+  describe("surfacePercentage", () => {
+    it("calculates the coma-free share of the eyepiece field area", () => {
+      const result = comaFree.surfacePercentage({
+        focalLength: 1200,
+        diameter: 300,
+        eyepieceFocalLength: 10,
+        apparentFOV: 82,
+      });
+      expect(result).toBeCloseTo(0.968, 2);
+    });
+
+    it("is the square of the linear share of the field", () => {
+      const args = {
+        focalLength: 1200,
+        diameter: 300,
+        eyepieceFocalLength: 10,
+        apparentFOV: 82,
+      };
+      const linearShare = comaFree.inEyepiece(args) / args.apparentFOV;
+      expect(comaFree.surfacePercentage(args)).toBeCloseTo(
+        linearShare * linearShare * 100,
+        6,
+      );
+    });
+
+    it("caps at 100% when the coma-free field overflows the eyepiece field", () => {
+      const result = comaFree.surfacePercentage({
+        focalLength: 3000,
+        diameter: 150,
+        eyepieceFocalLength: 40,
+        apparentFOV: 50,
+      });
+      expect(result).toBe(100);
+    });
+
+    it("returns NaN for a degenerate eyepiece field", () => {
+      const result = comaFree.surfacePercentage({
+        focalLength: 1200,
+        diameter: 300,
+        eyepieceFocalLength: 10,
+        apparentFOV: 0,
+      });
+      expect(result).toBeNaN();
+    });
+  });
 });
 
 describe("annularRing calculations", () => {

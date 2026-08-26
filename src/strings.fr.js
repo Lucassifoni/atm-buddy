@@ -213,6 +213,8 @@ export default {
     comaFreeLinear: "Champ sans coma (linéaire) :",
     comaFreeApparent: "Champ sans coma (apparent) :",
     comaFreeEyepiece: "Sans coma dans l'oculaire :",
+    comaFreeSurface: "Champ sans coma (surface) :",
+    ofFieldArea: " % de la surface du champ de l'oculaire",
     ofAfov: "° sur",
     afov: "AFOV",
     diameter: "Diamètre (mm) :",

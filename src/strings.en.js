@@ -212,6 +212,8 @@ export default {
     comaFreeLinear: "Coma-free field (linear):",
     comaFreeApparent: "Coma-free field (apparent):",
     comaFreeEyepiece: "Coma-free in eyepiece:",
+    comaFreeSurface: "Coma-free field (surface):",
+    ofFieldArea: "% of the eyepiece field area",
     ofAfov: "° of",
     afov: "AFOV",
     diameter: "Diameter (mm):",
