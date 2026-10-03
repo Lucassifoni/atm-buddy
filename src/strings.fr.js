@@ -22,7 +22,6 @@ export default {
 
   app: {
     title: "ATM Buddy",
-    subtitle: "outils pour opticiens amateurs",
     contributeOn: "Contribuer sur",
     github: "github",
     analyticsNote:
@@ -31,21 +30,15 @@ export default {
       "uniquement pour savoir quels outils sont utilisés ou non. Si vous ne le souhaitez pas, vous pouvez utiliser un bloqueur de publicités ou",
     optOut: "cliquez ici pour refuser",
     optIn: "réactiver",
-    credits: `Un projet par <a class="underline" href="https://lucassifoni.info">Lucas Sifoni</a>, <a class="underline" href="http://gallifrey-optics.fr">Paul Faÿs de Gallifrey Optics</a>, et <a class="underline" href="https://la3emedim.fr">Raphaël Labro de La3emedim.fr</a>`,
+    credits: `Un projet par <a class="underline" href="https://lucassifoni.info">Lucas Sifoni</a> et <a class="underline" href="http://gallifrey-optics.fr">Paul Faÿs de Gallifrey Optics</a>`,
   },
 
   home: {
+    subtitle:
+      "Collection d'outils adaptés aux smartphones pour les opticiens amateurs",
+    aboutTitle: "À propos",
     aboutText:
       "Cette application fournit des calculateurs spécialisés et des outils de référence pour les fabricants de télescopes amateurs (ATM). Tous les calculs sont effectués côté client et fonctionnent hors ligne après le premier chargement.",
-  },
-
-  categories: {
-    measuring: "Mesure de la courbe",
-    testing: "Contrôle & retouche",
-    grinding: "Taille & polissage",
-    design: "Conception optique",
-    blanks: "Disques & argenture",
-    gear: "Votre matériel",
   },
 
   routes: {
@@ -62,8 +55,9 @@ export default {
     pressure: "Calculateur de pression",
     comaFree: "Rayon sans coma",
     foucaultLA: "Foucault LA",
-    hardware: "Gérer votre matériel",
+    hardware: "Matériel",
     colorSplitter: "Séparation couleurs",
+    littleCalculators: "Petits calculateurs",
     glassSlab: "Aberration lame de verre",
     bathAstigmatism: "Astigmatisme Bath",
     sphericalAberration: "Aberration sphérique",
@@ -399,6 +393,11 @@ export default {
     bomSprayers: "Deux pulvérisateurs",
     bomContainers: "Récipients",
     bomMasks: "Masques FFP2",
+  },
+
+  littleCalculators: {
+    backToHome: "Retour à l'accueil",
+    backToList: "Retour à la liste",
   },
 
   glassSlab: {

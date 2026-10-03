@@ -31,22 +31,6 @@ export const routeTitle = (route, t) => {
   return (route && route.name) || "";
 };
 
-/**
- * @doc Groups routes into the ordered sections a tool list renders. Section
- * order follows `categories`, item order follows the route table, and empty
- * sections are dropped. Routes without a known category are left out.
- */
-export const groupRoutesByCategory = (routes, categories, t) =>
-  (categories || [])
-    .map((category) => ({
-      id: category.id,
-      title: t(category.titleKey),
-      items: (routes || [])
-        .filter((route) => route.meta && route.meta.category === category.id)
-        .map((route) => ({ path: route.path, title: routeTitle(route, t) })),
-    }))
-    .filter((section) => section.items.length > 0);
-
 export const normalize = (n) => n.toString().replace(",", ".");
 
 export const parseFloat = (value) => {

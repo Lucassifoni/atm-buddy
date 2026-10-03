@@ -307,4 +307,38 @@
       <path d="M61.1,6.73c.21.59-.22.55-.55.81-.47.36-.92.76-1.39,1.12-.13.1-.08.27-.29.2-.19-.06-.28-.47-.19-.57.02-.02.36-.1.5-.2.5-.32,1.09-1.04,1.53-1.28.13-.07.25-.11.39-.08Z"/>
     </g>
   </g>
+  <g id="Placeholders" font-family="monospace" font-size="2.6" text-anchor="middle">
+    <g id="menu">
+      <rect x="49.5" y="73.5" width="21" height="21" rx="3" ry="3" fill="none" stroke="#9ca3af" stroke-width="0.5" stroke-dasharray="1.5 1.5"/>
+      <text fill="#6b7280"><tspan x="60" y="83.3">[3,4]</tspan><tspan x="60" y="86.5">menu</tspan></text>
+    </g>
+    <g id="glass_slab">
+      <rect x="1.5" y="97.5" width="21" height="21" rx="3" ry="3" fill="none" stroke="#9ca3af" stroke-width="0.5" stroke-dasharray="1.5 1.5"/>
+      <text fill="#6b7280"><tspan x="12" y="107.3">[1,5]</tspan><tspan x="12" y="110.5">glass_slab</tspan></text>
+    </g>
+    <g id="bath_astigmatism">
+      <rect x="25.5" y="97.5" width="21" height="21" rx="3" ry="3" fill="none" stroke="#9ca3af" stroke-width="0.5" stroke-dasharray="1.5 1.5"/>
+      <text fill="#6b7280"><tspan x="36" y="105.7">[2,5]</tspan><tspan x="36" y="108.9">bath</tspan><tspan x="36" y="112.1">astigmatism</tspan></text>
+    </g>
+    <g id="spherical_aberration">
+      <rect x="49.5" y="97.5" width="21" height="21" rx="3" ry="3" fill="none" stroke="#9ca3af" stroke-width="0.5" stroke-dasharray="1.5 1.5"/>
+      <text fill="#6b7280"><tspan x="60" y="105.7">[3,5]</tspan><tspan x="60" y="108.9">spherical</tspan><tspan x="60" y="112.1">aberration</tspan></text>
+    </g>
+    <g id="mirror_weight">
+      <rect x="73.5" y="97.5" width="21" height="21" rx="3" ry="3" fill="none" stroke="#9ca3af" stroke-width="0.5" stroke-dasharray="1.5 1.5"/>
+      <text fill="#6b7280"><tspan x="84" y="105.7">[4,5]</tspan><tspan x="84" y="108.9">mirror</tspan><tspan x="84" y="112.1">weight</tspan></text>
+    </g>
+    <g id="field_converter">
+      <rect x="1.5" y="121.5" width="21" height="21" rx="3" ry="3" fill="none" stroke="#9ca3af" stroke-width="0.5" stroke-dasharray="1.5 1.5"/>
+      <text fill="#6b7280"><tspan x="12" y="129.7">[1,6]</tspan><tspan x="12" y="132.9">field</tspan><tspan x="12" y="136.1">converter</tspan></text>
+    </g>
+    <g id="spherometer_feet_radius">
+      <rect x="25.5" y="121.5" width="21" height="21" rx="3" ry="3" fill="none" stroke="#9ca3af" stroke-width="0.5" stroke-dasharray="1.5 1.5"/>
+      <text fill="#6b7280"><tspan x="36" y="129.7">[2,6]</tspan><tspan x="36" y="132.9">spherometer</tspan><tspan x="36" y="136.1">feet_radius</tspan></text>
+    </g>
+    <g id="little_calculators">
+      <rect x="49.5" y="121.5" width="21" height="21" rx="3" ry="3" fill="none" stroke="#9ca3af" stroke-width="0.5" stroke-dasharray="1.5 1.5"/>
+      <text fill="#6b7280"><tspan x="60" y="129.7">[3,6]</tspan><tspan x="60" y="132.9">little</tspan><tspan x="60" y="136.1">calculators</tspan></text>
+    </g>
+  </g>
 </svg>

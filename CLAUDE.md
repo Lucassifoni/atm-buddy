@@ -15,7 +15,7 @@ Mobile-friendly web application for Amateur Telescope Makers (ATMs) providing sp
 
 ## Architecture
 
-- Entry point `src/main.js`: exports the route table and the `ViteSSG` app factory, registers `$t` / `$i18n` as global properties, and registers the service worker on the client.
+- Entry point `src/main.js`: re-exports the route table from `src/routes.js` and exports the `ViteSSG` app factory, registers `$t` / `$i18n` as global properties, and registers the service worker on the client.
 - `src/App.vue` holds the layout, the language selector, and the analytics opt-out.
 - Components are flat `.vue` files directly under `src/`, one per tool. Views live at the top level of the route table; smaller tools are nested under the `/little_calculators` parent route rendered by `LittleCalculators.vue`.
 - All calculations run client-side. Every route is pre-rendered at build time, so component code must tolerate running without `window` (see `isBrowser` guards in `src/utils.js`).
@@ -26,7 +26,7 @@ Mobile-friendly web application for Amateur Telescope Makers (ATMs) providing sp
 - `src/formulas.test.js` — Vitest coverage for the above. Any new formula is expected to come with tests, including its degenerate cases.
 - `src/utils.js` / `src/utils.test.js` — `get`/`set` localStorage helpers, `normalize`/`parseFloat` (accept a decimal comma, French keyboards), and the hardware getters.
 - `src/useI18n.js` + `src/strings.en.js` + `src/strings.fr.js` — i18n. `$t("section.key")` in templates; English is the fallback language. Every user-facing string goes in both files, route titles under `routes.*`. (`src/lang.js` is leftover dead code from an earlier iteration.)
-- `src/components/Icon.vue`, `src/assets/icons.svg`, `src/assets/iconMap.js` — icons come from a single 24×24 sprite grid; `iconMap.js` maps an icon name to its `[column, row]`.
+- `src/components/Icon.vue`, `src/assets/icons.svg`, `src/assets/iconMap.js` — icons come from a single 24×24 sprite grid; `iconMap.js` maps an icon name to its `[column, row]`. Each route has its own icon. A cell whose icon is not drawn yet holds a dashed, labelled group in the `Placeholders` layer of `icons.svg` (`<g id="icon_name">`), to be deleted once the drawing lands in that cell. `icon_map.svg` is the labelled reference of the whole grid; `src/assets/iconMap.test.js` keeps routes, map, placeholders and reference in sync.
 - `public/` — service worker, manifest, favicon.
 
 ## Persistence
@@ -38,7 +38,7 @@ Mobile-friendly web application for Amateur Telescope Makers (ATMs) providing sp
 
 1. Add the math to `src/formulas.js` as pure functions, and tests to `src/formulas.test.js`.
 2. Create `src/YourTool.vue` — result first in an `alert alert-success`, then the inputs as `field-horizontal` rows with `inputmode="decimal"` and a comma-tolerant `pattern`.
-3. Register the route in `src/main.js` (nest it under `littleCalculators` unless it is a headline tool) with an `icon` and a `titleKey`.
+3. Register the route in `src/routes.js` (nest it under `littleCalculators` unless it is a headline tool, which also needs `isHome: true`) with an `icon` and a `titleKey`. Give it a free cell in `iconMap.js`, a placeholder in `icons.svg` and a label in `icon_map.svg`.
 4. Add the strings to both `strings.en.js` and `strings.fr.js`, including the `routes.*` title.
 5. Run `yarn test:run`, then `yarn build`.
 

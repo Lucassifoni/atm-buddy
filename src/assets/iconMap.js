@@ -18,4 +18,8 @@ export default {
   glass_slab: [1, 5],
   bath_astigmatism: [2, 5],
   spherical_aberration: [3, 5],
+  mirror_weight: [4, 5],
+  field_converter: [1, 6],
+  spherometer_feet_radius: [2, 6],
+  little_calculators: [3, 6],
 };

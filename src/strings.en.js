@@ -22,7 +22,6 @@ export default {
 
   app: {
     title: "ATM Buddy",
-    subtitle: "tools for Amateur Telescope Makers",
     contributeOn: "Contribute on",
     github: "github",
     analyticsNote: "Note : I use reasonably private analytics powered by",
@@ -30,21 +29,15 @@ export default {
       "only to know which tools are or aren't used. If you do not want that, you can use an adblocker or",
     optOut: "click here to opt-out",
     optIn: "opt back in",
-    credits: `A project by <a class="underline" href="https://lucassifoni.info">Lucas Sifoni</a>, <a class="underline" href="http://gallifrey-optics.fr">Paul Faÿs from Gallifrey Optics</a>, and <a class="underline" href="https://la3emedim.fr">Raphaël Labro from La3emedim.fr</a>`,
+    credits: `A project by <a class="underline" href="https://lucassifoni.info">Lucas Sifoni</a> and <a class="underline" href="http://gallifrey-optics.fr">Paul Faÿs from Gallifrey Optics</a>`,
   },
 
   home: {
+    subtitle:
+      "Mobile-friendly collection of tools for Amateur Telescope Makers",
+    aboutTitle: "About",
     aboutText:
       "This application provides specialized calculators and reference tools for Amateur Telescope Makers (ATMs). All calculations are performed client-side and work offline after initial load.",
-  },
-
-  categories: {
-    measuring: "Measuring the curve",
-    testing: "Testing & figuring",
-    grinding: "Grinding & polishing",
-    design: "Optical design",
-    blanks: "Blanks & coating",
-    gear: "Your gear",
   },
 
   routes: {
@@ -63,6 +56,7 @@ export default {
     foucaultLA: "Foucault LA",
     hardware: "Hardware",
     colorSplitter: "Color Splitter",
+    littleCalculators: "Little Calculators",
     glassSlab: "Glass Slab Aberration",
     bathAstigmatism: "Bath Astigmatism",
     sphericalAberration: "Spherical Aberration",
@@ -396,6 +390,11 @@ export default {
     bomSprayers: "Two sprayers",
     bomContainers: "Containers",
     bomMasks: "FFP2 masks",
+  },
+
+  littleCalculators: {
+    backToHome: "Back to home",
+    backToList: "Back to list",
   },
 
   glassSlab: {
