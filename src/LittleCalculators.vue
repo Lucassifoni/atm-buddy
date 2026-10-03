@@ -62,7 +62,7 @@ export default {
   align-items: center;
   justify-content: center;
   aspect-ratio: 1;
-  padding: 0.75rem;
+  padding: 0.5rem;
   border-radius: 0.75rem;
   background-color: oklch(var(--b2));
   border: 1px solid oklch(var(--b3));
@@ -77,10 +77,22 @@ export default {
   transform: scale(1.02);
 }
 
+.tool-icon {
+  width: 58%;
+  height: auto;
+  aspect-ratio: 1;
+  flex-shrink: 0;
+  margin-bottom: 0.25rem;
+}
+
 .tool-name {
   font-size: 0.75rem;
   text-align: center;
   color: oklch(var(--bc));
   line-height: 1.2;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
 }
 </style>

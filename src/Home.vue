@@ -58,7 +58,7 @@ export default {
   align-items: center;
   justify-content: center;
   aspect-ratio: 1;
-  padding: 0.75rem;
+  padding: 0.5rem;
   border-radius: 0.75rem;
   background-color: oklch(var(--b2));
   border: 1px solid oklch(var(--b3));
@@ -74,9 +74,11 @@ export default {
 }
 
 .tool-icon {
-  width: 2.5rem;
-  height: 2.5rem;
-  margin-bottom: 0.5rem;
+  width: 58%;
+  height: auto;
+  aspect-ratio: 1;
+  flex-shrink: 0;
+  margin-bottom: 0.25rem;
 }
 
 .tool-name {
