@@ -26,6 +26,7 @@ import {
   zernikeZ8Table,
   zernikeZ8MinimumWavelength,
   shortestLaserAbove,
+  zernikeZ8Comparison,
 } from "./formulas.js";
 
 describe("ballSpherometerROC", () => {
@@ -1191,6 +1192,46 @@ describe("shortestLaserAbove", () => {
 
   it("returns null when the minimum is not a number", () => {
     expect(shortestLaserAbove({ lasers, minimumNm: NaN })).toBeNull();
+  });
+});
+
+describe("zernikeZ8Comparison", () => {
+  const compare = (mirrors) =>
+    zernikeZ8Comparison({ mirrors, wavelengthNm: 632.8 });
+
+  it("sorts mirrors from the easiest to the hardest", () => {
+    const rows = compare([
+      { diameter: 300, fRatio: 3 },
+      { diameter: 200, fRatio: 6 },
+      { diameter: 400, fRatio: 4 },
+    ]);
+    expect(rows.map((row) => [row.diameter, row.fRatio])).toEqual([
+      [200, 6],
+      [400, 4],
+      [300, 3],
+    ]);
+  });
+
+  it("derives the radius of curvature from the focal ratio", () => {
+    const [row] = compare([{ diameter: 300, fRatio: 4 }]);
+    expect(row.radiusOfCurvature).toBe(2400);
+    expect(row.coefficient).toBe(
+      zernikeZ8({ diameter: 300, radiusOfCurvature: 2400, wavelengthNm: 632.8 })
+        .coefficient,
+    );
+  });
+
+  it("rates each mirror against the easiest one", () => {
+    const rows = compare([
+      { diameter: 200, fRatio: 4 },
+      { diameter: 200, fRatio: 2 },
+    ]);
+    expect(rows[0].relative).toBe(1);
+    expect(rows[1].relative).toBeCloseTo(8, 10);
+  });
+
+  it("returns an empty comparison for no mirror", () => {
+    expect(compare([])).toEqual([]);
   });
 });
 

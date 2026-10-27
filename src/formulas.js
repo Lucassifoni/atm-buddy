@@ -545,6 +545,30 @@ export const shortestLaserAbove = ({ lasers, minimumNm }) =>
       null,
     );
 
+/**
+ * Compares mirrors given by `diameter` (mm) and `fRatio`, easiest first:
+ * each gets its radius of curvature, Z8 at `wavelengthNm`, and how many
+ * times the easiest mirror's Z8 it reaches.
+ */
+export const zernikeZ8Comparison = ({ mirrors, wavelengthNm }) => {
+  const rows = mirrors
+    .map((mirror) => {
+      const radiusOfCurvature = 2 * mirror.fRatio * mirror.diameter;
+      return {
+        ...mirror,
+        radiusOfCurvature,
+        coefficient: zernikeZ8({
+          diameter: mirror.diameter,
+          radiusOfCurvature,
+          wavelengthNm,
+        }).coefficient,
+      };
+    })
+    .sort((a, b) => a.coefficient - b.coefficient);
+  const easiest = rows.length > 0 ? rows[0].coefficient : NaN;
+  return rows.map((row) => ({ ...row, relative: row.coefficient / easiest }));
+};
+
 export const sphericalCapVolume = ({ baseRadius, sagitta }) => {
   const a = baseRadius;
   const h = sagitta;

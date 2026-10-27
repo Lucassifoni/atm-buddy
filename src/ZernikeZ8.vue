@@ -120,12 +120,15 @@
       </h4>
       <p class="text-xs opacity-70 mb-2">
         {{ $t("zernikeZ8.tableHint", { wavelength: format(wavelengthNm, 1) }) }}
+        {{ $t("zernikeZ8.compareHint") }}
       </p>
       <div class="overflow-x-auto">
         <table class="table table-xs w-full text-center">
           <thead>
             <tr>
-              <th class="text-xs">{{ $t("zernikeZ8.tableCorner") }}</th>
+              <th class="text-xs sticky left-0 z-10 bg-white">
+                {{ $t("zernikeZ8.tableCorner") }}
+              </th>
               <th v-for="d in diameters" :key="d" class="text-xs text-center">
                 {{ d }}
               </th>
@@ -133,14 +136,92 @@
           </thead>
           <tbody>
             <tr v-for="row in table" :key="row.fRatio">
-              <th class="text-xs">{{ row.fRatio.toFixed(1) }}</th>
+              <th class="text-xs sticky left-0 z-10 bg-white">
+                {{ row.fRatio }}
+              </th>
               <td
                 v-for="(value, i) in row.values"
                 :key="diameters[i]"
-                class="text-xs tabular-nums"
+                class="text-xs tabular-nums cursor-pointer"
+                :class="{
+                  'font-bold outline outline-2 -outline-offset-2 outline-primary':
+                    isSelected({ diameter: diameters[i], fRatio: row.fRatio }),
+                }"
                 :style="cellStyle(value)"
+                role="button"
+                tabindex="0"
+                @click="toggle({ diameter: diameters[i], fRatio: row.fRatio })"
+                @keydown.enter="
+                  toggle({ diameter: diameters[i], fRatio: row.fRatio })
+                "
               >
                 {{ format(value, 1) }}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="mt-4">
+      <div class="flex flex-wrap items-center gap-2 mb-1">
+        <h4 class="text-sm font-semibold mr-auto">
+          {{ $t("zernikeZ8.compareTitle") }}
+        </h4>
+        <button
+          class="btn btn-outline btn-xs"
+          :disabled="!currentMirror || isSelected(currentMirror)"
+          @click="toggle(currentMirror)"
+        >
+          {{ $t("zernikeZ8.addCurrent") }}
+        </button>
+        <button
+          class="btn btn-outline btn-xs"
+          :disabled="selected.length === 0"
+          @click="set('selected', [])"
+        >
+          {{ $t("zernikeZ8.clear") }}
+        </button>
+      </div>
+      <p v-if="comparison.length === 0" class="text-xs opacity-70">
+        {{ $t("zernikeZ8.compareEmpty") }}
+      </p>
+      <div v-else class="overflow-x-auto">
+        <table class="table table-xs w-full">
+          <thead>
+            <tr>
+              <th class="text-xs">{{ $t("zernikeZ8.compareMirror") }}</th>
+              <th class="text-xs text-right">Z8</th>
+              <th class="text-xs text-right">
+                {{ $t("zernikeZ8.compareRelative") }}
+              </th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              v-for="row in comparison"
+              :key="row.diameter + '@' + row.fRatio"
+            >
+              <td class="text-xs whitespace-nowrap">
+                {{ row.diameter }} mm f/{{ Number(row.fRatio.toFixed(2)) }}
+              </td>
+              <td
+                class="text-xs text-right tabular-nums"
+                :style="cellStyle(row.coefficient)"
+              >
+                {{ format(row.coefficient, 2) }}
+              </td>
+              <td class="text-xs text-right tabular-nums">
+                ×{{ format(row.relative, 1) }}
+              </td>
+              <td class="text-right">
+                <button
+                  class="btn btn-ghost btn-xs"
+                  :aria-label="$t('zernikeZ8.remove')"
+                  @click="toggle(row)"
+                >
+                  ✕
+                </button>
               </td>
             </tr>
           </tbody>
@@ -151,19 +232,31 @@
 </template>
 
 <script>
-import { get, set, normalize, heatHue } from "./utils";
+import {
+  get,
+  set,
+  normalize,
+  heatHue,
+  heatDarkness,
+  steps,
+  toggleIn,
+} from "./utils";
 import {
   zernikeZ8,
   zernikeZ8Table,
   zernikeZ8MinimumWavelength,
   shortestLaserAbove,
+  zernikeZ8Comparison,
 } from "./formulas";
 import OpticalPieceSelector from "./OpticalPieceSelector.vue";
 
 const STORAGE_KEY = "__zernike_z8";
-const F_RATIOS = Array.from({ length: 9 }, (_, i) => 6 - i * 0.5);
-const DIAMETERS = Array.from({ length: 10 }, (_, i) => (i + 1) * 100);
-const SCALE = { yellowAt: 9, redAt: 11 };
+const F_RATIOS = [
+  ...steps({ from: 6, to: 4, step: -0.5 }),
+  ...steps({ from: 3.75, to: 2, step: -0.25 }),
+];
+const DIAMETERS = steps({ from: 100, to: 1000, step: 50 });
+const SCALE = { yellowAt: 9, redAt: 11, darkenFrom: 12.5, darkestAt: 25 };
 const LASERS = [
   { key: "violet", nm: 405 },
   { key: "greenPointer", nm: 518 },
@@ -183,6 +276,8 @@ const SOURCES = [
   },
 ];
 
+const sameMirror = (a, b) => a.diameter === b.diameter && a.fRatio === b.fRatio;
+
 const toN = (a) => Number(normalize(a));
 
 export default {
@@ -195,6 +290,7 @@ export default {
       diameter: get(STORAGE_KEY, "diameter", "300"),
       roc: get(STORAGE_KEY, "roc", "2400"),
       wavelength: get(STORAGE_KEY, "wavelength", "632.8"),
+      selected: get(STORAGE_KEY, "selected", []),
       diameters: DIAMETERS,
       lasers: LASERS,
       sources: SOURCES,
@@ -214,9 +310,23 @@ export default {
           diameter: this.diameter,
           roc: this.roc,
           wavelength: this.wavelength,
+          selected: this.selected,
         },
         key,
         value,
+      );
+    },
+    isSelected(mirror) {
+      return this.selected.some((other) => sameMirror(other, mirror));
+    },
+    toggle(mirror) {
+      this.set(
+        "selected",
+        toggleIn(
+          this.selected,
+          { diameter: mirror.diameter, fRatio: mirror.fRatio },
+          sameMirror,
+        ),
       );
     },
     format(value, digits) {
@@ -224,9 +334,12 @@ export default {
     },
     cellStyle(value) {
       const hue = heatHue(value, SCALE);
-      return hue === null
-        ? {}
-        : { backgroundColor: `hsl(${hue} 85% 50% / 0.35)` };
+      if (hue === null) return {};
+      const darkness = heatDarkness(value, SCALE);
+      return {
+        backgroundColor: `hsl(${hue} 85% ${50 - 25 * darkness}% / ${0.35 + 0.55 * darkness})`,
+        color: darkness > 0.4 ? "white" : undefined,
+      };
     },
   },
   computed: {
@@ -237,6 +350,19 @@ export default {
       return zernikeZ8({
         diameter: toN(this.diameter),
         radiusOfCurvature: toN(this.roc),
+        wavelengthNm: this.wavelengthNm,
+      });
+    },
+    currentMirror() {
+      const diameter = toN(this.diameter);
+      const fRatio = toN(this.roc) / (2 * diameter);
+      return diameter > 0 && fRatio > 0 && isFinite(fRatio)
+        ? { diameter, fRatio }
+        : null;
+    },
+    comparison() {
+      return zernikeZ8Comparison({
+        mirrors: this.selected,
         wavelengthNm: this.wavelengthNm,
       });
     },

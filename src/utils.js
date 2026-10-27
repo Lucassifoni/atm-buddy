@@ -93,3 +93,32 @@ export const heatHue = (value, { yellowAt, redAt }) => {
   }
   return 120 - 60 * (Math.max(value, 0) / yellowAt);
 };
+
+/**
+ * How dark a cell past the red threshold should be: 0 up to `darkenFrom`,
+ * rising linearly to 1 at `darkestAt`, then capped. 0 for non-finite values.
+ */
+export const heatDarkness = (value, { darkenFrom, darkestAt }) => {
+  if (!isFinite(value)) return 0;
+  const t = (value - darkenFrom) / (darkestAt - darkenFrom);
+  return Math.min(1, Math.max(0, t));
+};
+
+/**
+ * Inclusive arithmetic sequence from `from` to `to` by `step` (negative to
+ * count down), rounded to absorb floating-point drift.
+ */
+export const steps = ({ from, to, step }) =>
+  Array.from(
+    { length: Math.floor((to - from) / step + 1e-9) + 1 },
+    (_, i) => Math.round((from + i * step) * 1e9) / 1e9,
+  );
+
+/**
+ * Returns a copy of `list` without the items equal to `item` by `sameAs`,
+ * or with `item` appended when there was none.
+ */
+export const toggleIn = (list, item, sameAs) =>
+  list.some((other) => sameAs(other, item))
+    ? list.filter((other) => !sameAs(other, item))
+    : [...list, item];

@@ -20,6 +20,9 @@ const {
   routeTitle,
   formatArcSize,
   heatHue,
+  heatDarkness,
+  steps,
+  toggleIn,
 } = await import("./utils.js");
 
 const stored = (storageKey) => JSON.parse(localStorage.getItem(storageKey));
@@ -201,5 +204,74 @@ describe("heatHue", () => {
 
   it("has no hue for non-finite values", () => {
     expect(heatHue(NaN, scale)).toBeNull();
+  });
+});
+
+describe("heatDarkness", () => {
+  const scale = { darkenFrom: 12.5, darkestAt: 25 };
+
+  it("stays at zero up to the darkening threshold", () => {
+    expect(heatDarkness(0, scale)).toBe(0);
+    expect(heatDarkness(12.5, scale)).toBe(0);
+  });
+
+  it("rises linearly past the threshold", () => {
+    expect(heatDarkness(18.75, scale)).toBe(0.5);
+  });
+
+  it("is capped at one", () => {
+    expect(heatDarkness(25, scale)).toBe(1);
+    expect(heatDarkness(64, scale)).toBe(1);
+  });
+
+  it("is zero for non-finite values", () => {
+    expect(heatDarkness(NaN, scale)).toBe(0);
+  });
+});
+
+describe("steps", () => {
+  it("includes both ends", () => {
+    expect(steps({ from: 100, to: 300, step: 50 })).toEqual([
+      100, 150, 200, 250, 300,
+    ]);
+  });
+
+  it("counts down with a negative step", () => {
+    expect(steps({ from: 3, to: 2, step: -0.25 })).toEqual([
+      3, 2.75, 2.5, 2.25, 2,
+    ]);
+  });
+
+  it("does not drift with decimal steps", () => {
+    expect(steps({ from: 0, to: 1, step: 0.1 })).toEqual([
+      0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1,
+    ]);
+  });
+
+  it("stops before overshooting the end", () => {
+    expect(steps({ from: 0, to: 10, step: 4 })).toEqual([0, 4, 8]);
+  });
+});
+
+describe("toggleIn", () => {
+  const sameId = (a, b) => a.id === b.id;
+
+  it("appends a missing item", () => {
+    expect(toggleIn([{ id: 1 }], { id: 2 }, sameId)).toEqual([
+      { id: 1 },
+      { id: 2 },
+    ]);
+  });
+
+  it("removes an item already present", () => {
+    expect(toggleIn([{ id: 1 }, { id: 2 }], { id: 1 }, sameId)).toEqual([
+      { id: 2 },
+    ]);
+  });
+
+  it("does not mutate the list", () => {
+    const list = [{ id: 1 }];
+    toggleIn(list, { id: 2 }, sameId);
+    expect(list).toEqual([{ id: 1 }]);
   });
 });
