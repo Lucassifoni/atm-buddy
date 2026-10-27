@@ -80,3 +80,16 @@ export const formatArcSize = (arcsec) => {
   if (arcsec >= 120) return `${(arcsec / 60).toFixed(1)}\u2032`;
   return `${arcsec.toFixed(1)}\u2033`;
 };
+
+/**
+ * Hue of a green → yellow → red scale: 120 at zero, 60 at `yellowAt`, 0 from
+ * `redAt` on. Returns null for non-finite values.
+ */
+export const heatHue = (value, { yellowAt, redAt }) => {
+  if (!isFinite(value)) return null;
+  if (value >= redAt) return 0;
+  if (value >= yellowAt) {
+    return 60 * (1 - (value - yellowAt) / (redAt - yellowAt));
+  }
+  return 120 - 60 * (Math.max(value, 0) / yellowAt);
+};

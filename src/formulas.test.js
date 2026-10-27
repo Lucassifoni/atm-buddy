@@ -22,6 +22,10 @@ import {
   mirrorBlank,
   fieldConverter,
   spherometerTriangle,
+  zernikeZ8,
+  zernikeZ8Table,
+  zernikeZ8MinimumWavelength,
+  shortestLaserAbove,
 } from "./formulas.js";
 
 describe("ballSpherometerROC", () => {
@@ -1040,6 +1044,153 @@ describe("spraySilvering calculations", () => {
       expect(spraySilvering.firstQuantity(150)).toBeCloseTo(100, 5);
       expect(spraySilvering.firstQuantity(300)).toBeCloseTo(200, 5);
     });
+  });
+});
+
+describe("zernikeZ8", () => {
+  const reference = {
+    diameter: 300,
+    radiusOfCurvature: 2400,
+    wavelengthNm: 550,
+  };
+
+  it("computes the 0-to-peak coefficient for known values", () => {
+    expect(zernikeZ8(reference).coefficient).toBeCloseTo(2.7743, 4);
+  });
+
+  it("doubles the coefficient for the peak-to-valley value", () => {
+    const { coefficient, peakToValley } = zernikeZ8(reference);
+    expect(peakToValley).toBe(2 * coefficient);
+  });
+
+  it("is two thirds of the sphere-to-parabola P-V correction", () => {
+    const { coefficient } = zernikeZ8(reference);
+    const { totalCorrection } = sphericalAberration({
+      diameter: 300,
+      focalLength: 1200,
+      wavelengthNm: 550,
+    });
+    expect(1.5 * coefficient).toBeCloseTo(totalCorrection, 3);
+  });
+
+  it("scales with the fourth power of the diameter", () => {
+    const single = zernikeZ8(reference).coefficient;
+    const double = zernikeZ8({ ...reference, diameter: 600 }).coefficient;
+    expect(double / single).toBeCloseTo(16, 10);
+  });
+
+  it("scales inversely with the cube of the radius of curvature", () => {
+    const single = zernikeZ8(reference).coefficient;
+    const double = zernikeZ8({
+      ...reference,
+      radiusOfCurvature: 4800,
+    }).coefficient;
+    expect(single / double).toBeCloseTo(8, 10);
+  });
+
+  it("scales inversely with the wavelength", () => {
+    const green = zernikeZ8(reference).coefficient;
+    const red = zernikeZ8({ ...reference, wavelengthNm: 1100 }).coefficient;
+    expect(green / red).toBeCloseTo(2, 10);
+  });
+
+  it.each([
+    ["diameter", 0],
+    ["diameter", -300],
+    ["radiusOfCurvature", 0],
+    ["radiusOfCurvature", -2400],
+    ["wavelengthNm", 0],
+  ])("returns NaN when %s is %d", (key, value) => {
+    const result = zernikeZ8({ ...reference, [key]: value });
+    expect(result.coefficient).toBeNaN();
+    expect(result.peakToValley).toBeNaN();
+  });
+});
+
+describe("zernikeZ8Table", () => {
+  const table = zernikeZ8Table({
+    fRatios: [6, 3],
+    diameters: [200, 1000],
+    wavelengthNm: 632.8,
+  });
+
+  it("has one row per focal ratio and one cell per diameter", () => {
+    expect(table.map((row) => row.fRatio)).toEqual([6, 3]);
+    table.forEach((row) => expect(row.values).toHaveLength(2));
+  });
+
+  it("matches the DFTFringe bath reference table at 632.8 nm", () => {
+    expect(table[0].values[0]).toBeCloseTo(0.5, 1);
+    expect(table[0].values[1]).toBeCloseTo(2.4, 1);
+    expect(table[1].values[0]).toBeCloseTo(3.8, 1);
+    expect(table[1].values[1]).toBeCloseTo(19, 0);
+  });
+
+  it("uses a radius of curvature of twice the focal length", () => {
+    expect(table[1].values[1]).toBe(
+      zernikeZ8({
+        diameter: 1000,
+        radiusOfCurvature: 6000,
+        wavelengthNm: 632.8,
+      }).coefficient,
+    );
+  });
+});
+
+describe("zernikeZ8MinimumWavelength", () => {
+  const mirror = { diameter: 400, radiusOfCurvature: 2400 };
+
+  it("brings Z8 exactly to the requested coefficient", () => {
+    const wavelengthNm = zernikeZ8MinimumWavelength({
+      ...mirror,
+      maxCoefficient: 9,
+    });
+    expect(zernikeZ8({ ...mirror, wavelengthNm }).coefficient).toBeCloseTo(
+      9,
+      10,
+    );
+  });
+
+  it("is longer for a stricter limit", () => {
+    const loose = zernikeZ8MinimumWavelength({ ...mirror, maxCoefficient: 9 });
+    const strict = zernikeZ8MinimumWavelength({ ...mirror, maxCoefficient: 3 });
+    expect(strict / loose).toBeCloseTo(3, 10);
+  });
+
+  it.each([
+    ["diameter", 0],
+    ["radiusOfCurvature", 0],
+    ["maxCoefficient", 0],
+  ])("returns NaN when %s is %d", (key, value) => {
+    expect(
+      zernikeZ8MinimumWavelength({
+        ...mirror,
+        maxCoefficient: 9,
+        [key]: value,
+      }),
+    ).toBeNaN();
+  });
+});
+
+describe("shortestLaserAbove", () => {
+  const lasers = [{ nm: 650 }, { nm: 405 }, { nm: 632.8 }, { nm: 532 }];
+
+  it("picks the shortest laser long enough", () => {
+    expect(shortestLaserAbove({ lasers, minimumNm: 540 })).toEqual({
+      nm: 632.8,
+    });
+  });
+
+  it("accepts a laser exactly at the minimum", () => {
+    expect(shortestLaserAbove({ lasers, minimumNm: 532 })).toEqual({ nm: 532 });
+  });
+
+  it("returns null when no laser is long enough", () => {
+    expect(shortestLaserAbove({ lasers, minimumNm: 700 })).toBeNull();
+  });
+
+  it("returns null when the minimum is not a number", () => {
+    expect(shortestLaserAbove({ lasers, minimumNm: NaN })).toBeNull();
   });
 });
 

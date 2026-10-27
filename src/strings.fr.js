@@ -64,6 +64,7 @@ export default {
     mirrorWeight: "Poids d'une pièce optique",
     fieldConverter: "Champ ↔ TFOV",
     spherometerFeetRadius: "Rayon des pieds",
+    zernikeZ8: "Bath Z8",
   },
 
   spherometer: {
@@ -428,6 +429,36 @@ export default {
     focalLength: "Distance focale (mm) :",
     conic: "Constante conique :",
     wavelength: "Longueur d'onde (nm) :",
+  },
+
+  zernikeZ8: {
+    formula: "Z8 = D⁴·10⁶ / (384·λ·R³)",
+    source:
+      "Formule issue de DFTFringe (interféromètre de Bath, configuration du miroir) : Z8 de Wyant d'une sphère par rapport à une parabole.",
+    sources: "Sources :",
+    coefficientLabel: "Z8 (0 à crête) :",
+    peakToValleyLabel: "Z8 PTV (×2) :",
+    waves: "ondes",
+    diameter: "Diamètre optique du miroir (mm) :",
+    roc: "Rayon de courbure paraxial (mm) :",
+    wavelength: "Longueur d'onde du laser (nm) :",
+    tableTitle: "Z8 selon F/D et diamètre",
+    tableHint: "Z8 (0 à crête) en ondes à λ = {wavelength} nm, R = 2·F.",
+    tableCorner: "F/D \\ D",
+    lasers: {
+      violet: "405 nm violet",
+      greenPointer: "518 nm pointeur vert",
+      green: "532 nm vert",
+      hene: "632,8 nm HeNe",
+      red: "650 nm rouge",
+    },
+    useLaser: "L'utiliser",
+    laserPresets: "Lasers courants (nm) :",
+    tooHigh:
+      "Z8 dépasse {limit} ondes, ce qui est difficile à analyser avec un interféromètre de Bath. Un laser d'au moins {minimum} nm le ramène sous {limit}.",
+    suggestLaser: "Essayez le laser {laser} : Z8 = {z8} ondes.",
+    noLaserLongEnough:
+      "Aucun laser courant n'a une longueur d'onde suffisante : même le {laser} donne Z8 = {z8} ondes.",
   },
 
   mirrorWeight: {

@@ -63,6 +63,7 @@ export default {
     mirrorWeight: "Mirror Weight",
     fieldConverter: "Field ↔ TFOV",
     spherometerFeetRadius: "Feet radius",
+    zernikeZ8: "Bath Z8",
   },
 
   spherometer: {
@@ -425,6 +426,36 @@ export default {
     focalLength: "Focal length (mm):",
     conic: "Conic constant:",
     wavelength: "Wavelength (nm):",
+  },
+
+  zernikeZ8: {
+    formula: "Z8 = D⁴·10⁶ / (384·λ·R³)",
+    source:
+      "Formula from DFTFringe (Bath interferometer, mirror configuration): Wyant Z8 of a sphere against a parabola.",
+    sources: "Sources:",
+    coefficientLabel: "Z8 (0 to peak):",
+    peakToValleyLabel: "Z8 PTV (×2):",
+    waves: "waves",
+    diameter: "Mirror diameter (mm):",
+    roc: "Paraxial radius of curvature (mm):",
+    wavelength: "Laser wavelength (nm):",
+    tableTitle: "Z8 by focal ratio and diameter",
+    tableHint: "Z8 (0 to peak) in waves at λ = {wavelength} nm, R = 2·F.",
+    tableCorner: "F/D \\ D",
+    lasers: {
+      violet: "405 nm violet",
+      greenPointer: "518 nm green pointer",
+      green: "532 nm green",
+      hene: "632.8 nm HeNe",
+      red: "650 nm red",
+    },
+    useLaser: "Use it",
+    laserPresets: "Common lasers (nm):",
+    tooHigh:
+      "Z8 is above {limit} waves, which is hard to analyse with a Bath interferometer. A laser of at least {minimum} nm keeps it under {limit}.",
+    suggestLaser: "Try the {laser} laser: Z8 = {z8} waves.",
+    noLaserLongEnough:
+      "None of the common lasers is long enough: even {laser} gives Z8 = {z8} waves.",
   },
 
   mirrorWeight: {

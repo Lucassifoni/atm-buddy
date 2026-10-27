@@ -19,6 +19,7 @@ import SphericalAberration from "./SphericalAberration.vue";
 import MirrorWeight from "./MirrorWeight.vue";
 import FieldConverter from "./FieldConverter.vue";
 import SpherometerFeetRadius from "./SpherometerFeetRadius.vue";
+import ZernikeZ8 from "./ZernikeZ8.vue";
 import Home from "./Home.vue";
 
 export const routes = [
@@ -131,6 +132,12 @@ export const routes = [
           icon: "spherometer_feet_radius",
           titleKey: "routes.spherometerFeetRadius",
         },
+      },
+      {
+        path: "zernike_z8",
+        name: "zernikeZ8",
+        component: ZernikeZ8,
+        meta: { icon: "zernike_z8", titleKey: "routes.zernikeZ8" },
       },
     ],
   },

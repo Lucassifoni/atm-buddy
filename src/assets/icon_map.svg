@@ -57,5 +57,5 @@
   <text x="60" y="128" fill="#999">[3,6]</text>
   <text fill="#333"><tspan x="60" y="133.0">little</tspan><tspan x="60" y="136.2">calculators</tspan></text>
   <text x="84" y="128" fill="#999">[4,6]</text>
-  <text fill="#aaa"><tspan x="84" y="133.0">(empty)</tspan></text>
+  <text fill="#333"><tspan x="84" y="133.0">zernike_z8</tspan></text>
 </svg>

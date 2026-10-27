@@ -19,6 +19,7 @@ const {
   getSpherometers,
   routeTitle,
   formatArcSize,
+  heatHue,
 } = await import("./utils.js");
 
 const stored = (storageKey) => JSON.parse(localStorage.getItem(storageKey));
@@ -170,5 +171,35 @@ describe("formatArcSize", () => {
 
   it("renders non-finite sizes as a dash", () => {
     expect(formatArcSize(NaN)).toBe("-");
+  });
+});
+
+describe("heatHue", () => {
+  const scale = { yellowAt: 9, redAt: 11 };
+
+  it("is green at zero and below", () => {
+    expect(heatHue(0, scale)).toBe(120);
+    expect(heatHue(-3, scale)).toBe(120);
+  });
+
+  it("is yellow at the yellow threshold", () => {
+    expect(heatHue(9, scale)).toBe(60);
+  });
+
+  it("goes linearly from green to yellow", () => {
+    expect(heatHue(4.5, scale)).toBe(90);
+  });
+
+  it("goes linearly from yellow to red", () => {
+    expect(heatHue(10, scale)).toBe(30);
+  });
+
+  it("is red from the red threshold on", () => {
+    expect(heatHue(11, scale)).toBe(0);
+    expect(heatHue(19, scale)).toBe(0);
+  });
+
+  it("has no hue for non-finite values", () => {
+    expect(heatHue(NaN, scale)).toBeNull();
   });
 });

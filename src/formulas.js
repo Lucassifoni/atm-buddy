@@ -485,6 +485,66 @@ export const bathAstigmatism = ({
   return (valMm * 1e6) / wavelengthNm;
 };
 
+/**
+ * Wyant Z8 (primary spherical) of a sphere measured against a parabola, from
+ * Z8 = D⁴ / (384·λ·R³) · 10⁶. Lengths in mm, wavelength in nm, results in
+ * waves: `coefficient` is the 0-to-peak value, `peakToValley` is twice that.
+ */
+export const zernikeZ8 = ({ diameter, radiusOfCurvature, wavelengthNm }) => {
+  if (diameter <= 0 || radiusOfCurvature <= 0 || wavelengthNm <= 0) {
+    return { coefficient: NaN, peakToValley: NaN };
+  }
+  const coefficient =
+    (diameter ** 4 * 1e6) / (384 * wavelengthNm * radiusOfCurvature ** 3);
+  return { coefficient, peakToValley: 2 * coefficient };
+};
+
+/**
+ * Z8 coefficients for every focal ratio × diameter pair, one row per focal
+ * ratio, with the radius of curvature taken as twice the focal length.
+ */
+export const zernikeZ8Table = ({ fRatios, diameters, wavelengthNm }) =>
+  fRatios.map((fRatio) => ({
+    fRatio,
+    values: diameters.map(
+      (diameter) =>
+        zernikeZ8({
+          diameter,
+          radiusOfCurvature: 2 * fRatio * diameter,
+          wavelengthNm,
+        }).coefficient,
+    ),
+  }));
+
+/**
+ * Shortest wavelength, in nm, that keeps Z8 at or below `maxCoefficient`
+ * waves (0 to peak). Z8 scales as 1/λ.
+ */
+export const zernikeZ8MinimumWavelength = ({
+  diameter,
+  radiusOfCurvature,
+  maxCoefficient,
+}) => {
+  if (diameter <= 0 || radiusOfCurvature <= 0 || maxCoefficient <= 0) {
+    return NaN;
+  }
+  return (
+    (diameter ** 4 * 1e6) / (384 * maxCoefficient * radiusOfCurvature ** 3)
+  );
+};
+
+/**
+ * Shortest of `lasers` (each with an `nm` wavelength) at or above
+ * `minimumNm`, or null when none is long enough.
+ */
+export const shortestLaserAbove = ({ lasers, minimumNm }) =>
+  lasers
+    .filter((laser) => laser.nm >= minimumNm)
+    .reduce(
+      (best, laser) => (best && best.nm <= laser.nm ? best : laser),
+      null,
+    );
+
 export const sphericalCapVolume = ({ baseRadius, sagitta }) => {
   const a = baseRadius;
   const h = sagitta;

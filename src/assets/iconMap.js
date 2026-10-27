@@ -22,4 +22,5 @@ export default {
   field_converter: [1, 6],
   spherometer_feet_radius: [2, 6],
   little_calculators: [3, 6],
+  zernike_z8: [4, 6],
 };
