@@ -429,18 +429,20 @@ export default {
   },
 
   zernikeZ8: {
-    formula: "Z8 = D⁴·10⁶ / (384·λ·R³)",
+    formula: "Z8 = −K·D⁴·10⁶ / (384·λ·R³)",
     source:
-      "Formula from DFTFringe (Bath interferometer, mirror configuration): Wyant Z8 of a sphere against a parabola.",
+      "Formula from DFTFringe (Bath interferometer, mirror configuration): Wyant Z8 of a sphere against the target conic (K = −1 for a parabola).",
     sources: "Sources:",
     coefficientLabel: "Z8 (0 to peak):",
     peakToValleyLabel: "Z8 PTV (×2):",
     waves: "waves",
     diameter: "Mirror diameter (mm):",
     roc: "Paraxial radius of curvature (mm):",
+    conic: "Target conic constant (K):",
     wavelength: "Laser wavelength (nm):",
     tableTitle: "Z8 by focal ratio and diameter",
-    tableHint: "Z8 (0 to peak) in waves at λ = {wavelength} nm, R = 2·F.",
+    tableHint:
+      "Z8 (0 to peak) in waves at λ = {wavelength} nm, K = {conic}, R = 2·F.",
     tableCorner: "F/D \\ D",
     lasers: {
       violet: "405 nm violet",

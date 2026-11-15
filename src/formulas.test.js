@@ -1101,10 +1101,49 @@ describe("zernikeZ8", () => {
     ["radiusOfCurvature", 0],
     ["radiusOfCurvature", -2400],
     ["wavelengthNm", 0],
+    ["conic", NaN],
   ])("returns NaN when %s is %d", (key, value) => {
     const result = zernikeZ8({ ...reference, [key]: value });
     expect(result.coefficient).toBeNaN();
     expect(result.peakToValley).toBeNaN();
+  });
+
+  describe("with a conic constant", () => {
+    const parabola = zernikeZ8(reference).coefficient;
+
+    it("defaults to a parabola", () => {
+      expect(zernikeZ8({ ...reference, conic: -1 }).coefficient).toBe(parabola);
+    });
+
+    it("is zero for a sphere", () => {
+      const result = zernikeZ8({ ...reference, conic: 0 });
+      expect(Math.abs(result.coefficient)).toBe(0);
+      expect(result.peakToValley).toBe(0);
+    });
+
+    it("scales linearly with the conic constant", () => {
+      const prolate = zernikeZ8({ ...reference, conic: -0.5 }).coefficient;
+      const hyperbola = zernikeZ8({ ...reference, conic: -2 }).coefficient;
+      expect(prolate / parabola).toBeCloseTo(0.5, 10);
+      expect(hyperbola / parabola).toBeCloseTo(2, 10);
+    });
+
+    it("is negative for an oblate ellipsoid, with a positive P-V", () => {
+      const result = zernikeZ8({ ...reference, conic: 0.5 });
+      expect(result.coefficient).toBeCloseTo(-0.5 * parabola, 10);
+      expect(result.peakToValley).toBeCloseTo(parabola, 10);
+    });
+
+    it("is two thirds of the sphere-to-conic P-V correction", () => {
+      const { coefficient } = zernikeZ8({ ...reference, conic: -1.3 });
+      const { toCurrentConic } = sphericalAberration({
+        diameter: 300,
+        focalLength: 1200,
+        wavelengthNm: 550,
+        conic: -1.3,
+      });
+      expect(1.5 * coefficient).toBeCloseTo(toCurrentConic, 3);
+    });
   });
 });
 
@@ -1136,6 +1175,20 @@ describe("zernikeZ8Table", () => {
       }).coefficient,
     );
   });
+
+  it("applies the conic constant to every cell", () => {
+    const hyperbolic = zernikeZ8Table({
+      fRatios: [6, 3],
+      diameters: [200, 1000],
+      wavelengthNm: 632.8,
+      conic: -2,
+    });
+    hyperbolic.forEach((row, i) =>
+      row.values.forEach((value, j) =>
+        expect(value).toBeCloseTo(2 * table[i].values[j], 10),
+      ),
+    );
+  });
 });
 
 describe("zernikeZ8MinimumWavelength", () => {
@@ -1156,6 +1209,26 @@ describe("zernikeZ8MinimumWavelength", () => {
     const loose = zernikeZ8MinimumWavelength({ ...mirror, maxCoefficient: 9 });
     const strict = zernikeZ8MinimumWavelength({ ...mirror, maxCoefficient: 3 });
     expect(strict / loose).toBeCloseTo(3, 10);
+  });
+
+  it.each([-2, -0.5, 0.5])(
+    "brings |Z8| exactly to the limit for a conic of %d",
+    (conic) => {
+      const wavelengthNm = zernikeZ8MinimumWavelength({
+        ...mirror,
+        maxCoefficient: 9,
+        conic,
+      });
+      expect(
+        Math.abs(zernikeZ8({ ...mirror, wavelengthNm, conic }).coefficient),
+      ).toBeCloseTo(9, 10);
+    },
+  );
+
+  it("needs no minimum for a sphere", () => {
+    expect(
+      zernikeZ8MinimumWavelength({ ...mirror, maxCoefficient: 9, conic: 0 }),
+    ).toBe(0);
   });
 
   it.each([
@@ -1232,6 +1305,20 @@ describe("zernikeZ8Comparison", () => {
 
   it("returns an empty comparison for no mirror", () => {
     expect(compare([])).toEqual([]);
+  });
+
+  it("applies the conic constant and ranks by magnitude", () => {
+    const rows = zernikeZ8Comparison({
+      mirrors: [
+        { diameter: 200, fRatio: 2 },
+        { diameter: 200, fRatio: 4 },
+      ],
+      wavelengthNm: 632.8,
+      conic: 0.5,
+    });
+    expect(rows.map((row) => row.fRatio)).toEqual([4, 2]);
+    expect(rows[0].coefficient).toBeLessThan(0);
+    expect(rows[1].relative).toBeCloseTo(8, 10);
   });
 });
 

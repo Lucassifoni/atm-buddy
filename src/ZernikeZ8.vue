@@ -91,6 +91,18 @@
     </div>
     <div class="field-horizontal">
       <label class="label text-xs font-medium">{{
+        $t("zernikeZ8.conic")
+      }}</label>
+      <input
+        class="input input-bordered input-sm w-full"
+        :value="conic"
+        inputmode="decimal"
+        pattern="-?[0-9]*[.,]?[0-9]*"
+        @input="set('conic', $event.target.value)"
+      />
+    </div>
+    <div class="field-horizontal">
+      <label class="label text-xs font-medium">{{
         $t("zernikeZ8.wavelength")
       }}</label>
       <input
@@ -119,7 +131,12 @@
         {{ $t("zernikeZ8.tableTitle") }}
       </h4>
       <p class="text-xs opacity-70 mb-2">
-        {{ $t("zernikeZ8.tableHint", { wavelength: format(wavelengthNm, 1) }) }}
+        {{
+          $t("zernikeZ8.tableHint", {
+            wavelength: format(wavelengthNm, 1),
+            conic: format(conicK, 2),
+          })
+        }}
         {{ $t("zernikeZ8.compareHint") }}
       </p>
       <div class="overflow-x-auto">
@@ -289,6 +306,7 @@ export default {
     return {
       diameter: get(STORAGE_KEY, "diameter", "300"),
       roc: get(STORAGE_KEY, "roc", "2400"),
+      conic: get(STORAGE_KEY, "conic", "-1"),
       wavelength: get(STORAGE_KEY, "wavelength", "632.8"),
       selected: get(STORAGE_KEY, "selected", []),
       diameters: DIAMETERS,
@@ -309,6 +327,7 @@ export default {
         {
           diameter: this.diameter,
           roc: this.roc,
+          conic: this.conic,
           wavelength: this.wavelength,
           selected: this.selected,
         },
@@ -333,9 +352,10 @@ export default {
       return isFinite(value) ? value.toFixed(digits) : "-";
     },
     cellStyle(value) {
-      const hue = heatHue(value, SCALE);
+      const magnitude = Math.abs(value);
+      const hue = heatHue(magnitude, SCALE);
       if (hue === null) return {};
-      const darkness = heatDarkness(value, SCALE);
+      const darkness = heatDarkness(magnitude, SCALE);
       return {
         backgroundColor: `hsl(${hue} 85% ${50 - 25 * darkness}% / ${0.35 + 0.55 * darkness})`,
         color: darkness > 0.4 ? "white" : undefined,
@@ -346,11 +366,15 @@ export default {
     wavelengthNm() {
       return toN(this.wavelength);
     },
+    conicK() {
+      return this.conic === "" ? NaN : toN(this.conic);
+    },
     result() {
       return zernikeZ8({
         diameter: toN(this.diameter),
         radiusOfCurvature: toN(this.roc),
         wavelengthNm: this.wavelengthNm,
+        conic: this.conicK,
       });
     },
     currentMirror() {
@@ -364,16 +388,18 @@ export default {
       return zernikeZ8Comparison({
         mirrors: this.selected,
         wavelengthNm: this.wavelengthNm,
+        conic: this.conicK,
       });
     },
     tooHigh() {
-      return this.result.coefficient > SCALE.yellowAt;
+      return Math.abs(this.result.coefficient) > SCALE.yellowAt;
     },
     minimumWavelength() {
       return zernikeZ8MinimumWavelength({
         diameter: toN(this.diameter),
         radiusOfCurvature: toN(this.roc),
         maxCoefficient: SCALE.yellowAt,
+        conic: this.conicK,
       });
     },
     suggestion() {
@@ -390,6 +416,7 @@ export default {
           diameter: toN(this.diameter),
           radiusOfCurvature: toN(this.roc),
           wavelengthNm: laser.nm,
+          conic: this.conicK,
         }).coefficient,
       };
     },
@@ -398,6 +425,7 @@ export default {
         fRatios: F_RATIOS,
         diameters: DIAMETERS,
         wavelengthNm: this.wavelengthNm,
+        conic: this.conicK,
       });
     },
   },

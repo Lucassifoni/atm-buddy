@@ -486,24 +486,44 @@ export const bathAstigmatism = ({
 };
 
 /**
- * Wyant Z8 (primary spherical) of a sphere measured against a parabola, from
- * Z8 = D⁴ / (384·λ·R³) · 10⁶. Lengths in mm, wavelength in nm, results in
- * waves: `coefficient` is the 0-to-peak value, `peakToValley` is twice that.
+ * Wyant Z8 (primary spherical) a sphere shows when measured against a conic
+ * of constant `conic` (−1, a parabola, by default), from
+ * Z8 = −K · D⁴ / (384·λ·R³) · 10⁶. The fourth-order departure of a conic
+ * from its osculating sphere is −K·r⁴/(8R³), so Z8 is linear in K: zero for
+ * a sphere, negative for an oblate ellipsoid. Lengths in mm, wavelength in
+ * nm, results in waves: `coefficient` is the signed 0-to-peak value,
+ * `peakToValley` twice its magnitude.
  */
-export const zernikeZ8 = ({ diameter, radiusOfCurvature, wavelengthNm }) => {
-  if (diameter <= 0 || radiusOfCurvature <= 0 || wavelengthNm <= 0) {
+export const zernikeZ8 = ({
+  diameter,
+  radiusOfCurvature,
+  wavelengthNm,
+  conic = -1,
+}) => {
+  if (
+    diameter <= 0 ||
+    radiusOfCurvature <= 0 ||
+    wavelengthNm <= 0 ||
+    !isFinite(conic)
+  ) {
     return { coefficient: NaN, peakToValley: NaN };
   }
   const coefficient =
-    (diameter ** 4 * 1e6) / (384 * wavelengthNm * radiusOfCurvature ** 3);
-  return { coefficient, peakToValley: 2 * coefficient };
+    (-conic * diameter ** 4 * 1e6) /
+    (384 * wavelengthNm * radiusOfCurvature ** 3);
+  return { coefficient, peakToValley: 2 * Math.abs(coefficient) };
 };
 
 /**
  * Z8 coefficients for every focal ratio × diameter pair, one row per focal
  * ratio, with the radius of curvature taken as twice the focal length.
  */
-export const zernikeZ8Table = ({ fRatios, diameters, wavelengthNm }) =>
+export const zernikeZ8Table = ({
+  fRatios,
+  diameters,
+  wavelengthNm,
+  conic = -1,
+}) =>
   fRatios.map((fRatio) => ({
     fRatio,
     values: diameters.map(
@@ -512,24 +532,33 @@ export const zernikeZ8Table = ({ fRatios, diameters, wavelengthNm }) =>
           diameter,
           radiusOfCurvature: 2 * fRatio * diameter,
           wavelengthNm,
+          conic,
         }).coefficient,
     ),
   }));
 
 /**
- * Shortest wavelength, in nm, that keeps Z8 at or below `maxCoefficient`
- * waves (0 to peak). Z8 scales as 1/λ.
+ * Shortest wavelength, in nm, that keeps the magnitude of Z8 at or below
+ * `maxCoefficient` waves (0 to peak). Z8 scales as 1/λ; a sphere (K = 0)
+ * needs no minimum, hence 0.
  */
 export const zernikeZ8MinimumWavelength = ({
   diameter,
   radiusOfCurvature,
   maxCoefficient,
+  conic = -1,
 }) => {
-  if (diameter <= 0 || radiusOfCurvature <= 0 || maxCoefficient <= 0) {
+  if (
+    diameter <= 0 ||
+    radiusOfCurvature <= 0 ||
+    maxCoefficient <= 0 ||
+    !isFinite(conic)
+  ) {
     return NaN;
   }
   return (
-    (diameter ** 4 * 1e6) / (384 * maxCoefficient * radiusOfCurvature ** 3)
+    (Math.abs(conic) * diameter ** 4 * 1e6) /
+    (384 * maxCoefficient * radiusOfCurvature ** 3)
   );
 };
 
@@ -546,11 +575,12 @@ export const shortestLaserAbove = ({ lasers, minimumNm }) =>
     );
 
 /**
- * Compares mirrors given by `diameter` (mm) and `fRatio`, easiest first:
- * each gets its radius of curvature, Z8 at `wavelengthNm`, and how many
- * times the easiest mirror's Z8 it reaches.
+ * Compares mirrors given by `diameter` (mm) and `fRatio`, all figured to
+ * the same `conic`, easiest first: each gets its radius of curvature, Z8 at
+ * `wavelengthNm`, and how many times the easiest mirror's Z8 it reaches.
+ * Mirrors are ranked by the magnitude of Z8.
  */
-export const zernikeZ8Comparison = ({ mirrors, wavelengthNm }) => {
+export const zernikeZ8Comparison = ({ mirrors, wavelengthNm, conic = -1 }) => {
   const rows = mirrors
     .map((mirror) => {
       const radiusOfCurvature = 2 * mirror.fRatio * mirror.diameter;
@@ -561,12 +591,16 @@ export const zernikeZ8Comparison = ({ mirrors, wavelengthNm }) => {
           diameter: mirror.diameter,
           radiusOfCurvature,
           wavelengthNm,
+          conic,
         }).coefficient,
       };
     })
-    .sort((a, b) => a.coefficient - b.coefficient);
-  const easiest = rows.length > 0 ? rows[0].coefficient : NaN;
-  return rows.map((row) => ({ ...row, relative: row.coefficient / easiest }));
+    .sort((a, b) => Math.abs(a.coefficient) - Math.abs(b.coefficient));
+  const easiest = rows.length > 0 ? Math.abs(rows[0].coefficient) : NaN;
+  return rows.map((row) => ({
+    ...row,
+    relative: Math.abs(row.coefficient) / easiest,
+  }));
 };
 
 export const sphericalCapVolume = ({ baseRadius, sagitta }) => {
