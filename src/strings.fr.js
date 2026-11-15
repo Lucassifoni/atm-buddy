@@ -432,12 +432,12 @@ export default {
   },
 
   zernikeZ8: {
-    formula: "Z8 = −K·D⁴·10⁶ / (384·λ·R³)",
+    formula: "Z8 = K·D⁴·10⁶ / (384·λ·R³)",
     source:
       "Formule issue de DFTFringe (interféromètre de Bath, configuration du miroir) : Z8 de Wyant d'une sphère par rapport à la conique visée (K = −1 pour une parabole).",
     sources: "Sources :",
     coefficientLabel: "Z8 (0 à crête) :",
-    peakToValleyLabel: "Z8 PTV (×2) :",
+    peakToValleyLabel: "Z8 PTV (×1.5) :",
     waves: "ondes",
     diameter: "Diamètre optique du miroir (mm) :",
     roc: "Rayon de courbure paraxial (mm) :",

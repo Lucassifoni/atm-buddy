@@ -1056,12 +1056,12 @@ describe("zernikeZ8", () => {
   };
 
   it("computes the 0-to-peak coefficient for known values", () => {
-    expect(zernikeZ8(reference).coefficient).toBeCloseTo(2.7743, 4);
+    expect(zernikeZ8(reference).coefficient).toBeCloseTo(-2.7743, 4);
   });
 
-  it("doubles the coefficient for the peak-to-valley value", () => {
+  it("takes 1.5 times the magnitude as the peak-to-valley value, as DFTFringe does", () => {
     const { coefficient, peakToValley } = zernikeZ8(reference);
-    expect(peakToValley).toBe(2 * coefficient);
+    expect(peakToValley).toBe(1.5 * Math.abs(coefficient));
   });
 
   it("is two thirds of the sphere-to-parabola P-V correction", () => {
@@ -1071,7 +1071,7 @@ describe("zernikeZ8", () => {
       focalLength: 1200,
       wavelengthNm: 550,
     });
-    expect(1.5 * coefficient).toBeCloseTo(totalCorrection, 3);
+    expect(-1.5 * coefficient).toBeCloseTo(totalCorrection, 3);
   });
 
   it("scales with the fourth power of the diameter", () => {
@@ -1128,10 +1128,15 @@ describe("zernikeZ8", () => {
       expect(hyperbola / parabola).toBeCloseTo(2, 10);
     });
 
-    it("is negative for an oblate ellipsoid, with a positive P-V", () => {
+    it("is negative for a parabola, as DFTFringe's z8 × cc null", () => {
+      expect(parabola).toBeLessThan(0);
+    });
+
+    it("is positive for an oblate ellipsoid, with a positive P-V", () => {
       const result = zernikeZ8({ ...reference, conic: 0.5 });
       expect(result.coefficient).toBeCloseTo(-0.5 * parabola, 10);
-      expect(result.peakToValley).toBeCloseTo(parabola, 10);
+      expect(result.coefficient).toBeGreaterThan(0);
+      expect(result.peakToValley).toBeCloseTo(-0.75 * parabola, 10);
     });
 
     it("is two thirds of the sphere-to-conic P-V correction", () => {
@@ -1142,7 +1147,7 @@ describe("zernikeZ8", () => {
         wavelengthNm: 550,
         conic: -1.3,
       });
-      expect(1.5 * coefficient).toBeCloseTo(toCurrentConic, 3);
+      expect(-1.5 * coefficient).toBeCloseTo(toCurrentConic, 3);
     });
   });
 });
@@ -1160,10 +1165,10 @@ describe("zernikeZ8Table", () => {
   });
 
   it("matches the DFTFringe bath reference table at 632.8 nm", () => {
-    expect(table[0].values[0]).toBeCloseTo(0.5, 1);
-    expect(table[0].values[1]).toBeCloseTo(2.4, 1);
-    expect(table[1].values[0]).toBeCloseTo(3.8, 1);
-    expect(table[1].values[1]).toBeCloseTo(19, 0);
+    expect(table[0].values[0]).toBeCloseTo(-0.5, 1);
+    expect(table[0].values[1]).toBeCloseTo(-2.4, 1);
+    expect(table[1].values[0]).toBeCloseTo(-3.8, 1);
+    expect(table[1].values[1]).toBeCloseTo(-19, 0);
   });
 
   it("uses a radius of curvature of twice the focal length", () => {
@@ -1199,10 +1204,9 @@ describe("zernikeZ8MinimumWavelength", () => {
       ...mirror,
       maxCoefficient: 9,
     });
-    expect(zernikeZ8({ ...mirror, wavelengthNm }).coefficient).toBeCloseTo(
-      9,
-      10,
-    );
+    expect(
+      Math.abs(zernikeZ8({ ...mirror, wavelengthNm }).coefficient),
+    ).toBeCloseTo(9, 10);
   });
 
   it("is longer for a stricter limit", () => {
@@ -1317,7 +1321,7 @@ describe("zernikeZ8Comparison", () => {
       conic: 0.5,
     });
     expect(rows.map((row) => row.fRatio)).toEqual([4, 2]);
-    expect(rows[0].coefficient).toBeLessThan(0);
+    expect(rows[0].coefficient).toBeGreaterThan(0);
     expect(rows[1].relative).toBeCloseTo(8, 10);
   });
 });

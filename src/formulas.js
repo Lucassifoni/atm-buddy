@@ -486,13 +486,14 @@ export const bathAstigmatism = ({
 };
 
 /**
- * Wyant Z8 (primary spherical) a sphere shows when measured against a conic
- * of constant `conic` (−1, a parabola, by default), from
- * Z8 = −K · D⁴ / (384·λ·R³) · 10⁶. The fourth-order departure of a conic
- * from its osculating sphere is −K·r⁴/(8R³), so Z8 is linear in K: zero for
- * a sphere, negative for an oblate ellipsoid. Lengths in mm, wavelength in
- * nm, results in waves: `coefficient` is the signed 0-to-peak value,
- * `peakToValley` twice its magnitude.
+ * Wyant Z8 (primary spherical) null of a conic of constant `conic` (−1, a
+ * parabola, by default) tested at centre of curvature, matching DFTFringe's
+ * `z8 * cc`: Z8 = K · D⁴ / (384·λ·R³) · 10⁶. The fourth-order departure of
+ * a conic from its osculating sphere is K·r⁴/(8R³), so Z8 is linear in K:
+ * negative for a parabola, zero for a sphere, positive for an oblate
+ * ellipsoid. Lengths in mm, wavelength in nm, results in waves:
+ * `coefficient` is the signed 0-to-peak value, `peakToValley` 1.5 times its
+ * magnitude, the P-V of the Z8 polynomial alone (DFTFringe's null variation).
  */
 export const zernikeZ8 = ({
   diameter,
@@ -509,9 +510,9 @@ export const zernikeZ8 = ({
     return { coefficient: NaN, peakToValley: NaN };
   }
   const coefficient =
-    (-conic * diameter ** 4 * 1e6) /
+    (conic * diameter ** 4 * 1e6) /
     (384 * wavelengthNm * radiusOfCurvature ** 3);
-  return { coefficient, peakToValley: 2 * Math.abs(coefficient) };
+  return { coefficient, peakToValley: 1.5 * Math.abs(coefficient) };
 };
 
 /**
